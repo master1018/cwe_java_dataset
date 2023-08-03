@@ -1,0 +1,7058 @@
+[
+    {
+        "name": "1.java",
+        "CWE_name": "CWE36",
+        "start_line": 13,
+        "end_line": 133
+    },
+    {
+        "name": "2.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "3.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 19
+    },
+    {
+        "name": "4.java",
+        "CWE_name": "CWE209",
+        "start_line": 8,
+        "end_line": 21
+    },
+    {
+        "name": "5.java",
+        "CWE_name": "CWE617",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "6.java",
+        "CWE_name": "CWE789",
+        "start_line": 13,
+        "end_line": 75
+    },
+    {
+        "name": "7.java",
+        "CWE_name": "CWE789",
+        "start_line": 12,
+        "end_line": 63
+    },
+    {
+        "name": "8.java",
+        "CWE_name": "CWE134",
+        "start_line": 12,
+        "end_line": 57
+    },
+    {
+        "name": "9.java",
+        "CWE_name": "CWE400",
+        "start_line": 8,
+        "end_line": 27
+    },
+    {
+        "name": "10.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "11.java",
+        "CWE_name": "CWE129",
+        "start_line": 14,
+        "end_line": 93
+    },
+    {
+        "name": "12.java",
+        "CWE_name": "CWE252",
+        "start_line": 10,
+        "end_line": 94
+    },
+    {
+        "name": "13.java",
+        "CWE_name": "CWE15",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "14.java",
+        "CWE_name": "CWE197",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "15.java",
+        "CWE_name": "CWE832",
+        "start_line": 14,
+        "end_line": null
+    },
+    {
+        "name": "16.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "17.java",
+        "CWE_name": "CWE459",
+        "start_line": 9,
+        "end_line": 36
+    },
+    {
+        "name": "18.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "19.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 56
+    },
+    {
+        "name": "20.java",
+        "CWE_name": "CWE190",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "21.java",
+        "CWE_name": "CWE789",
+        "start_line": 11,
+        "end_line": 55
+    },
+    {
+        "name": "22.java",
+        "CWE_name": "CWE252",
+        "start_line": 12,
+        "end_line": 48
+    },
+    {
+        "name": "23.java",
+        "CWE_name": "CWE506",
+        "start_line": 10,
+        "end_line": 72
+    },
+    {
+        "name": "24.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 18
+    },
+    {
+        "name": "25.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "26.java",
+        "CWE_name": "CWE400",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "27.java",
+        "CWE_name": "CWE566",
+        "start_line": 9,
+        "end_line": 79
+    },
+    {
+        "name": "28.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "29.java",
+        "CWE_name": "CWE259",
+        "start_line": 10,
+        "end_line": 18
+    },
+    {
+        "name": "30.java",
+        "CWE_name": "CWE113",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "31.java",
+        "CWE_name": "CWE526",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "32.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "33.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 45
+    },
+    {
+        "name": "34.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 57
+    },
+    {
+        "name": "35.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 78
+    },
+    {
+        "name": "36.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "37.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 33
+    },
+    {
+        "name": "38.java",
+        "CWE_name": "CWE90",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "39.java",
+        "CWE_name": "CWE643",
+        "start_line": 12,
+        "end_line": 51
+    },
+    {
+        "name": "40.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "41.java",
+        "CWE_name": "CWE526",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "42.java",
+        "CWE_name": "CWE789",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "43.java",
+        "CWE_name": "CWE584",
+        "start_line": 7,
+        "end_line": 27
+    },
+    {
+        "name": "44.java",
+        "CWE_name": "CWE572",
+        "start_line": 6,
+        "end_line": null
+    },
+    {
+        "name": "45.java",
+        "CWE_name": "CWE760",
+        "start_line": 11,
+        "end_line": 21
+    },
+    {
+        "name": "46.java",
+        "CWE_name": "CWE484",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "47.java",
+        "CWE_name": "CWE329",
+        "start_line": 13,
+        "end_line": 36
+    },
+    {
+        "name": "48.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "49.java",
+        "CWE_name": "CWE81",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "50.java",
+        "CWE_name": "CWE190",
+        "start_line": 20,
+        "end_line": 74
+    },
+    {
+        "name": "51.java",
+        "CWE_name": "CWE598",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "52.java",
+        "CWE_name": "CWE523",
+        "start_line": 10,
+        "end_line": 41
+    },
+    {
+        "name": "53.java",
+        "CWE_name": "CWE197",
+        "start_line": 13,
+        "end_line": 86
+    },
+    {
+        "name": "54.java",
+        "CWE_name": "CWE570",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "55.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "56.java",
+        "CWE_name": "CWE606",
+        "start_line": 12,
+        "end_line": 69
+    },
+    {
+        "name": "57.java",
+        "CWE_name": "CWE584",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "58.java",
+        "CWE_name": "CWE190",
+        "start_line": 9,
+        "end_line": 25
+    },
+    {
+        "name": "59.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "60.java",
+        "CWE_name": "CWE476",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "61.java",
+        "CWE_name": "CWE325",
+        "start_line": 10,
+        "end_line": 29
+    },
+    {
+        "name": "62.java",
+        "CWE_name": "CWE329",
+        "start_line": 13,
+        "end_line": 31
+    },
+    {
+        "name": "63.java",
+        "CWE_name": "CWE328",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "64.java",
+        "CWE_name": "CWE598",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "65.java",
+        "CWE_name": "CWE690",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "66.java",
+        "CWE_name": "CWE400",
+        "start_line": 6,
+        "end_line": 10
+    },
+    {
+        "name": "67.java",
+        "CWE_name": "CWE191",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "68.java",
+        "CWE_name": "CWE506",
+        "start_line": 11,
+        "end_line": null
+    },
+    {
+        "name": "69.java",
+        "CWE_name": "CWE586",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "70.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 73
+    },
+    {
+        "name": "71.java",
+        "CWE_name": "CWE327",
+        "start_line": 10,
+        "end_line": 25
+    },
+    {
+        "name": "72.java",
+        "CWE_name": "CWE259",
+        "start_line": 10,
+        "end_line": 73
+    },
+    {
+        "name": "73.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "74.java",
+        "CWE_name": "CWE400",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "75.java",
+        "CWE_name": "CWE690",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "76.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "77.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 18
+    },
+    {
+        "name": "78.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 23
+    },
+    {
+        "name": "79.java",
+        "CWE_name": "CWE510",
+        "start_line": 11,
+        "end_line": 75
+    },
+    {
+        "name": "80.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "81.java",
+        "CWE_name": "CWE511",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "82.java",
+        "CWE_name": "CWE338",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "83.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "84.java",
+        "CWE_name": "CWE459",
+        "start_line": 11,
+        "end_line": 38
+    },
+    {
+        "name": "85.java",
+        "CWE_name": "CWE197",
+        "start_line": 14,
+        "end_line": 79
+    },
+    {
+        "name": "86.java",
+        "CWE_name": "CWE315",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "87.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "88.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 97
+    },
+    {
+        "name": "89.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "90.java",
+        "CWE_name": "CWE499",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "91.java",
+        "CWE_name": "CWE252",
+        "start_line": 18,
+        "end_line": 54
+    },
+    {
+        "name": "92.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "93.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "94.java",
+        "CWE_name": "CWE114",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "95.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 18
+    },
+    {
+        "name": "96.java",
+        "CWE_name": "CWE400",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "97.java",
+        "CWE_name": "CWE614",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "98.java",
+        "CWE_name": "CWE129",
+        "start_line": 12,
+        "end_line": 97
+    },
+    {
+        "name": "99.java",
+        "CWE_name": "CWE511",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "100.java",
+        "CWE_name": "CWE546",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "101.java",
+        "CWE_name": "CWE81",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "102.java",
+        "CWE_name": "CWE615",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "103.java",
+        "CWE_name": "CWE397",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "104.java",
+        "CWE_name": "CWE400",
+        "start_line": 10,
+        "end_line": 33
+    },
+    {
+        "name": "105.java",
+        "CWE_name": "CWE570",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "106.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "107.java",
+        "CWE_name": "CWE90",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "108.java",
+        "CWE_name": "CWE566",
+        "start_line": 9,
+        "end_line": 71
+    },
+    {
+        "name": "109.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "110.java",
+        "CWE_name": "CWE129",
+        "start_line": 13,
+        "end_line": 69
+    },
+    {
+        "name": "111.java",
+        "CWE_name": "CWE476",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "112.java",
+        "CWE_name": "CWE500",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "113.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "114.java",
+        "CWE_name": "CWE248",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "115.java",
+        "CWE_name": "CWE369",
+        "start_line": 8,
+        "end_line": 12
+    },
+    {
+        "name": "116.java",
+        "CWE_name": "CWE470",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "117.java",
+        "CWE_name": "CWE523",
+        "start_line": 10,
+        "end_line": 41
+    },
+    {
+        "name": "118.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "119.java",
+        "CWE_name": "CWE197",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "120.java",
+        "CWE_name": "CWE789",
+        "start_line": 11,
+        "end_line": 66
+    },
+    {
+        "name": "121.java",
+        "CWE_name": "CWE336",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "122.java",
+        "CWE_name": "CWE369",
+        "start_line": 8,
+        "end_line": 37
+    },
+    {
+        "name": "123.java",
+        "CWE_name": "CWE833",
+        "start_line": 25,
+        "end_line": null
+    },
+    {
+        "name": "124.java",
+        "CWE_name": "CWE533",
+        "start_line": 15,
+        "end_line": 34
+    },
+    {
+        "name": "125.java",
+        "CWE_name": "CWE81",
+        "start_line": 8,
+        "end_line": 24
+    },
+    {
+        "name": "126.java",
+        "CWE_name": "CWE759",
+        "start_line": 8,
+        "end_line": 21
+    },
+    {
+        "name": "127.java",
+        "CWE_name": "CWE615",
+        "start_line": 7,
+        "end_line": 23
+    },
+    {
+        "name": "128.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "129.java",
+        "CWE_name": "CWE605",
+        "start_line": 10,
+        "end_line": 54
+    },
+    {
+        "name": "130.java",
+        "CWE_name": "CWE191",
+        "start_line": 13,
+        "end_line": 83
+    },
+    {
+        "name": "131.java",
+        "CWE_name": "CWE789",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "132.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "133.java",
+        "CWE_name": "CWE483",
+        "start_line": 15,
+        "end_line": 29
+    },
+    {
+        "name": "134.java",
+        "CWE_name": "CWE605",
+        "start_line": 10,
+        "end_line": 53
+    },
+    {
+        "name": "135.java",
+        "CWE_name": "CWE36",
+        "start_line": 10,
+        "end_line": 72
+    },
+    {
+        "name": "136.java",
+        "CWE_name": "CWE134",
+        "start_line": 16,
+        "end_line": 63
+    },
+    {
+        "name": "137.java",
+        "CWE_name": "CWE478",
+        "start_line": 16,
+        "end_line": 33
+    },
+    {
+        "name": "138.java",
+        "CWE_name": "CWE533",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "139.java",
+        "CWE_name": "CWE209",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "140.java",
+        "CWE_name": "CWE526",
+        "start_line": 6,
+        "end_line": 16
+    },
+    {
+        "name": "141.java",
+        "CWE_name": "CWE759",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "142.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "143.java",
+        "CWE_name": "CWE23",
+        "start_line": 9,
+        "end_line": 93
+    },
+    {
+        "name": "144.java",
+        "CWE_name": "CWE315",
+        "start_line": 10,
+        "end_line": 26
+    },
+    {
+        "name": "145.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "146.java",
+        "CWE_name": "CWE197",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "147.java",
+        "CWE_name": "CWE539",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "148.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 70
+    },
+    {
+        "name": "149.java",
+        "CWE_name": "CWE482",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "150.java",
+        "CWE_name": "CWE690",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "151.java",
+        "CWE_name": "CWE336",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "152.java",
+        "CWE_name": "CWE80",
+        "start_line": 9,
+        "end_line": 18
+    },
+    {
+        "name": "153.java",
+        "CWE_name": "CWE606",
+        "start_line": 9,
+        "end_line": 30
+    },
+    {
+        "name": "154.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "155.java",
+        "CWE_name": "CWE477",
+        "start_line": 6,
+        "end_line": 15
+    },
+    {
+        "name": "156.java",
+        "CWE_name": "CWE568",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "157.java",
+        "CWE_name": "CWE523",
+        "start_line": 12,
+        "end_line": 43
+    },
+    {
+        "name": "158.java",
+        "CWE_name": "CWE315",
+        "start_line": 8,
+        "end_line": 12
+    },
+    {
+        "name": "159.java",
+        "CWE_name": "CWE539",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "160.java",
+        "CWE_name": "CWE336",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "161.java",
+        "CWE_name": "CWE129",
+        "start_line": 9,
+        "end_line": 45
+    },
+    {
+        "name": "162.java",
+        "CWE_name": "CWE83",
+        "start_line": 11,
+        "end_line": 54
+    },
+    {
+        "name": "163.java",
+        "CWE_name": "CWE571",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "164.java",
+        "CWE_name": "CWE681",
+        "start_line": 9,
+        "end_line": 116
+    },
+    {
+        "name": "165.java",
+        "CWE_name": "CWE615",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "166.java",
+        "CWE_name": "CWE759",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "167.java",
+        "CWE_name": "CWE191",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "168.java",
+        "CWE_name": "CWE328",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "169.java",
+        "CWE_name": "CWE369",
+        "start_line": 11,
+        "end_line": 68
+    },
+    {
+        "name": "170.java",
+        "CWE_name": "CWE674",
+        "start_line": 13,
+        "end_line": 17
+    },
+    {
+        "name": "171.java",
+        "CWE_name": "CWE534",
+        "start_line": 8,
+        "end_line": 28
+    },
+    {
+        "name": "172.java",
+        "CWE_name": "CWE256",
+        "start_line": 13,
+        "end_line": 46
+    },
+    {
+        "name": "173.java",
+        "CWE_name": "CWE80",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "174.java",
+        "CWE_name": "CWE321",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "175.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 42
+    },
+    {
+        "name": "176.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "177.java",
+        "CWE_name": "CWE606",
+        "start_line": 7,
+        "end_line": 24
+    },
+    {
+        "name": "178.java",
+        "CWE_name": "CWE328",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "179.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "180.java",
+        "CWE_name": "CWE321",
+        "start_line": 12,
+        "end_line": 26
+    },
+    {
+        "name": "181.java",
+        "CWE_name": "CWE601",
+        "start_line": 10,
+        "end_line": 28
+    },
+    {
+        "name": "182.java",
+        "CWE_name": "CWE15",
+        "start_line": 13,
+        "end_line": 68
+    },
+    {
+        "name": "183.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "184.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 23
+    },
+    {
+        "name": "185.java",
+        "CWE_name": "CWE789",
+        "start_line": 14,
+        "end_line": 99
+    },
+    {
+        "name": "186.java",
+        "CWE_name": "CWE111",
+        "start_line": 21,
+        "end_line": 66
+    },
+    {
+        "name": "187.java",
+        "CWE_name": "CWE80",
+        "start_line": 17,
+        "end_line": 64
+    },
+    {
+        "name": "188.java",
+        "CWE_name": "CWE775",
+        "start_line": 12,
+        "end_line": 28
+    },
+    {
+        "name": "189.java",
+        "CWE_name": "CWE690",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "190.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 101
+    },
+    {
+        "name": "191.java",
+        "CWE_name": "CWE571",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "192.java",
+        "CWE_name": "CWE510",
+        "start_line": 9,
+        "end_line": 51
+    },
+    {
+        "name": "193.java",
+        "CWE_name": "CWE400",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "194.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "195.java",
+        "CWE_name": "CWE191",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "196.java",
+        "CWE_name": "CWE534",
+        "start_line": 9,
+        "end_line": 29
+    },
+    {
+        "name": "197.java",
+        "CWE_name": "CWE398",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "198.java",
+        "CWE_name": "CWE315",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "199.java",
+        "CWE_name": "CWE209",
+        "start_line": 14,
+        "end_line": 27
+    },
+    {
+        "name": "200.java",
+        "CWE_name": "CWE789",
+        "start_line": 9,
+        "end_line": 33
+    },
+    {
+        "name": "201.java",
+        "CWE_name": "CWE114",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "202.java",
+        "CWE_name": "CWE315",
+        "start_line": 8,
+        "end_line": 12
+    },
+    {
+        "name": "203.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "204.java",
+        "CWE_name": "CWE396",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "205.java",
+        "CWE_name": "CWE398",
+        "start_line": 9,
+        "end_line": 24
+    },
+    {
+        "name": "206.java",
+        "CWE_name": "CWE78",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "207.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 73
+    },
+    {
+        "name": "208.java",
+        "CWE_name": "CWE681",
+        "start_line": 17,
+        "end_line": 69
+    },
+    {
+        "name": "209.java",
+        "CWE_name": "CWE598",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "210.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "211.java",
+        "CWE_name": "CWE484",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "212.java",
+        "CWE_name": "CWE134",
+        "start_line": 12,
+        "end_line": 81
+    },
+    {
+        "name": "213.java",
+        "CWE_name": "CWE584",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "214.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "215.java",
+        "CWE_name": "CWE325",
+        "start_line": 10,
+        "end_line": 24
+    },
+    {
+        "name": "216.java",
+        "CWE_name": "CWE690",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "217.java",
+        "CWE_name": "CWE400",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "218.java",
+        "CWE_name": "CWE191",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "219.java",
+        "CWE_name": "CWE523",
+        "start_line": 18,
+        "end_line": 49
+    },
+    {
+        "name": "220.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "221.java",
+        "CWE_name": "CWE197",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "222.java",
+        "CWE_name": "CWE584",
+        "start_line": 7,
+        "end_line": 27
+    },
+    {
+        "name": "223.java",
+        "CWE_name": "CWE765",
+        "start_line": 17,
+        "end_line": 21
+    },
+    {
+        "name": "224.java",
+        "CWE_name": "CWE572",
+        "start_line": 6,
+        "end_line": null
+    },
+    {
+        "name": "225.java",
+        "CWE_name": "CWE760",
+        "start_line": 11,
+        "end_line": 21
+    },
+    {
+        "name": "226.java",
+        "CWE_name": "CWE329",
+        "start_line": 13,
+        "end_line": 31
+    },
+    {
+        "name": "227.java",
+        "CWE_name": "CWE321",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "228.java",
+        "CWE_name": "CWE134",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "229.java",
+        "CWE_name": "CWE369",
+        "start_line": 10,
+        "end_line": 80
+    },
+    {
+        "name": "230.java",
+        "CWE_name": "CWE90",
+        "start_line": 8,
+        "end_line": 12
+    },
+    {
+        "name": "231.java",
+        "CWE_name": "CWE191",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "232.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "233.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "234.java",
+        "CWE_name": "CWE566",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "235.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 73
+    },
+    {
+        "name": "236.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "237.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 42
+    },
+    {
+        "name": "238.java",
+        "CWE_name": "CWE511",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "239.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "240.java",
+        "CWE_name": "CWE190",
+        "start_line": 12,
+        "end_line": 69
+    },
+    {
+        "name": "241.java",
+        "CWE_name": "CWE606",
+        "start_line": 28,
+        "end_line": 34
+    },
+    {
+        "name": "242.java",
+        "CWE_name": "CWE15",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "243.java",
+        "CWE_name": "CWE390",
+        "start_line": 15,
+        "end_line": 77
+    },
+    {
+        "name": "244.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 23
+    },
+    {
+        "name": "245.java",
+        "CWE_name": "CWE129",
+        "start_line": 17,
+        "end_line": 34
+    },
+    {
+        "name": "246.java",
+        "CWE_name": "CWE36",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "247.java",
+        "CWE_name": "CWE253",
+        "start_line": 10,
+        "end_line": 49
+    },
+    {
+        "name": "248.java",
+        "CWE_name": "CWE325",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "249.java",
+        "CWE_name": "CWE321",
+        "start_line": 9,
+        "end_line": 22
+    },
+    {
+        "name": "250.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "251.java",
+        "CWE_name": "CWE253",
+        "start_line": 10,
+        "end_line": 52
+    },
+    {
+        "name": "252.java",
+        "CWE_name": "CWE789",
+        "start_line": 12,
+        "end_line": 64
+    },
+    {
+        "name": "253.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "254.java",
+        "CWE_name": "CWE698",
+        "start_line": 15,
+        "end_line": 22
+    },
+    {
+        "name": "255.java",
+        "CWE_name": "CWE607",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "256.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 30
+    },
+    {
+        "name": "257.java",
+        "CWE_name": "CWE327",
+        "start_line": 10,
+        "end_line": 26
+    },
+    {
+        "name": "258.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 45
+    },
+    {
+        "name": "259.java",
+        "CWE_name": "CWE390",
+        "start_line": 13,
+        "end_line": 137
+    },
+    {
+        "name": "260.java",
+        "CWE_name": "CWE597",
+        "start_line": 11,
+        "end_line": 67
+    },
+    {
+        "name": "261.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "262.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "263.java",
+        "CWE_name": "CWE129",
+        "start_line": 12,
+        "end_line": 30
+    },
+    {
+        "name": "264.java",
+        "CWE_name": "CWE114",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "265.java",
+        "CWE_name": "CWE36",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "266.java",
+        "CWE_name": "CWE190",
+        "start_line": 16,
+        "end_line": 123
+    },
+    {
+        "name": "267.java",
+        "CWE_name": "CWE89",
+        "start_line": 73,
+        "end_line": 118
+    },
+    {
+        "name": "268.java",
+        "CWE_name": "CWE535",
+        "start_line": 19,
+        "end_line": 53
+    },
+    {
+        "name": "269.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "270.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 18
+    },
+    {
+        "name": "271.java",
+        "CWE_name": "CWE563",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "272.java",
+        "CWE_name": "CWE833",
+        "start_line": 30,
+        "end_line": 40
+    },
+    {
+        "name": "273.java",
+        "CWE_name": "CWE470",
+        "start_line": 13,
+        "end_line": 79
+    },
+    {
+        "name": "274.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "275.java",
+        "CWE_name": "CWE315",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "276.java",
+        "CWE_name": "CWE534",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "277.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 100
+    },
+    {
+        "name": "278.java",
+        "CWE_name": "CWE338",
+        "start_line": 8,
+        "end_line": 20
+    },
+    {
+        "name": "279.java",
+        "CWE_name": "CWE510",
+        "start_line": 9,
+        "end_line": 51
+    },
+    {
+        "name": "280.java",
+        "CWE_name": "CWE78",
+        "start_line": 8,
+        "end_line": 42
+    },
+    {
+        "name": "281.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "282.java",
+        "CWE_name": "CWE319",
+        "start_line": 10,
+        "end_line": 19
+    },
+    {
+        "name": "283.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "284.java",
+        "CWE_name": "CWE191",
+        "start_line": 16,
+        "end_line": 123
+    },
+    {
+        "name": "285.java",
+        "CWE_name": "CWE113",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "286.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "287.java",
+        "CWE_name": "CWE129",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "288.java",
+        "CWE_name": "CWE338",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "289.java",
+        "CWE_name": "CWE601",
+        "start_line": 11,
+        "end_line": 44
+    },
+    {
+        "name": "290.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 67
+    },
+    {
+        "name": "291.java",
+        "CWE_name": "CWE459",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "292.java",
+        "CWE_name": "CWE390",
+        "start_line": 9,
+        "end_line": 26
+    },
+    {
+        "name": "293.java",
+        "CWE_name": "CWE191",
+        "start_line": 6,
+        "end_line": 15
+    },
+    {
+        "name": "294.java",
+        "CWE_name": "CWE581",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "295.java",
+        "CWE_name": "CWE398",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "296.java",
+        "CWE_name": "CWE197",
+        "start_line": 12,
+        "end_line": 102
+    },
+    {
+        "name": "297.java",
+        "CWE_name": "CWE601",
+        "start_line": 16,
+        "end_line": 94
+    },
+    {
+        "name": "298.java",
+        "CWE_name": "CWE315",
+        "start_line": 9,
+        "end_line": 13
+    },
+    {
+        "name": "299.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 49
+    },
+    {
+        "name": "300.java",
+        "CWE_name": "CWE398",
+        "start_line": 6,
+        "end_line": 22
+    },
+    {
+        "name": "301.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 46
+    },
+    {
+        "name": "302.java",
+        "CWE_name": "CWE835",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "303.java",
+        "CWE_name": "CWE605",
+        "start_line": 11,
+        "end_line": 54
+    },
+    {
+        "name": "304.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "305.java",
+        "CWE_name": "CWE400",
+        "start_line": 7,
+        "end_line": 37
+    },
+    {
+        "name": "306.java",
+        "CWE_name": "CWE190",
+        "start_line": 11,
+        "end_line": 18
+    },
+    {
+        "name": "307.java",
+        "CWE_name": "CWE539",
+        "start_line": 9,
+        "end_line": 16
+    },
+    {
+        "name": "308.java",
+        "CWE_name": "CWE482",
+        "start_line": 8,
+        "end_line": 20
+    },
+    {
+        "name": "309.java",
+        "CWE_name": "CWE83",
+        "start_line": 12,
+        "end_line": 79
+    },
+    {
+        "name": "310.java",
+        "CWE_name": "CWE190",
+        "start_line": 13,
+        "end_line": 69
+    },
+    {
+        "name": "311.java",
+        "CWE_name": "CWE476",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "312.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "313.java",
+        "CWE_name": "CWE835",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "314.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "315.java",
+        "CWE_name": "CWE482",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "316.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "317.java",
+        "CWE_name": "CWE477",
+        "start_line": 11,
+        "end_line": 21
+    },
+    {
+        "name": "318.java",
+        "CWE_name": "CWE197",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "319.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 29
+    },
+    {
+        "name": "320.java",
+        "CWE_name": "CWE83",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "321.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 56
+    },
+    {
+        "name": "322.java",
+        "CWE_name": "CWE113",
+        "start_line": 9,
+        "end_line": 17
+    },
+    {
+        "name": "323.java",
+        "CWE_name": "CWE329",
+        "start_line": 13,
+        "end_line": 31
+    },
+    {
+        "name": "324.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "325.java",
+        "CWE_name": "CWE643",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "326.java",
+        "CWE_name": "CWE615",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "327.java",
+        "CWE_name": "CWE190",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "328.java",
+        "CWE_name": "CWE526",
+        "start_line": 6,
+        "end_line": 17
+    },
+    {
+        "name": "329.java",
+        "CWE_name": "CWE369",
+        "start_line": 10,
+        "end_line": 36
+    },
+    {
+        "name": "330.java",
+        "CWE_name": "CWE586",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "331.java",
+        "CWE_name": "CWE681",
+        "start_line": 9,
+        "end_line": 62
+    },
+    {
+        "name": "332.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "333.java",
+        "CWE_name": "CWE597",
+        "start_line": 10,
+        "end_line": 63
+    },
+    {
+        "name": "334.java",
+        "CWE_name": "CWE481",
+        "start_line": 8,
+        "end_line": 20
+    },
+    {
+        "name": "335.java",
+        "CWE_name": "CWE259",
+        "start_line": 12,
+        "end_line": 19
+    },
+    {
+        "name": "336.java",
+        "CWE_name": "CWE566",
+        "start_line": 9,
+        "end_line": 79
+    },
+    {
+        "name": "337.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 65
+    },
+    {
+        "name": "338.java",
+        "CWE_name": "CWE83",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "339.java",
+        "CWE_name": "CWE209",
+        "start_line": 6,
+        "end_line": 19
+    },
+    {
+        "name": "340.java",
+        "CWE_name": "CWE397",
+        "start_line": 11,
+        "end_line": 23
+    },
+    {
+        "name": "341.java",
+        "CWE_name": "CWE606",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "342.java",
+        "CWE_name": "CWE327",
+        "start_line": 10,
+        "end_line": 25
+    },
+    {
+        "name": "343.java",
+        "CWE_name": "CWE390",
+        "start_line": 13,
+        "end_line": 80
+    },
+    {
+        "name": "344.java",
+        "CWE_name": "CWE256",
+        "start_line": 16,
+        "end_line": 79
+    },
+    {
+        "name": "345.java",
+        "CWE_name": "CWE191",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "346.java",
+        "CWE_name": "CWE325",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "347.java",
+        "CWE_name": "CWE113",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "348.java",
+        "CWE_name": "CWE382",
+        "start_line": 15,
+        "end_line": 21
+    },
+    {
+        "name": "349.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 22
+    },
+    {
+        "name": "350.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "351.java",
+        "CWE_name": "CWE789",
+        "start_line": 9,
+        "end_line": 36
+    },
+    {
+        "name": "352.java",
+        "CWE_name": "CWE15",
+        "start_line": 9,
+        "end_line": 35
+    },
+    {
+        "name": "353.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 32
+    },
+    {
+        "name": "354.java",
+        "CWE_name": "CWE789",
+        "start_line": 9,
+        "end_line": 13
+    },
+    {
+        "name": "355.java",
+        "CWE_name": "CWE81",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "356.java",
+        "CWE_name": "CWE325",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "357.java",
+        "CWE_name": "CWE23",
+        "start_line": 9,
+        "end_line": 77
+    },
+    {
+        "name": "358.java",
+        "CWE_name": "CWE253",
+        "start_line": 11,
+        "end_line": 53
+    },
+    {
+        "name": "359.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 16
+    },
+    {
+        "name": "360.java",
+        "CWE_name": "CWE190",
+        "start_line": 9,
+        "end_line": 33
+    },
+    {
+        "name": "361.java",
+        "CWE_name": "CWE252",
+        "start_line": 10,
+        "end_line": 46
+    },
+    {
+        "name": "362.java",
+        "CWE_name": "CWE789",
+        "start_line": 9,
+        "end_line": 13
+    },
+    {
+        "name": "363.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "364.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "365.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 15
+    },
+    {
+        "name": "366.java",
+        "CWE_name": "CWE600",
+        "start_line": 11,
+        "end_line": 23
+    },
+    {
+        "name": "367.java",
+        "CWE_name": "CWE80",
+        "start_line": 13,
+        "end_line": 81
+    },
+    {
+        "name": "368.java",
+        "CWE_name": "CWE597",
+        "start_line": 10,
+        "end_line": 66
+    },
+    {
+        "name": "369.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 23
+    },
+    {
+        "name": "370.java",
+        "CWE_name": "CWE134",
+        "start_line": 10,
+        "end_line": 56
+    },
+    {
+        "name": "371.java",
+        "CWE_name": "CWE601",
+        "start_line": 11,
+        "end_line": 49
+    },
+    {
+        "name": "372.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "373.java",
+        "CWE_name": "CWE114",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "374.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "375.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "376.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "377.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 76
+    },
+    {
+        "name": "378.java",
+        "CWE_name": "CWE327",
+        "start_line": 11,
+        "end_line": 26
+    },
+    {
+        "name": "379.java",
+        "CWE_name": "CWE23",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "380.java",
+        "CWE_name": "CWE601",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "381.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 30
+    },
+    {
+        "name": "382.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "383.java",
+        "CWE_name": "CWE197",
+        "start_line": 8,
+        "end_line": 36
+    },
+    {
+        "name": "384.java",
+        "CWE_name": "CWE586",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "385.java",
+        "CWE_name": "CWE113",
+        "start_line": 9,
+        "end_line": 15
+    },
+    {
+        "name": "386.java",
+        "CWE_name": "CWE581",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "387.java",
+        "CWE_name": "CWE533",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "388.java",
+        "CWE_name": "CWE197",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "389.java",
+        "CWE_name": "CWE759",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "390.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "391.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "392.java",
+        "CWE_name": "CWE484",
+        "start_line": 9,
+        "end_line": 28
+    },
+    {
+        "name": "393.java",
+        "CWE_name": "CWE572",
+        "start_line": 6,
+        "end_line": null
+    },
+    {
+        "name": "394.java",
+        "CWE_name": "CWE566",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "395.java",
+        "CWE_name": "CWE325",
+        "start_line": 12,
+        "end_line": 26
+    },
+    {
+        "name": "396.java",
+        "CWE_name": "CWE129",
+        "start_line": 9,
+        "end_line": 44
+    },
+    {
+        "name": "397.java",
+        "CWE_name": "CWE329",
+        "start_line": 13,
+        "end_line": 31
+    },
+    {
+        "name": "398.java",
+        "CWE_name": "CWE81",
+        "start_line": 8,
+        "end_line": 35
+    },
+    {
+        "name": "399.java",
+        "CWE_name": "CWE598",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "400.java",
+        "CWE_name": "CWE506",
+        "start_line": 9,
+        "end_line": 23
+    },
+    {
+        "name": "401.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 24
+    },
+    {
+        "name": "402.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "403.java",
+        "CWE_name": "CWE321",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "404.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "405.java",
+        "CWE_name": "CWE598",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "406.java",
+        "CWE_name": "CWE510",
+        "start_line": 11,
+        "end_line": 40
+    },
+    {
+        "name": "407.java",
+        "CWE_name": "CWE369",
+        "start_line": 10,
+        "end_line": 35
+    },
+    {
+        "name": "408.java",
+        "CWE_name": "CWE197",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "409.java",
+        "CWE_name": "CWE226",
+        "start_line": 15,
+        "end_line": 75
+    },
+    {
+        "name": "410.java",
+        "CWE_name": "CWE586",
+        "start_line": 8,
+        "end_line": 26
+    },
+    {
+        "name": "411.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "412.java",
+        "CWE_name": "CWE533",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "413.java",
+        "CWE_name": "CWE256",
+        "start_line": 14,
+        "end_line": 40
+    },
+    {
+        "name": "414.java",
+        "CWE_name": "CWE259",
+        "start_line": 9,
+        "end_line": 63
+    },
+    {
+        "name": "415.java",
+        "CWE_name": "CWE533",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "416.java",
+        "CWE_name": "CWE327",
+        "start_line": 10,
+        "end_line": 26
+    },
+    {
+        "name": "417.java",
+        "CWE_name": "CWE113",
+        "start_line": 22,
+        "end_line": 80
+    },
+    {
+        "name": "418.java",
+        "CWE_name": "CWE369",
+        "start_line": 10,
+        "end_line": 63
+    },
+    {
+        "name": "419.java",
+        "CWE_name": "CWE586",
+        "start_line": 8,
+        "end_line": 26
+    },
+    {
+        "name": "420.java",
+        "CWE_name": "CWE511",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "421.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "422.java",
+        "CWE_name": "CWE400",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "423.java",
+        "CWE_name": "CWE546",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "424.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "425.java",
+        "CWE_name": "CWE89",
+        "start_line": 10,
+        "end_line": 62
+    },
+    {
+        "name": "426.java",
+        "CWE_name": "CWE134",
+        "start_line": 58,
+        "end_line": 65
+    },
+    {
+        "name": "427.java",
+        "CWE_name": "CWE598",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "428.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "429.java",
+        "CWE_name": "CWE89",
+        "start_line": 69,
+        "end_line": 102
+    },
+    {
+        "name": "430.java",
+        "CWE_name": "CWE584",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "431.java",
+        "CWE_name": "CWE572",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "432.java",
+        "CWE_name": "CWE789",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "433.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "434.java",
+        "CWE_name": "CWE484",
+        "start_line": 7,
+        "end_line": 44
+    },
+    {
+        "name": "435.java",
+        "CWE_name": "CWE89",
+        "start_line": 14,
+        "end_line": 126
+    },
+    {
+        "name": "436.java",
+        "CWE_name": "CWE191",
+        "start_line": 8,
+        "end_line": 24
+    },
+    {
+        "name": "437.java",
+        "CWE_name": "CWE329",
+        "start_line": 15,
+        "end_line": 33
+    },
+    {
+        "name": "438.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 34
+    },
+    {
+        "name": "439.java",
+        "CWE_name": "CWE129",
+        "start_line": 12,
+        "end_line": 71
+    },
+    {
+        "name": "440.java",
+        "CWE_name": "CWE539",
+        "start_line": 15,
+        "end_line": 22
+    },
+    {
+        "name": "441.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 83
+    },
+    {
+        "name": "442.java",
+        "CWE_name": "CWE470",
+        "start_line": 13,
+        "end_line": 92
+    },
+    {
+        "name": "443.java",
+        "CWE_name": "CWE510",
+        "start_line": 10,
+        "end_line": 39
+    },
+    {
+        "name": "444.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 27
+    },
+    {
+        "name": "445.java",
+        "CWE_name": "CWE398",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "446.java",
+        "CWE_name": "CWE484",
+        "start_line": 9,
+        "end_line": 28
+    },
+    {
+        "name": "447.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "448.java",
+        "CWE_name": "CWE572",
+        "start_line": 6,
+        "end_line": null
+    },
+    {
+        "name": "449.java",
+        "CWE_name": "CWE584",
+        "start_line": 6,
+        "end_line": 23
+    },
+    {
+        "name": "450.java",
+        "CWE_name": "CWE134",
+        "start_line": 12,
+        "end_line": 71
+    },
+    {
+        "name": "451.java",
+        "CWE_name": "CWE579",
+        "start_line": 20,
+        "end_line": 25
+    },
+    {
+        "name": "452.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "453.java",
+        "CWE_name": "CWE759",
+        "start_line": 16,
+        "end_line": 24
+    },
+    {
+        "name": "454.java",
+        "CWE_name": "CWE506",
+        "start_line": 11,
+        "end_line": 26
+    },
+    {
+        "name": "455.java",
+        "CWE_name": "CWE570",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "456.java",
+        "CWE_name": "CWE643",
+        "start_line": 15,
+        "end_line": 104
+    },
+    {
+        "name": "457.java",
+        "CWE_name": "CWE789",
+        "start_line": 10,
+        "end_line": 34
+    },
+    {
+        "name": "458.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "459.java",
+        "CWE_name": "CWE511",
+        "start_line": 9,
+        "end_line": 18
+    },
+    {
+        "name": "460.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 132
+    },
+    {
+        "name": "461.java",
+        "CWE_name": "CWE114",
+        "start_line": 14,
+        "end_line": 21
+    },
+    {
+        "name": "462.java",
+        "CWE_name": "CWE617",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "463.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 45
+    },
+    {
+        "name": "464.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "465.java",
+        "CWE_name": "CWE390",
+        "start_line": 13,
+        "end_line": 75
+    },
+    {
+        "name": "466.java",
+        "CWE_name": "CWE617",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "467.java",
+        "CWE_name": "CWE259",
+        "start_line": 10,
+        "end_line": 20
+    },
+    {
+        "name": "468.java",
+        "CWE_name": "CWE256",
+        "start_line": 13,
+        "end_line": 45
+    },
+    {
+        "name": "469.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 28
+    },
+    {
+        "name": "470.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "471.java",
+        "CWE_name": "CWE23",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "472.java",
+        "CWE_name": "CWE253",
+        "start_line": 11,
+        "end_line": 53
+    },
+    {
+        "name": "473.java",
+        "CWE_name": "CWE609",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "474.java",
+        "CWE_name": "CWE319",
+        "start_line": 15,
+        "end_line": 123
+    },
+    {
+        "name": "475.java",
+        "CWE_name": "CWE252",
+        "start_line": 10,
+        "end_line": 46
+    },
+    {
+        "name": "476.java",
+        "CWE_name": "CWE390",
+        "start_line": 7,
+        "end_line": 24
+    },
+    {
+        "name": "477.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "478.java",
+        "CWE_name": "CWE404",
+        "start_line": 11,
+        "end_line": 47
+    },
+    {
+        "name": "479.java",
+        "CWE_name": "CWE129",
+        "start_line": 12,
+        "end_line": 97
+    },
+    {
+        "name": "480.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "481.java",
+        "CWE_name": "CWE764",
+        "start_line": 18,
+        "end_line": 22
+    },
+    {
+        "name": "482.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "483.java",
+        "CWE_name": "CWE197",
+        "start_line": 13,
+        "end_line": 91
+    },
+    {
+        "name": "484.java",
+        "CWE_name": "CWE470",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "485.java",
+        "CWE_name": "CWE321",
+        "start_line": 9,
+        "end_line": 24
+    },
+    {
+        "name": "486.java",
+        "CWE_name": "CWE400",
+        "start_line": 12,
+        "end_line": 78
+    },
+    {
+        "name": "487.java",
+        "CWE_name": "CWE256",
+        "start_line": 16,
+        "end_line": 79
+    },
+    {
+        "name": "488.java",
+        "CWE_name": "CWE511",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "489.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "490.java",
+        "CWE_name": "CWE15",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "491.java",
+        "CWE_name": "CWE83",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "492.java",
+        "CWE_name": "CWE526",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "493.java",
+        "CWE_name": "CWE129",
+        "start_line": 14,
+        "end_line": 19
+    },
+    {
+        "name": "494.java",
+        "CWE_name": "CWE617",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "495.java",
+        "CWE_name": "CWE390",
+        "start_line": 13,
+        "end_line": 75
+    },
+    {
+        "name": "496.java",
+        "CWE_name": "CWE535",
+        "start_line": 13,
+        "end_line": 47
+    },
+    {
+        "name": "497.java",
+        "CWE_name": "CWE190",
+        "start_line": 8,
+        "end_line": 41
+    },
+    {
+        "name": "498.java",
+        "CWE_name": "CWE134",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "499.java",
+        "CWE_name": "CWE395",
+        "start_line": 7,
+        "end_line": 24
+    },
+    {
+        "name": "500.java",
+        "CWE_name": "CWE789",
+        "start_line": 9,
+        "end_line": 28
+    },
+    {
+        "name": "501.java",
+        "CWE_name": "CWE506",
+        "start_line": 16,
+        "end_line": 139
+    },
+    {
+        "name": "502.java",
+        "CWE_name": "CWE23",
+        "start_line": 13,
+        "end_line": 138
+    },
+    {
+        "name": "503.java",
+        "CWE_name": "CWE586",
+        "start_line": 14,
+        "end_line": 32
+    },
+    {
+        "name": "504.java",
+        "CWE_name": "CWE209",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "505.java",
+        "CWE_name": "CWE129",
+        "start_line": 13,
+        "end_line": 82
+    },
+    {
+        "name": "506.java",
+        "CWE_name": "CWE833",
+        "start_line": 33,
+        "end_line": 44
+    },
+    {
+        "name": "507.java",
+        "CWE_name": "CWE615",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "508.java",
+        "CWE_name": "CWE15",
+        "start_line": 12,
+        "end_line": 79
+    },
+    {
+        "name": "509.java",
+        "CWE_name": "CWE759",
+        "start_line": 8,
+        "end_line": 24
+    },
+    {
+        "name": "510.java",
+        "CWE_name": "CWE506",
+        "start_line": 16,
+        "end_line": 126
+    },
+    {
+        "name": "511.java",
+        "CWE_name": "CWE191",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "512.java",
+        "CWE_name": "CWE765",
+        "start_line": 15,
+        "end_line": null
+    },
+    {
+        "name": "513.java",
+        "CWE_name": "CWE329",
+        "start_line": 21,
+        "end_line": 39
+    },
+    {
+        "name": "514.java",
+        "CWE_name": "CWE197",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "515.java",
+        "CWE_name": "CWE378",
+        "start_line": 13,
+        "end_line": 74
+    },
+    {
+        "name": "516.java",
+        "CWE_name": "CWE523",
+        "start_line": 10,
+        "end_line": 41
+    },
+    {
+        "name": "517.java",
+        "CWE_name": "CWE113",
+        "start_line": 13,
+        "end_line": 58
+    },
+    {
+        "name": "518.java",
+        "CWE_name": "CWE539",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "519.java",
+        "CWE_name": "CWE336",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "520.java",
+        "CWE_name": "CWE113",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "521.java",
+        "CWE_name": "CWE580",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "522.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 22
+    },
+    {
+        "name": "523.java",
+        "CWE_name": "CWE36",
+        "start_line": 12,
+        "end_line": 63
+    },
+    {
+        "name": "524.java",
+        "CWE_name": "CWE835",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "525.java",
+        "CWE_name": "CWE484",
+        "start_line": 15,
+        "end_line": 34
+    },
+    {
+        "name": "526.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 31
+    },
+    {
+        "name": "527.java",
+        "CWE_name": "CWE80",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "528.java",
+        "CWE_name": "CWE482",
+        "start_line": 8,
+        "end_line": 20
+    },
+    {
+        "name": "529.java",
+        "CWE_name": "CWE523",
+        "start_line": 10,
+        "end_line": 41
+    },
+    {
+        "name": "530.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 73
+    },
+    {
+        "name": "531.java",
+        "CWE_name": "CWE336",
+        "start_line": 8,
+        "end_line": 18
+    },
+    {
+        "name": "532.java",
+        "CWE_name": "CWE89",
+        "start_line": 10,
+        "end_line": 16
+    },
+    {
+        "name": "533.java",
+        "CWE_name": "CWE89",
+        "start_line": 15,
+        "end_line": 74
+    },
+    {
+        "name": "534.java",
+        "CWE_name": "CWE259",
+        "start_line": 10,
+        "end_line": 18
+    },
+    {
+        "name": "535.java",
+        "CWE_name": "CWE197",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "536.java",
+        "CWE_name": "CWE113",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "537.java",
+        "CWE_name": "CWE789",
+        "start_line": 22,
+        "end_line": 85
+    },
+    {
+        "name": "538.java",
+        "CWE_name": "CWE81",
+        "start_line": 14,
+        "end_line": 23
+    },
+    {
+        "name": "539.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "540.java",
+        "CWE_name": "CWE568",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "541.java",
+        "CWE_name": "CWE506",
+        "start_line": 14,
+        "end_line": 30
+    },
+    {
+        "name": "542.java",
+        "CWE_name": "CWE759",
+        "start_line": 10,
+        "end_line": 18
+    },
+    {
+        "name": "543.java",
+        "CWE_name": "CWE129",
+        "start_line": 11,
+        "end_line": 71
+    },
+    {
+        "name": "544.java",
+        "CWE_name": "CWE398",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "545.java",
+        "CWE_name": "CWE615",
+        "start_line": 9,
+        "end_line": 20
+    },
+    {
+        "name": "546.java",
+        "CWE_name": "CWE190",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "547.java",
+        "CWE_name": "CWE328",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "548.java",
+        "CWE_name": "CWE570",
+        "start_line": 9,
+        "end_line": 15
+    },
+    {
+        "name": "549.java",
+        "CWE_name": "CWE511",
+        "start_line": 8,
+        "end_line": 23
+    },
+    {
+        "name": "550.java",
+        "CWE_name": "CWE197",
+        "start_line": 69,
+        "end_line": 75
+    },
+    {
+        "name": "551.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 17
+    },
+    {
+        "name": "552.java",
+        "CWE_name": "CWE114",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "553.java",
+        "CWE_name": "CWE321",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "554.java",
+        "CWE_name": "CWE197",
+        "start_line": 11,
+        "end_line": 81
+    },
+    {
+        "name": "555.java",
+        "CWE_name": "CWE319",
+        "start_line": 17,
+        "end_line": 145
+    },
+    {
+        "name": "556.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "557.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "558.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "559.java",
+        "CWE_name": "CWE404",
+        "start_line": 14,
+        "end_line": 68
+    },
+    {
+        "name": "560.java",
+        "CWE_name": "CWE190",
+        "start_line": 11,
+        "end_line": 66
+    },
+    {
+        "name": "561.java",
+        "CWE_name": "CWE338",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "562.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "563.java",
+        "CWE_name": "CWE190",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "564.java",
+        "CWE_name": "CWE382",
+        "start_line": 9,
+        "end_line": 15
+    },
+    {
+        "name": "565.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "566.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 100
+    },
+    {
+        "name": "567.java",
+        "CWE_name": "CWE338",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "568.java",
+        "CWE_name": "CWE690",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "569.java",
+        "CWE_name": "CWE613",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "570.java",
+        "CWE_name": "CWE191",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "571.java",
+        "CWE_name": "CWE400",
+        "start_line": 11,
+        "end_line": 67
+    },
+    {
+        "name": "572.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "573.java",
+        "CWE_name": "CWE470",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "574.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "575.java",
+        "CWE_name": "CWE470",
+        "start_line": 13,
+        "end_line": 79
+    },
+    {
+        "name": "576.java",
+        "CWE_name": "CWE315",
+        "start_line": 9,
+        "end_line": 16
+    },
+    {
+        "name": "577.java",
+        "CWE_name": "CWE89",
+        "start_line": 12,
+        "end_line": 44
+    },
+    {
+        "name": "578.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 28
+    },
+    {
+        "name": "579.java",
+        "CWE_name": "CWE772",
+        "start_line": 12,
+        "end_line": 31
+    },
+    {
+        "name": "580.java",
+        "CWE_name": "CWE606",
+        "start_line": 8,
+        "end_line": 36
+    },
+    {
+        "name": "581.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 19
+    },
+    {
+        "name": "582.java",
+        "CWE_name": "CWE681",
+        "start_line": 9,
+        "end_line": 58
+    },
+    {
+        "name": "583.java",
+        "CWE_name": "CWE404",
+        "start_line": 12,
+        "end_line": 50
+    },
+    {
+        "name": "584.java",
+        "CWE_name": "CWE83",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "585.java",
+        "CWE_name": "CWE197",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "586.java",
+        "CWE_name": "CWE759",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "587.java",
+        "CWE_name": "CWE526",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "588.java",
+        "CWE_name": "CWE615",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "589.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "590.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "591.java",
+        "CWE_name": "CWE134",
+        "start_line": 12,
+        "end_line": 59
+    },
+    {
+        "name": "592.java",
+        "CWE_name": "CWE190",
+        "start_line": 11,
+        "end_line": 75
+    },
+    {
+        "name": "593.java",
+        "CWE_name": "CWE571",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "594.java",
+        "CWE_name": "CWE191",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "595.java",
+        "CWE_name": "CWE23",
+        "start_line": 15,
+        "end_line": 64
+    },
+    {
+        "name": "596.java",
+        "CWE_name": "CWE539",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "597.java",
+        "CWE_name": "CWE482",
+        "start_line": 7,
+        "end_line": 29
+    },
+    {
+        "name": "598.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "599.java",
+        "CWE_name": "CWE690",
+        "start_line": 11,
+        "end_line": 47
+    },
+    {
+        "name": "600.java",
+        "CWE_name": "CWE23",
+        "start_line": 14,
+        "end_line": 59
+    },
+    {
+        "name": "601.java",
+        "CWE_name": "CWE571",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "602.java",
+        "CWE_name": "CWE134",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "603.java",
+        "CWE_name": "CWE398",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "604.java",
+        "CWE_name": "CWE477",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "605.java",
+        "CWE_name": "CWE523",
+        "start_line": 10,
+        "end_line": 38
+    },
+    {
+        "name": "606.java",
+        "CWE_name": "CWE191",
+        "start_line": 13,
+        "end_line": 94
+    },
+    {
+        "name": "607.java",
+        "CWE_name": "CWE190",
+        "start_line": 16,
+        "end_line": 32
+    },
+    {
+        "name": "608.java",
+        "CWE_name": "CWE190",
+        "start_line": 11,
+        "end_line": 66
+    },
+    {
+        "name": "609.java",
+        "CWE_name": "CWE681",
+        "start_line": 9,
+        "end_line": 61
+    },
+    {
+        "name": "610.java",
+        "CWE_name": "CWE477",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "611.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "612.java",
+        "CWE_name": "CWE605",
+        "start_line": 12,
+        "end_line": 55
+    },
+    {
+        "name": "613.java",
+        "CWE_name": "CWE190",
+        "start_line": 12,
+        "end_line": 17
+    },
+    {
+        "name": "614.java",
+        "CWE_name": "CWE615",
+        "start_line": 8,
+        "end_line": 19
+    },
+    {
+        "name": "615.java",
+        "CWE_name": "CWE759",
+        "start_line": 9,
+        "end_line": 17
+    },
+    {
+        "name": "616.java",
+        "CWE_name": "CWE835",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "617.java",
+        "CWE_name": "CWE197",
+        "start_line": 18,
+        "end_line": 74
+    },
+    {
+        "name": "618.java",
+        "CWE_name": "CWE534",
+        "start_line": 8,
+        "end_line": 33
+    },
+    {
+        "name": "619.java",
+        "CWE_name": "CWE400",
+        "start_line": 14,
+        "end_line": 66
+    },
+    {
+        "name": "620.java",
+        "CWE_name": "CWE89",
+        "start_line": 12,
+        "end_line": 71
+    },
+    {
+        "name": "621.java",
+        "CWE_name": "CWE327",
+        "start_line": 10,
+        "end_line": 25
+    },
+    {
+        "name": "622.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "623.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 18
+    },
+    {
+        "name": "624.java",
+        "CWE_name": "CWE114",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "625.java",
+        "CWE_name": "CWE369",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "626.java",
+        "CWE_name": "CWE561",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "627.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "628.java",
+        "CWE_name": "CWE78",
+        "start_line": 8,
+        "end_line": 12
+    },
+    {
+        "name": "629.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "630.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "631.java",
+        "CWE_name": "CWE129",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "632.java",
+        "CWE_name": "CWE667",
+        "start_line": 16,
+        "end_line": 19
+    },
+    {
+        "name": "633.java",
+        "CWE_name": "CWE319",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "634.java",
+        "CWE_name": "CWE197",
+        "start_line": 12,
+        "end_line": 74
+    },
+    {
+        "name": "635.java",
+        "CWE_name": "CWE256",
+        "start_line": 24,
+        "end_line": 87
+    },
+    {
+        "name": "636.java",
+        "CWE_name": "CWE397",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "637.java",
+        "CWE_name": "CWE486",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "638.java",
+        "CWE_name": "CWE459",
+        "start_line": 10,
+        "end_line": 42
+    },
+    {
+        "name": "639.java",
+        "CWE_name": "CWE369",
+        "start_line": 11,
+        "end_line": 102
+    },
+    {
+        "name": "640.java",
+        "CWE_name": "CWE191",
+        "start_line": 11,
+        "end_line": 65
+    },
+    {
+        "name": "641.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "642.java",
+        "CWE_name": "CWE253",
+        "start_line": 18,
+        "end_line": 60
+    },
+    {
+        "name": "643.java",
+        "CWE_name": "CWE459",
+        "start_line": 9,
+        "end_line": 33
+    },
+    {
+        "name": "644.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 57
+    },
+    {
+        "name": "645.java",
+        "CWE_name": "CWE459",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "646.java",
+        "CWE_name": "CWE510",
+        "start_line": 9,
+        "end_line": 56
+    },
+    {
+        "name": "647.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 100
+    },
+    {
+        "name": "648.java",
+        "CWE_name": "CWE534",
+        "start_line": 8,
+        "end_line": 28
+    },
+    {
+        "name": "649.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "650.java",
+        "CWE_name": "CWE129",
+        "start_line": 13,
+        "end_line": 69
+    },
+    {
+        "name": "651.java",
+        "CWE_name": "CWE81",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "652.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 23
+    },
+    {
+        "name": "653.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 16
+    },
+    {
+        "name": "654.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 18
+    },
+    {
+        "name": "655.java",
+        "CWE_name": "CWE256",
+        "start_line": 13,
+        "end_line": 45
+    },
+    {
+        "name": "656.java",
+        "CWE_name": "CWE789",
+        "start_line": 9,
+        "end_line": 29
+    },
+    {
+        "name": "657.java",
+        "CWE_name": "CWE369",
+        "start_line": 13,
+        "end_line": 90
+    },
+    {
+        "name": "658.java",
+        "CWE_name": "CWE190",
+        "start_line": 8,
+        "end_line": 38
+    },
+    {
+        "name": "659.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 22
+    },
+    {
+        "name": "660.java",
+        "CWE_name": "CWE134",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "661.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "662.java",
+        "CWE_name": "CWE134",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "663.java",
+        "CWE_name": "CWE400",
+        "start_line": 13,
+        "end_line": 81
+    },
+    {
+        "name": "664.java",
+        "CWE_name": "CWE378",
+        "start_line": 20,
+        "end_line": 81
+    },
+    {
+        "name": "665.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "666.java",
+        "CWE_name": "CWE325",
+        "start_line": 10,
+        "end_line": 24
+    },
+    {
+        "name": "667.java",
+        "CWE_name": "CWE329",
+        "start_line": 14,
+        "end_line": 32
+    },
+    {
+        "name": "668.java",
+        "CWE_name": "CWE129",
+        "start_line": 9,
+        "end_line": 29
+    },
+    {
+        "name": "669.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "670.java",
+        "CWE_name": "CWE572",
+        "start_line": 8,
+        "end_line": null
+    },
+    {
+        "name": "671.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "672.java",
+        "CWE_name": "CWE259",
+        "start_line": 10,
+        "end_line": 18
+    },
+    {
+        "name": "673.java",
+        "CWE_name": "CWE113",
+        "start_line": 15,
+        "end_line": 99
+    },
+    {
+        "name": "674.java",
+        "CWE_name": "CWE336",
+        "start_line": 15,
+        "end_line": 25
+    },
+    {
+        "name": "675.java",
+        "CWE_name": "CWE598",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "676.java",
+        "CWE_name": "CWE470",
+        "start_line": 14,
+        "end_line": 22
+    },
+    {
+        "name": "677.java",
+        "CWE_name": "CWE190",
+        "start_line": 19,
+        "end_line": 25
+    },
+    {
+        "name": "678.java",
+        "CWE_name": "CWE584",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "679.java",
+        "CWE_name": "CWE484",
+        "start_line": 8,
+        "end_line": 27
+    },
+    {
+        "name": "680.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 16
+    },
+    {
+        "name": "681.java",
+        "CWE_name": "CWE90",
+        "start_line": 16,
+        "end_line": 110
+    },
+    {
+        "name": "682.java",
+        "CWE_name": "CWE134",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "683.java",
+        "CWE_name": "CWE259",
+        "start_line": 10,
+        "end_line": 18
+    },
+    {
+        "name": "684.java",
+        "CWE_name": "CWE80",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "685.java",
+        "CWE_name": "CWE400",
+        "start_line": 17,
+        "end_line": 100
+    },
+    {
+        "name": "686.java",
+        "CWE_name": "CWE533",
+        "start_line": 7,
+        "end_line": 27
+    },
+    {
+        "name": "687.java",
+        "CWE_name": "CWE764",
+        "start_line": 16,
+        "end_line": null
+    },
+    {
+        "name": "688.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "689.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "690.java",
+        "CWE_name": "CWE478",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "691.java",
+        "CWE_name": "CWE319",
+        "start_line": 13,
+        "end_line": 62
+    },
+    {
+        "name": "692.java",
+        "CWE_name": "CWE190",
+        "start_line": 13,
+        "end_line": 82
+    },
+    {
+        "name": "693.java",
+        "CWE_name": "CWE586",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "694.java",
+        "CWE_name": "CWE191",
+        "start_line": 10,
+        "end_line": 67
+    },
+    {
+        "name": "695.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "696.java",
+        "CWE_name": "CWE83",
+        "start_line": 13,
+        "end_line": 22
+    },
+    {
+        "name": "697.java",
+        "CWE_name": "CWE390",
+        "start_line": 13,
+        "end_line": 72
+    },
+    {
+        "name": "698.java",
+        "CWE_name": "CWE789",
+        "start_line": 15,
+        "end_line": 90
+    },
+    {
+        "name": "699.java",
+        "CWE_name": "CWE209",
+        "start_line": 6,
+        "end_line": 19
+    },
+    {
+        "name": "700.java",
+        "CWE_name": "CWE197",
+        "start_line": 11,
+        "end_line": 29
+    },
+    {
+        "name": "701.java",
+        "CWE_name": "CWE338",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "702.java",
+        "CWE_name": "CWE369",
+        "start_line": 14,
+        "end_line": 93
+    },
+    {
+        "name": "703.java",
+        "CWE_name": "CWE80",
+        "start_line": 20,
+        "end_line": 65
+    },
+    {
+        "name": "704.java",
+        "CWE_name": "CWE681",
+        "start_line": 9,
+        "end_line": 61
+    },
+    {
+        "name": "705.java",
+        "CWE_name": "CWE597",
+        "start_line": 10,
+        "end_line": 71
+    },
+    {
+        "name": "706.java",
+        "CWE_name": "CWE643",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "707.java",
+        "CWE_name": "CWE253",
+        "start_line": 12,
+        "end_line": 54
+    },
+    {
+        "name": "708.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 100
+    },
+    {
+        "name": "709.java",
+        "CWE_name": "CWE321",
+        "start_line": 11,
+        "end_line": 20
+    },
+    {
+        "name": "710.java",
+        "CWE_name": "CWE681",
+        "start_line": 11,
+        "end_line": 63
+    },
+    {
+        "name": "711.java",
+        "CWE_name": "CWE601",
+        "start_line": 9,
+        "end_line": 27
+    },
+    {
+        "name": "712.java",
+        "CWE_name": "CWE113",
+        "start_line": 14,
+        "end_line": 69
+    },
+    {
+        "name": "713.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "714.java",
+        "CWE_name": "CWE566",
+        "start_line": 10,
+        "end_line": 72
+    },
+    {
+        "name": "715.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "716.java",
+        "CWE_name": "CWE772",
+        "start_line": 13,
+        "end_line": 34
+    },
+    {
+        "name": "717.java",
+        "CWE_name": "CWE643",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "718.java",
+        "CWE_name": "CWE78",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "719.java",
+        "CWE_name": "CWE398",
+        "start_line": 6,
+        "end_line": 15
+    },
+    {
+        "name": "720.java",
+        "CWE_name": "CWE89",
+        "start_line": 10,
+        "end_line": 51
+    },
+    {
+        "name": "721.java",
+        "CWE_name": "CWE256",
+        "start_line": 16,
+        "end_line": 145
+    },
+    {
+        "name": "722.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 25
+    },
+    {
+        "name": "723.java",
+        "CWE_name": "CWE197",
+        "start_line": 11,
+        "end_line": 88
+    },
+    {
+        "name": "724.java",
+        "CWE_name": "CWE690",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "725.java",
+        "CWE_name": "CWE36",
+        "start_line": 15,
+        "end_line": 136
+    },
+    {
+        "name": "726.java",
+        "CWE_name": "CWE617",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "727.java",
+        "CWE_name": "CWE400",
+        "start_line": 13,
+        "end_line": 83
+    },
+    {
+        "name": "728.java",
+        "CWE_name": "CWE190",
+        "start_line": 13,
+        "end_line": 96
+    },
+    {
+        "name": "729.java",
+        "CWE_name": "CWE80",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "730.java",
+        "CWE_name": "CWE90",
+        "start_line": 14,
+        "end_line": 100
+    },
+    {
+        "name": "731.java",
+        "CWE_name": "CWE481",
+        "start_line": 9,
+        "end_line": 21
+    },
+    {
+        "name": "732.java",
+        "CWE_name": "CWE571",
+        "start_line": 11,
+        "end_line": 17
+    },
+    {
+        "name": "733.java",
+        "CWE_name": "CWE597",
+        "start_line": 10,
+        "end_line": 66
+    },
+    {
+        "name": "734.java",
+        "CWE_name": "CWE597",
+        "start_line": 10,
+        "end_line": 66
+    },
+    {
+        "name": "735.java",
+        "CWE_name": "CWE36",
+        "start_line": 10,
+        "end_line": 70
+    },
+    {
+        "name": "736.java",
+        "CWE_name": "CWE617",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "737.java",
+        "CWE_name": "CWE526",
+        "start_line": 9,
+        "end_line": 15
+    },
+    {
+        "name": "738.java",
+        "CWE_name": "CWE617",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "739.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "740.java",
+        "CWE_name": "CWE190",
+        "start_line": 13,
+        "end_line": 102
+    },
+    {
+        "name": "741.java",
+        "CWE_name": "CWE511",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "742.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "743.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "744.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "745.java",
+        "CWE_name": "CWE549",
+        "start_line": 15,
+        "end_line": 24
+    },
+    {
+        "name": "746.java",
+        "CWE_name": "CWE252",
+        "start_line": 10,
+        "end_line": 46
+    },
+    {
+        "name": "747.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "748.java",
+        "CWE_name": "CWE613",
+        "start_line": 15,
+        "end_line": 23
+    },
+    {
+        "name": "749.java",
+        "CWE_name": "CWE253",
+        "start_line": 10,
+        "end_line": 52
+    },
+    {
+        "name": "750.java",
+        "CWE_name": "CWE325",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "751.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "752.java",
+        "CWE_name": "CWE511",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "753.java",
+        "CWE_name": "CWE643",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "754.java",
+        "CWE_name": "CWE252",
+        "start_line": 10,
+        "end_line": 43
+    },
+    {
+        "name": "755.java",
+        "CWE_name": "CWE369",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "756.java",
+        "CWE_name": "CWE570",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "757.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "758.java",
+        "CWE_name": "CWE379",
+        "start_line": 20,
+        "end_line": 108
+    },
+    {
+        "name": "759.java",
+        "CWE_name": "CWE643",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "760.java",
+        "CWE_name": "CWE681",
+        "start_line": 11,
+        "end_line": 63
+    },
+    {
+        "name": "761.java",
+        "CWE_name": "CWE566",
+        "start_line": 10,
+        "end_line": 80
+    },
+    {
+        "name": "762.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "763.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "764.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 29
+    },
+    {
+        "name": "765.java",
+        "CWE_name": "CWE197",
+        "start_line": 11,
+        "end_line": 88
+    },
+    {
+        "name": "766.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 23
+    },
+    {
+        "name": "767.java",
+        "CWE_name": "CWE597",
+        "start_line": 10,
+        "end_line": 66
+    },
+    {
+        "name": "768.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 68
+    },
+    {
+        "name": "769.java",
+        "CWE_name": "CWE570",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "770.java",
+        "CWE_name": "CWE400",
+        "start_line": 14,
+        "end_line": 60
+    },
+    {
+        "name": "771.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 45
+    },
+    {
+        "name": "772.java",
+        "CWE_name": "CWE617",
+        "start_line": 6,
+        "end_line": 17
+    },
+    {
+        "name": "773.java",
+        "CWE_name": "CWE526",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "774.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 73
+    },
+    {
+        "name": "775.java",
+        "CWE_name": "CWE775",
+        "start_line": 11,
+        "end_line": 27
+    },
+    {
+        "name": "776.java",
+        "CWE_name": "CWE586",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "777.java",
+        "CWE_name": "CWE605",
+        "start_line": 10,
+        "end_line": 53
+    },
+    {
+        "name": "778.java",
+        "CWE_name": "CWE476",
+        "start_line": 6,
+        "end_line": 11
+    },
+    {
+        "name": "779.java",
+        "CWE_name": "CWE477",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "780.java",
+        "CWE_name": "CWE476",
+        "start_line": 8,
+        "end_line": 20
+    },
+    {
+        "name": "781.java",
+        "CWE_name": "CWE256",
+        "start_line": 13,
+        "end_line": 44
+    },
+    {
+        "name": "782.java",
+        "CWE_name": "CWE400",
+        "start_line": 19,
+        "end_line": 97
+    },
+    {
+        "name": "783.java",
+        "CWE_name": "CWE570",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "784.java",
+        "CWE_name": "CWE486",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "785.java",
+        "CWE_name": "CWE325",
+        "start_line": 11,
+        "end_line": 25
+    },
+    {
+        "name": "786.java",
+        "CWE_name": "CWE566",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "787.java",
+        "CWE_name": "CWE584",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "788.java",
+        "CWE_name": "CWE572",
+        "start_line": 6,
+        "end_line": null
+    },
+    {
+        "name": "789.java",
+        "CWE_name": "CWE499",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "790.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 22
+    },
+    {
+        "name": "791.java",
+        "CWE_name": "CWE129",
+        "start_line": 12,
+        "end_line": 69
+    },
+    {
+        "name": "792.java",
+        "CWE_name": "CWE15",
+        "start_line": 13,
+        "end_line": 85
+    },
+    {
+        "name": "793.java",
+        "CWE_name": "CWE482",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "794.java",
+        "CWE_name": "CWE83",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "795.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "796.java",
+        "CWE_name": "CWE477",
+        "start_line": 6,
+        "end_line": 15
+    },
+    {
+        "name": "797.java",
+        "CWE_name": "CWE329",
+        "start_line": 14,
+        "end_line": 32
+    },
+    {
+        "name": "798.java",
+        "CWE_name": "CWE328",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "799.java",
+        "CWE_name": "CWE572",
+        "start_line": 8,
+        "end_line": null
+    },
+    {
+        "name": "800.java",
+        "CWE_name": "CWE484",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "801.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 20
+    },
+    {
+        "name": "802.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "803.java",
+        "CWE_name": "CWE400",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "804.java",
+        "CWE_name": "CWE129",
+        "start_line": 13,
+        "end_line": 95
+    },
+    {
+        "name": "805.java",
+        "CWE_name": "CWE369",
+        "start_line": 6,
+        "end_line": 34
+    },
+    {
+        "name": "806.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 73
+    },
+    {
+        "name": "807.java",
+        "CWE_name": "CWE90",
+        "start_line": 12,
+        "end_line": 58
+    },
+    {
+        "name": "808.java",
+        "CWE_name": "CWE226",
+        "start_line": 14,
+        "end_line": 74
+    },
+    {
+        "name": "809.java",
+        "CWE_name": "CWE789",
+        "start_line": 14,
+        "end_line": 77
+    },
+    {
+        "name": "810.java",
+        "CWE_name": "CWE400",
+        "start_line": 12,
+        "end_line": 80
+    },
+    {
+        "name": "811.java",
+        "CWE_name": "CWE78",
+        "start_line": 12,
+        "end_line": 86
+    },
+    {
+        "name": "812.java",
+        "CWE_name": "CWE789",
+        "start_line": 10,
+        "end_line": 36
+    },
+    {
+        "name": "813.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "814.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "815.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 18
+    },
+    {
+        "name": "816.java",
+        "CWE_name": "CWE570",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "817.java",
+        "CWE_name": "CWE193",
+        "start_line": 6,
+        "end_line": 18
+    },
+    {
+        "name": "818.java",
+        "CWE_name": "CWE134",
+        "start_line": 11,
+        "end_line": 45
+    },
+    {
+        "name": "819.java",
+        "CWE_name": "CWE90",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "820.java",
+        "CWE_name": "CWE113",
+        "start_line": 12,
+        "end_line": 58
+    },
+    {
+        "name": "821.java",
+        "CWE_name": "CWE81",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "822.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 23
+    },
+    {
+        "name": "823.java",
+        "CWE_name": "CWE563",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "824.java",
+        "CWE_name": "CWE197",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "825.java",
+        "CWE_name": "CWE23",
+        "start_line": 9,
+        "end_line": 18
+    },
+    {
+        "name": "826.java",
+        "CWE_name": "CWE601",
+        "start_line": 9,
+        "end_line": 26
+    },
+    {
+        "name": "827.java",
+        "CWE_name": "CWE549",
+        "start_line": 9,
+        "end_line": 18
+    },
+    {
+        "name": "828.java",
+        "CWE_name": "CWE609",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "829.java",
+        "CWE_name": "CWE319",
+        "start_line": 12,
+        "end_line": 84
+    },
+    {
+        "name": "830.java",
+        "CWE_name": "CWE338",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "831.java",
+        "CWE_name": "CWE197",
+        "start_line": 12,
+        "end_line": 70
+    },
+    {
+        "name": "832.java",
+        "CWE_name": "CWE476",
+        "start_line": 14,
+        "end_line": 20
+    },
+    {
+        "name": "833.java",
+        "CWE_name": "CWE80",
+        "start_line": 11,
+        "end_line": 44
+    },
+    {
+        "name": "834.java",
+        "CWE_name": "CWE369",
+        "start_line": 8,
+        "end_line": 38
+    },
+    {
+        "name": "835.java",
+        "CWE_name": "CWE191",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "836.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 23
+    },
+    {
+        "name": "837.java",
+        "CWE_name": "CWE835",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "838.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 29
+    },
+    {
+        "name": "839.java",
+        "CWE_name": "CWE253",
+        "start_line": 10,
+        "end_line": 52
+    },
+    {
+        "name": "840.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "841.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "842.java",
+        "CWE_name": "CWE78",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "843.java",
+        "CWE_name": "CWE197",
+        "start_line": 12,
+        "end_line": 73
+    },
+    {
+        "name": "844.java",
+        "CWE_name": "CWE327",
+        "start_line": 18,
+        "end_line": 33
+    },
+    {
+        "name": "845.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "846.java",
+        "CWE_name": "CWE400",
+        "start_line": 14,
+        "end_line": 71
+    },
+    {
+        "name": "847.java",
+        "CWE_name": "CWE81",
+        "start_line": 8,
+        "end_line": 35
+    },
+    {
+        "name": "848.java",
+        "CWE_name": "CWE114",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "849.java",
+        "CWE_name": "CWE89",
+        "start_line": 55,
+        "end_line": 100
+    },
+    {
+        "name": "850.java",
+        "CWE_name": "CWE534",
+        "start_line": 8,
+        "end_line": 28
+    },
+    {
+        "name": "851.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "852.java",
+        "CWE_name": "CWE510",
+        "start_line": 11,
+        "end_line": 75
+    },
+    {
+        "name": "853.java",
+        "CWE_name": "CWE615",
+        "start_line": 8,
+        "end_line": 19
+    },
+    {
+        "name": "854.java",
+        "CWE_name": "CWE582",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "855.java",
+        "CWE_name": "CWE759",
+        "start_line": 9,
+        "end_line": 17
+    },
+    {
+        "name": "856.java",
+        "CWE_name": "CWE89",
+        "start_line": 13,
+        "end_line": 83
+    },
+    {
+        "name": "857.java",
+        "CWE_name": "CWE315",
+        "start_line": 10,
+        "end_line": 20
+    },
+    {
+        "name": "858.java",
+        "CWE_name": "CWE197",
+        "start_line": 11,
+        "end_line": 88
+    },
+    {
+        "name": "859.java",
+        "CWE_name": "CWE400",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "860.java",
+        "CWE_name": "CWE477",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "861.java",
+        "CWE_name": "CWE605",
+        "start_line": 12,
+        "end_line": 55
+    },
+    {
+        "name": "862.java",
+        "CWE_name": "CWE89",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "863.java",
+        "CWE_name": "CWE336",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "864.java",
+        "CWE_name": "CWE482",
+        "start_line": 9,
+        "end_line": 21
+    },
+    {
+        "name": "865.java",
+        "CWE_name": "CWE191",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "866.java",
+        "CWE_name": "CWE190",
+        "start_line": 8,
+        "end_line": 16
+    },
+    {
+        "name": "867.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 73
+    },
+    {
+        "name": "868.java",
+        "CWE_name": "CWE89",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "869.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "870.java",
+        "CWE_name": "CWE539",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "871.java",
+        "CWE_name": "CWE15",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "872.java",
+        "CWE_name": "CWE477",
+        "start_line": 10,
+        "end_line": 20
+    },
+    {
+        "name": "873.java",
+        "CWE_name": "CWE566",
+        "start_line": 10,
+        "end_line": 74
+    },
+    {
+        "name": "874.java",
+        "CWE_name": "CWE336",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "875.java",
+        "CWE_name": "CWE539",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "876.java",
+        "CWE_name": "CWE190",
+        "start_line": 13,
+        "end_line": 93
+    },
+    {
+        "name": "877.java",
+        "CWE_name": "CWE477",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "878.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "879.java",
+        "CWE_name": "CWE259",
+        "start_line": 11,
+        "end_line": 20
+    },
+    {
+        "name": "880.java",
+        "CWE_name": "CWE572",
+        "start_line": 14,
+        "end_line": null
+    },
+    {
+        "name": "881.java",
+        "CWE_name": "CWE129",
+        "start_line": 13,
+        "end_line": 114
+    },
+    {
+        "name": "882.java",
+        "CWE_name": "CWE510",
+        "start_line": 11,
+        "end_line": 75
+    },
+    {
+        "name": "883.java",
+        "CWE_name": "CWE643",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "884.java",
+        "CWE_name": "CWE78",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "885.java",
+        "CWE_name": "CWE789",
+        "start_line": 12,
+        "end_line": 63
+    },
+    {
+        "name": "886.java",
+        "CWE_name": "CWE477",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "887.java",
+        "CWE_name": "CWE605",
+        "start_line": 10,
+        "end_line": 53
+    },
+    {
+        "name": "888.java",
+        "CWE_name": "CWE533",
+        "start_line": 8,
+        "end_line": 27
+    },
+    {
+        "name": "889.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "890.java",
+        "CWE_name": "CWE789",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "891.java",
+        "CWE_name": "CWE404",
+        "start_line": 11,
+        "end_line": 48
+    },
+    {
+        "name": "892.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 70
+    },
+    {
+        "name": "893.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "894.java",
+        "CWE_name": "CWE789",
+        "start_line": 13,
+        "end_line": 88
+    },
+    {
+        "name": "895.java",
+        "CWE_name": "CWE191",
+        "start_line": 11,
+        "end_line": 54
+    },
+    {
+        "name": "896.java",
+        "CWE_name": "CWE546",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "897.java",
+        "CWE_name": "CWE369",
+        "start_line": 8,
+        "end_line": 24
+    },
+    {
+        "name": "898.java",
+        "CWE_name": "CWE383",
+        "start_line": 7,
+        "end_line": null
+    },
+    {
+        "name": "899.java",
+        "CWE_name": "CWE397",
+        "start_line": 11,
+        "end_line": 23
+    },
+    {
+        "name": "900.java",
+        "CWE_name": "CWE789",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "901.java",
+        "CWE_name": "CWE572",
+        "start_line": 6,
+        "end_line": null
+    },
+    {
+        "name": "902.java",
+        "CWE_name": "CWE134",
+        "start_line": 11,
+        "end_line": 68
+    },
+    {
+        "name": "903.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "904.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 18
+    },
+    {
+        "name": "905.java",
+        "CWE_name": "CWE566",
+        "start_line": 9,
+        "end_line": 70
+    },
+    {
+        "name": "906.java",
+        "CWE_name": "CWE484",
+        "start_line": 7,
+        "end_line": 23
+    },
+    {
+        "name": "907.java",
+        "CWE_name": "CWE584",
+        "start_line": 8,
+        "end_line": 28
+    },
+    {
+        "name": "908.java",
+        "CWE_name": "CWE571",
+        "start_line": 9,
+        "end_line": 15
+    },
+    {
+        "name": "909.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 32
+    },
+    {
+        "name": "910.java",
+        "CWE_name": "CWE789",
+        "start_line": 9,
+        "end_line": 31
+    },
+    {
+        "name": "911.java",
+        "CWE_name": "CWE209",
+        "start_line": 15,
+        "end_line": 28
+    },
+    {
+        "name": "912.java",
+        "CWE_name": "CWE533",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "913.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "914.java",
+        "CWE_name": "CWE586",
+        "start_line": 6,
+        "end_line": 24
+    },
+    {
+        "name": "915.java",
+        "CWE_name": "CWE190",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "916.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "917.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "918.java",
+        "CWE_name": "CWE191",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "919.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 46
+    },
+    {
+        "name": "920.java",
+        "CWE_name": "CWE134",
+        "start_line": 11,
+        "end_line": 69
+    },
+    {
+        "name": "921.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 63
+    },
+    {
+        "name": "922.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 18
+    },
+    {
+        "name": "923.java",
+        "CWE_name": "CWE617",
+        "start_line": 6,
+        "end_line": 17
+    },
+    {
+        "name": "924.java",
+        "CWE_name": "CWE526",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "925.java",
+        "CWE_name": "CWE209",
+        "start_line": 6,
+        "end_line": 19
+    },
+    {
+        "name": "926.java",
+        "CWE_name": "CWE571",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "927.java",
+        "CWE_name": "CWE789",
+        "start_line": 8,
+        "end_line": 13
+    },
+    {
+        "name": "928.java",
+        "CWE_name": "CWE601",
+        "start_line": 9,
+        "end_line": 25
+    },
+    {
+        "name": "929.java",
+        "CWE_name": "CWE563",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "930.java",
+        "CWE_name": "CWE597",
+        "start_line": 10,
+        "end_line": 66
+    },
+    {
+        "name": "931.java",
+        "CWE_name": "CWE571",
+        "start_line": 8,
+        "end_line": 14
+    },
+    {
+        "name": "932.java",
+        "CWE_name": "CWE89",
+        "start_line": 12,
+        "end_line": 69
+    },
+    {
+        "name": "933.java",
+        "CWE_name": "CWE252",
+        "start_line": 11,
+        "end_line": 47
+    },
+    {
+        "name": "934.java",
+        "CWE_name": "CWE113",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "935.java",
+        "CWE_name": "CWE369",
+        "start_line": 12,
+        "end_line": 81
+    },
+    {
+        "name": "936.java",
+        "CWE_name": "CWE191",
+        "start_line": 10,
+        "end_line": 55
+    },
+    {
+        "name": "937.java",
+        "CWE_name": "CWE252",
+        "start_line": 10,
+        "end_line": 46
+    },
+    {
+        "name": "938.java",
+        "CWE_name": "CWE129",
+        "start_line": 11,
+        "end_line": 76
+    },
+    {
+        "name": "939.java",
+        "CWE_name": "CWE90",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "940.java",
+        "CWE_name": "CWE253",
+        "start_line": 10,
+        "end_line": 52
+    },
+    {
+        "name": "941.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "942.java",
+        "CWE_name": "CWE832",
+        "start_line": 16,
+        "end_line": 20
+    },
+    {
+        "name": "943.java",
+        "CWE_name": "CWE674",
+        "start_line": 16,
+        "end_line": 20
+    },
+    {
+        "name": "944.java",
+        "CWE_name": "CWE23",
+        "start_line": 12,
+        "end_line": 117
+    },
+    {
+        "name": "945.java",
+        "CWE_name": "CWE36",
+        "start_line": 9,
+        "end_line": 84
+    },
+    {
+        "name": "946.java",
+        "CWE_name": "CWE491",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "947.java",
+        "CWE_name": "CWE209",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "948.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "949.java",
+        "CWE_name": "CWE534",
+        "start_line": 8,
+        "end_line": 28
+    },
+    {
+        "name": "950.java",
+        "CWE_name": "CWE134",
+        "start_line": 12,
+        "end_line": 67
+    },
+    {
+        "name": "951.java",
+        "CWE_name": "CWE190",
+        "start_line": 16,
+        "end_line": 32
+    },
+    {
+        "name": "952.java",
+        "CWE_name": "CWE690",
+        "start_line": 7,
+        "end_line": 25
+    },
+    {
+        "name": "953.java",
+        "CWE_name": "CWE113",
+        "start_line": 13,
+        "end_line": 71
+    },
+    {
+        "name": "954.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 23
+    },
+    {
+        "name": "955.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 36
+    },
+    {
+        "name": "956.java",
+        "CWE_name": "CWE597",
+        "start_line": 12,
+        "end_line": 68
+    },
+    {
+        "name": "957.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 65
+    },
+    {
+        "name": "958.java",
+        "CWE_name": "CWE134",
+        "start_line": 6,
+        "end_line": 19
+    },
+    {
+        "name": "959.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "960.java",
+        "CWE_name": "CWE89",
+        "start_line": 13,
+        "end_line": 104
+    },
+    {
+        "name": "961.java",
+        "CWE_name": "CWE605",
+        "start_line": 10,
+        "end_line": 53
+    },
+    {
+        "name": "962.java",
+        "CWE_name": "CWE615",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "963.java",
+        "CWE_name": "CWE369",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "964.java",
+        "CWE_name": "CWE526",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "965.java",
+        "CWE_name": "CWE209",
+        "start_line": 7,
+        "end_line": 31
+    },
+    {
+        "name": "966.java",
+        "CWE_name": "CWE400",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "967.java",
+        "CWE_name": "CWE315",
+        "start_line": 11,
+        "end_line": 27
+    },
+    {
+        "name": "968.java",
+        "CWE_name": "CWE328",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "969.java",
+        "CWE_name": "CWE383",
+        "start_line": 8,
+        "end_line": null
+    },
+    {
+        "name": "970.java",
+        "CWE_name": "CWE400",
+        "start_line": 13,
+        "end_line": 69
+    },
+    {
+        "name": "971.java",
+        "CWE_name": "CWE319",
+        "start_line": 86,
+        "end_line": 94
+    },
+    {
+        "name": "972.java",
+        "CWE_name": "CWE570",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "973.java",
+        "CWE_name": "CWE15",
+        "start_line": 14,
+        "end_line": 76
+    },
+    {
+        "name": "974.java",
+        "CWE_name": "CWE476",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "975.java",
+        "CWE_name": "CWE833",
+        "start_line": 42,
+        "end_line": 53
+    },
+    {
+        "name": "976.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "977.java",
+        "CWE_name": "CWE585",
+        "start_line": 18,
+        "end_line": 22
+    },
+    {
+        "name": "978.java",
+        "CWE_name": "CWE336",
+        "start_line": 7,
+        "end_line": 17
+    },
+    {
+        "name": "979.java",
+        "CWE_name": "CWE197",
+        "start_line": 10,
+        "end_line": 74
+    },
+    {
+        "name": "980.java",
+        "CWE_name": "CWE369",
+        "start_line": 12,
+        "end_line": 57
+    },
+    {
+        "name": "981.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 73
+    },
+    {
+        "name": "982.java",
+        "CWE_name": "CWE539",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "983.java",
+        "CWE_name": "CWE585",
+        "start_line": 15,
+        "end_line": null
+    },
+    {
+        "name": "984.java",
+        "CWE_name": "CWE476",
+        "start_line": 8,
+        "end_line": 23
+    },
+    {
+        "name": "985.java",
+        "CWE_name": "CWE506",
+        "start_line": 15,
+        "end_line": 126
+    },
+    {
+        "name": "986.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 66
+    },
+    {
+        "name": "987.java",
+        "CWE_name": "CWE476",
+        "start_line": 6,
+        "end_line": 21
+    },
+    {
+        "name": "988.java",
+        "CWE_name": "CWE523",
+        "start_line": 11,
+        "end_line": 42
+    },
+    {
+        "name": "989.java",
+        "CWE_name": "CWE482",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "990.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 73
+    },
+    {
+        "name": "991.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "992.java",
+        "CWE_name": "CWE369",
+        "start_line": 14,
+        "end_line": 58
+    },
+    {
+        "name": "993.java",
+        "CWE_name": "CWE113",
+        "start_line": 14,
+        "end_line": 65
+    },
+    {
+        "name": "994.java",
+        "CWE_name": "CWE476",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "995.java",
+        "CWE_name": "CWE191",
+        "start_line": 12,
+        "end_line": 80
+    },
+    {
+        "name": "996.java",
+        "CWE_name": "CWE327",
+        "start_line": 10,
+        "end_line": 25
+    },
+    {
+        "name": "997.java",
+        "CWE_name": "CWE369",
+        "start_line": 8,
+        "end_line": 34
+    },
+    {
+        "name": "998.java",
+        "CWE_name": "CWE319",
+        "start_line": 16,
+        "end_line": 98
+    },
+    {
+        "name": "999.java",
+        "CWE_name": "CWE400",
+        "start_line": 12,
+        "end_line": 94
+    },
+    {
+        "name": "1000.java",
+        "CWE_name": "CWE328",
+        "start_line": 9,
+        "end_line": 18
+    },
+    {
+        "name": "1001.java",
+        "CWE_name": "CWE400",
+        "start_line": 9,
+        "end_line": 33
+    },
+    {
+        "name": "1002.java",
+        "CWE_name": "CWE83",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "1003.java",
+        "CWE_name": "CWE114",
+        "start_line": 6,
+        "end_line": 10
+    },
+    {
+        "name": "1004.java",
+        "CWE_name": "CWE319",
+        "start_line": 9,
+        "end_line": 16
+    },
+    {
+        "name": "1005.java",
+        "CWE_name": "CWE369",
+        "start_line": 11,
+        "end_line": 66
+    },
+    {
+        "name": "1006.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "1007.java",
+        "CWE_name": "CWE190",
+        "start_line": 15,
+        "end_line": 20
+    },
+    {
+        "name": "1008.java",
+        "CWE_name": "CWE129",
+        "start_line": 8,
+        "end_line": 42
+    },
+    {
+        "name": "1009.java",
+        "CWE_name": "CWE459",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "1010.java",
+        "CWE_name": "CWE89",
+        "start_line": 10,
+        "end_line": 81
+    },
+    {
+        "name": "1011.java",
+        "CWE_name": "CWE129",
+        "start_line": 13,
+        "end_line": 112
+    },
+    {
+        "name": "1012.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "1013.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "1014.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 100
+    },
+    {
+        "name": "1015.java",
+        "CWE_name": "CWE470",
+        "start_line": 11,
+        "end_line": 64
+    },
+    {
+        "name": "1016.java",
+        "CWE_name": "CWE398",
+        "start_line": 6,
+        "end_line": 16
+    },
+    {
+        "name": "1017.java",
+        "CWE_name": "CWE390",
+        "start_line": 7,
+        "end_line": 25
+    },
+    {
+        "name": "1018.java",
+        "CWE_name": "CWE606",
+        "start_line": 13,
+        "end_line": 100
+    },
+    {
+        "name": "1019.java",
+        "CWE_name": "CWE78",
+        "start_line": 8,
+        "end_line": 12
+    },
+    {
+        "name": "1020.java",
+        "CWE_name": "CWE191",
+        "start_line": 11,
+        "end_line": 63
+    },
+    {
+        "name": "1021.java",
+        "CWE_name": "CWE191",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "1022.java",
+        "CWE_name": "CWE510",
+        "start_line": 9,
+        "end_line": 51
+    },
+    {
+        "name": "1023.java",
+        "CWE_name": "CWE90",
+        "start_line": 17,
+        "end_line": 65
+    },
+    {
+        "name": "1024.java",
+        "CWE_name": "CWE459",
+        "start_line": 9,
+        "end_line": 36
+    },
+    {
+        "name": "1025.java",
+        "CWE_name": "CWE534",
+        "start_line": 10,
+        "end_line": 30
+    },
+    {
+        "name": "1026.java",
+        "CWE_name": "CWE338",
+        "start_line": 7,
+        "end_line": 18
+    },
+    {
+        "name": "1027.java",
+        "CWE_name": "CWE470",
+        "start_line": 13,
+        "end_line": 67
+    },
+    {
+        "name": "1028.java",
+        "CWE_name": "CWE114",
+        "start_line": 6,
+        "end_line": 13
+    },
+    {
+        "name": "1029.java",
+        "CWE_name": "CWE190",
+        "start_line": 12,
+        "end_line": 69
+    },
+    {
+        "name": "1030.java",
+        "CWE_name": "CWE614",
+        "start_line": 8,
+        "end_line": 27
+    },
+    {
+        "name": "1031.java",
+        "CWE_name": "CWE789",
+        "start_line": 11,
+        "end_line": 34
+    },
+    {
+        "name": "1032.java",
+        "CWE_name": "CWE191",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "1033.java",
+        "CWE_name": "CWE833",
+        "start_line": 57,
+        "end_line": null
+    },
+    {
+        "name": "1034.java",
+        "CWE_name": "CWE534",
+        "start_line": 10,
+        "end_line": 30
+    },
+    {
+        "name": "1035.java",
+        "CWE_name": "CWE191",
+        "start_line": 12,
+        "end_line": 94
+    },
+    {
+        "name": "1036.java",
+        "CWE_name": "CWE338",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "1037.java",
+        "CWE_name": "CWE328",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "1038.java",
+        "CWE_name": "CWE470",
+        "start_line": 13,
+        "end_line": 67
+    },
+    {
+        "name": "1039.java",
+        "CWE_name": "CWE321",
+        "start_line": 12,
+        "end_line": 34
+    },
+    {
+        "name": "1040.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 100
+    },
+    {
+        "name": "1041.java",
+        "CWE_name": "CWE36",
+        "start_line": 8,
+        "end_line": 11
+    },
+    {
+        "name": "1042.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "1043.java",
+        "CWE_name": "CWE259",
+        "start_line": 10,
+        "end_line": 27
+    },
+    {
+        "name": "1044.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "1045.java",
+        "CWE_name": "CWE833",
+        "start_line": 48,
+        "end_line": null
+    },
+    {
+        "name": "1046.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "1047.java",
+        "CWE_name": "CWE698",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "1048.java",
+        "CWE_name": "CWE571",
+        "start_line": 9,
+        "end_line": 17
+    },
+    {
+        "name": "1049.java",
+        "CWE_name": "CWE390",
+        "start_line": 7,
+        "end_line": 24
+    },
+    {
+        "name": "1050.java",
+        "CWE_name": "CWE580",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "1051.java",
+        "CWE_name": "CWE459",
+        "start_line": 12,
+        "end_line": 39
+    },
+    {
+        "name": "1052.java",
+        "CWE_name": "CWE549",
+        "start_line": 7,
+        "end_line": 16
+    },
+    {
+        "name": "1053.java",
+        "CWE_name": "CWE499",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "1054.java",
+        "CWE_name": "CWE190",
+        "start_line": 8,
+        "end_line": 24
+    },
+    {
+        "name": "1055.java",
+        "CWE_name": "CWE113",
+        "start_line": 13,
+        "end_line": 71
+    },
+    {
+        "name": "1056.java",
+        "CWE_name": "CWE613",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "1057.java",
+        "CWE_name": "CWE459",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "1058.java",
+        "CWE_name": "CWE379",
+        "start_line": 12,
+        "end_line": 100
+    },
+    {
+        "name": "1059.java",
+        "CWE_name": "CWE328",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "1060.java",
+        "CWE_name": "CWE338",
+        "start_line": 9,
+        "end_line": 16
+    },
+    {
+        "name": "1061.java",
+        "CWE_name": "CWE698",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "1062.java",
+        "CWE_name": "CWE398",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "1063.java",
+        "CWE_name": "CWE382",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "1064.java",
+        "CWE_name": "CWE191",
+        "start_line": 8,
+        "end_line": 17
+    },
+    {
+        "name": "1065.java",
+        "CWE_name": "CWE80",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "1066.java",
+        "CWE_name": "CWE511",
+        "start_line": 15,
+        "end_line": 27
+    },
+    {
+        "name": "1067.java",
+        "CWE_name": "CWE690",
+        "start_line": 7,
+        "end_line": 12
+    },
+    {
+        "name": "1068.java",
+        "CWE_name": "CWE129",
+        "start_line": 14,
+        "end_line": 71
+    },
+    {
+        "name": "1069.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "1070.java",
+        "CWE_name": "CWE83",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "1071.java",
+        "CWE_name": "CWE570",
+        "start_line": 7,
+        "end_line": 13
+    },
+    {
+        "name": "1072.java",
+        "CWE_name": "CWE534",
+        "start_line": 8,
+        "end_line": 45
+    },
+    {
+        "name": "1073.java",
+        "CWE_name": "CWE369",
+        "start_line": 9,
+        "end_line": 33
+    },
+    {
+        "name": "1074.java",
+        "CWE_name": "CWE113",
+        "start_line": 9,
+        "end_line": 36
+    },
+    {
+        "name": "1075.java",
+        "CWE_name": "CWE197",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "1076.java",
+        "CWE_name": "CWE78",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "1077.java",
+        "CWE_name": "CWE327",
+        "start_line": 18,
+        "end_line": 33
+    },
+    {
+        "name": "1078.java",
+        "CWE_name": "CWE606",
+        "start_line": 9,
+        "end_line": 37
+    },
+    {
+        "name": "1079.java",
+        "CWE_name": "CWE605",
+        "start_line": 10,
+        "end_line": 53
+    },
+    {
+        "name": "1080.java",
+        "CWE_name": "CWE80",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "1081.java",
+        "CWE_name": "CWE643",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "1082.java",
+        "CWE_name": "CWE400",
+        "start_line": 10,
+        "end_line": 64
+    },
+    {
+        "name": "1083.java",
+        "CWE_name": "CWE606",
+        "start_line": 34,
+        "end_line": 80
+    },
+    {
+        "name": "1084.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 56
+    },
+    {
+        "name": "1085.java",
+        "CWE_name": "CWE523",
+        "start_line": 11,
+        "end_line": 42
+    },
+    {
+        "name": "1086.java",
+        "CWE_name": "CWE598",
+        "start_line": 15,
+        "end_line": 24
+    },
+    {
+        "name": "1087.java",
+        "CWE_name": "CWE482",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "1088.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 78
+    },
+    {
+        "name": "1089.java",
+        "CWE_name": "CWE90",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "1090.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "1091.java",
+        "CWE_name": "CWE584",
+        "start_line": 6,
+        "end_line": 26
+    },
+    {
+        "name": "1092.java",
+        "CWE_name": "CWE789",
+        "start_line": 13,
+        "end_line": 70
+    },
+    {
+        "name": "1093.java",
+        "CWE_name": "CWE36",
+        "start_line": 13,
+        "end_line": 70
+    },
+    {
+        "name": "1094.java",
+        "CWE_name": "CWE601",
+        "start_line": 15,
+        "end_line": 81
+    },
+    {
+        "name": "1095.java",
+        "CWE_name": "CWE336",
+        "start_line": 7,
+        "end_line": 22
+    },
+    {
+        "name": "1096.java",
+        "CWE_name": "CWE378",
+        "start_line": 12,
+        "end_line": 73
+    },
+    {
+        "name": "1097.java",
+        "CWE_name": "CWE482",
+        "start_line": 7,
+        "end_line": 24
+    },
+    {
+        "name": "1098.java",
+        "CWE_name": "CWE523",
+        "start_line": 10,
+        "end_line": 41
+    },
+    {
+        "name": "1099.java",
+        "CWE_name": "CWE571",
+        "start_line": 9,
+        "end_line": 15
+    },
+    {
+        "name": "1100.java",
+        "CWE_name": "CWE539",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "1101.java",
+        "CWE_name": "CWE369",
+        "start_line": 6,
+        "end_line": 9
+    },
+    {
+        "name": "1102.java",
+        "CWE_name": "CWE601",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "1103.java",
+        "CWE_name": "CWE319",
+        "start_line": 10,
+        "end_line": 62
+    },
+    {
+        "name": "1104.java",
+        "CWE_name": "CWE396",
+        "start_line": 6,
+        "end_line": 20
+    },
+    {
+        "name": "1105.java",
+        "CWE_name": "CWE113",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "1106.java",
+        "CWE_name": "CWE369",
+        "start_line": 10,
+        "end_line": 64
+    },
+    {
+        "name": "1107.java",
+        "CWE_name": "CWE191",
+        "start_line": 8,
+        "end_line": 15
+    },
+    {
+        "name": "1108.java",
+        "CWE_name": "CWE190",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "1109.java",
+        "CWE_name": "CWE605",
+        "start_line": 10,
+        "end_line": 58
+    },
+    {
+        "name": "1110.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "1111.java",
+        "CWE_name": "CWE191",
+        "start_line": 12,
+        "end_line": 17
+    },
+    {
+        "name": "1112.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 23
+    },
+    {
+        "name": "1113.java",
+        "CWE_name": "CWE835",
+        "start_line": 6,
+        "end_line": 14
+    },
+    {
+        "name": "1114.java",
+        "CWE_name": "CWE597",
+        "start_line": 12,
+        "end_line": 68
+    },
+    {
+        "name": "1115.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 42
+    },
+    {
+        "name": "1116.java",
+        "CWE_name": "CWE369",
+        "start_line": 17,
+        "end_line": 51
+    },
+    {
+        "name": "1117.java",
+        "CWE_name": "CWE617",
+        "start_line": 6,
+        "end_line": 12
+    },
+    {
+        "name": "1118.java",
+        "CWE_name": "CWE81",
+        "start_line": 15,
+        "end_line": 95
+    },
+    {
+        "name": "1119.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "1120.java",
+        "CWE_name": "CWE400",
+        "start_line": 10,
+        "end_line": 54
+    },
+    {
+        "name": "1121.java",
+        "CWE_name": "CWE643",
+        "start_line": 11,
+        "end_line": 52
+    },
+    {
+        "name": "1122.java",
+        "CWE_name": "CWE253",
+        "start_line": 10,
+        "end_line": 57
+    },
+    {
+        "name": "1123.java",
+        "CWE_name": "CWE681",
+        "start_line": 9,
+        "end_line": 66
+    },
+    {
+        "name": "1124.java",
+        "CWE_name": "CWE113",
+        "start_line": 14,
+        "end_line": 86
+    },
+    {
+        "name": "1125.java",
+        "CWE_name": "CWE197",
+        "start_line": 13,
+        "end_line": 98
+    },
+    {
+        "name": "1126.java",
+        "CWE_name": "CWE400",
+        "start_line": 9,
+        "end_line": 26
+    },
+    {
+        "name": "1127.java",
+        "CWE_name": "CWE252",
+        "start_line": 11,
+        "end_line": 47
+    },
+    {
+        "name": "1128.java",
+        "CWE_name": "CWE681",
+        "start_line": 9,
+        "end_line": 61
+    },
+    {
+        "name": "1129.java",
+        "CWE_name": "CWE506",
+        "start_line": 17,
+        "end_line": 140
+    },
+    {
+        "name": "1130.java",
+        "CWE_name": "CWE481",
+        "start_line": 7,
+        "end_line": 19
+    },
+    {
+        "name": "1131.java",
+        "CWE_name": "CWE395",
+        "start_line": 6,
+        "end_line": 28
+    },
+    {
+        "name": "1132.java",
+        "CWE_name": "CWE606",
+        "start_line": 14,
+        "end_line": 63
+    },
+    {
+        "name": "1133.java",
+        "CWE_name": "CWE190",
+        "start_line": 16,
+        "end_line": 22
+    },
+    {
+        "name": "1134.java",
+        "CWE_name": "CWE535",
+        "start_line": 11,
+        "end_line": 45
+    },
+    {
+        "name": "1135.java",
+        "CWE_name": "CWE614",
+        "start_line": 16,
+        "end_line": 26
+    },
+    {
+        "name": "1136.java",
+        "CWE_name": "CWE193",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "1137.java",
+        "CWE_name": "CWE483",
+        "start_line": 7,
+        "end_line": 21
+    },
+    {
+        "name": "1138.java",
+        "CWE_name": "CWE789",
+        "start_line": 8,
+        "end_line": 29
+    },
+    {
+        "name": "1139.java",
+        "CWE_name": "CWE400",
+        "start_line": 7,
+        "end_line": 15
+    },
+    {
+        "name": "1140.java",
+        "CWE_name": "CWE190",
+        "start_line": 14,
+        "end_line": 96
+    },
+    {
+        "name": "1141.java",
+        "CWE_name": "CWE226",
+        "start_line": 13,
+        "end_line": 74
+    },
+    {
+        "name": "1142.java",
+        "CWE_name": "CWE113",
+        "start_line": 14,
+        "end_line": 85
+    },
+    {
+        "name": "1143.java",
+        "CWE_name": "CWE197",
+        "start_line": 12,
+        "end_line": 77
+    },
+    {
+        "name": "1144.java",
+        "CWE_name": "CWE15",
+        "start_line": 10,
+        "end_line": 37
+    },
+    {
+        "name": "1145.java",
+        "CWE_name": "CWE404",
+        "start_line": 17,
+        "end_line": 20
+    },
+    {
+        "name": "1146.java",
+        "CWE_name": "CWE129",
+        "start_line": 7,
+        "end_line": 20
+    },
+    {
+        "name": "1147.java",
+        "CWE_name": "CWE134",
+        "start_line": 13,
+        "end_line": 71
+    },
+    {
+        "name": "1148.java",
+        "CWE_name": "CWE256",
+        "start_line": 16,
+        "end_line": 85
+    },
+    {
+        "name": "1149.java",
+        "CWE_name": "CWE533",
+        "start_line": 7,
+        "end_line": 26
+    },
+    {
+        "name": "1150.java",
+        "CWE_name": "CWE328",
+        "start_line": 7,
+        "end_line": 23
+    },
+    {
+        "name": "1151.java",
+        "CWE_name": "CWE329",
+        "start_line": 13,
+        "end_line": 32
+    },
+    {
+        "name": "1152.java",
+        "CWE_name": "CWE789",
+        "start_line": 18,
+        "end_line": 99
+    },
+    {
+        "name": "1153.java",
+        "CWE_name": "CWE321",
+        "start_line": 10,
+        "end_line": 15
+    },
+    {
+        "name": "1154.java",
+        "CWE_name": "CWE190",
+        "start_line": 11,
+        "end_line": 55
+    },
+    {
+        "name": "1155.java",
+        "CWE_name": "CWE598",
+        "start_line": 9,
+        "end_line": 18
+    },
+    {
+        "name": "1156.java",
+        "CWE_name": "CWE78",
+        "start_line": 7,
+        "end_line": 10
+    },
+    {
+        "name": "1157.java",
+        "CWE_name": "CWE89",
+        "start_line": 9,
+        "end_line": 73
+    },
+    {
+        "name": "1158.java",
+        "CWE_name": "CWE383",
+        "start_line": 11,
+        "end_line": null
+    },
+    {
+        "name": "1159.java",
+        "CWE_name": "CWE486",
+        "start_line": 6,
+        "end_line": 22
+    },
+    {
+        "name": "1160.java",
+        "CWE_name": "CWE325",
+        "start_line": 10,
+        "end_line": 25
+    },
+    {
+        "name": "1161.java",
+        "CWE_name": "CWE23",
+        "start_line": 10,
+        "end_line": 79
+    },
+    {
+        "name": "1162.java",
+        "CWE_name": "CWE484",
+        "start_line": 7,
+        "end_line": 27
+    },
+    {
+        "name": "1163.java",
+        "CWE_name": "CWE760",
+        "start_line": 9,
+        "end_line": 19
+    },
+    {
+        "name": "1164.java",
+        "CWE_name": "CWE510",
+        "start_line": 10,
+        "end_line": 36
+    },
+    {
+        "name": "1165.java",
+        "CWE_name": "CWE598",
+        "start_line": 7,
+        "end_line": 23
+    },
+    {
+        "name": "1166.java",
+        "CWE_name": "CWE89",
+        "start_line": 14,
+        "end_line": 85
+    },
+    {
+        "name": "1167.java",
+        "CWE_name": "CWE369",
+        "start_line": 12,
+        "end_line": 104
+    },
+    {
+        "name": "1168.java",
+        "CWE_name": "CWE586",
+        "start_line": null,
+        "end_line": null
+    },
+    {
+        "name": "1169.java",
+        "CWE_name": "CWE483",
+        "start_line": 8,
+        "end_line": 22
+    },
+    {
+        "name": "1170.java",
+        "CWE_name": "CWE478",
+        "start_line": 9,
+        "end_line": 26
+    },
+    {
+        "name": "1171.java",
+        "CWE_name": "CWE134",
+        "start_line": 11,
+        "end_line": 56
+    },
+    {
+        "name": "1172.java",
+        "CWE_name": "CWE506",
+        "start_line": 11,
+        "end_line": null
+    },
+    {
+        "name": "1173.java",
+        "CWE_name": "CWE191",
+        "start_line": 7,
+        "end_line": 11
+    },
+    {
+        "name": "1174.java",
+        "CWE_name": "CWE533",
+        "start_line": 8,
+        "end_line": 27
+    },
+    {
+        "name": "1175.java",
+        "CWE_name": "CWE113",
+        "start_line": 7,
+        "end_line": 14
+    },
+    {
+        "name": "1176.java",
+        "CWE_name": "CWE327",
+        "start_line": 10,
+        "end_line": 38
+    }
+]
