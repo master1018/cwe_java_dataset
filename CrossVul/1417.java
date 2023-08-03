@@ -1,29 +1,5 @@
-/*
- * Copyright (C) 2004 Red Hat Inc.
- * Copyright (C) 2005 Martin Koegler
- * Copyright (C) 2010 m-privacy GmbH
- * Copyright (C) 2010 TigerVNC Team
- * Copyright (C) 2011-2019 Brian P. Hinz
- * Copyright (C) 2015 D. R. Commander.  All Rights Reserved.
- *
- * This is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this software; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- * USA.
- */
 
 package com.tigervnc.rfb;
-
 import javax.net.ssl.*;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -51,15 +27,11 @@ import javax.naming.ldap.LdapName;
 import javax.naming.ldap.Rdn;
 import javax.net.ssl.HostnameVerifier;
 import javax.swing.JOptionPane;
-
 import com.tigervnc.rdr.*;
 import com.tigervnc.network.*;
 import com.tigervnc.vncviewer.*;
-
 import static javax.swing.JOptionPane.*;
-
 public class CSecurityTLS extends CSecurity {
-
   public static StringParameter X509CA
   = new StringParameter("X509CA",
                         "X509 CA certificate", "", Configuration.ConfigurationObject.ConfViewer);
@@ -67,7 +39,6 @@ public class CSecurityTLS extends CSecurity {
   = new StringParameter("X509CRL",
                         "X509 CRL file", "", Configuration.ConfigurationObject.ConfViewer);
   public static UserMsgBox msg;
-
   private void initGlobal()
   {
     try {
@@ -76,29 +47,24 @@ public class CSecurityTLS extends CSecurity {
       throw new Exception(e.toString());
     }
   }
-
   public CSecurityTLS(boolean _anon)
   {
     anon = _anon;
     manager = null;
-
     setDefaults();
     cafile = X509CA.getData();
     crlfile = X509CRL.getData();
   }
-
   public static String getDefaultCA() {
     if (UserPreferences.get("viewer", "x509ca") != null)
       return UserPreferences.get("viewer", "x509ca");
     return FileUtils.getVncHomeDir()+"x509_ca.pem";
   }
-
   public static String getDefaultCRL() {
     if (UserPreferences.get("viewer", "x509crl") != null)
       return UserPreferences.get("viewer", "x509crl");
     return FileUtils.getVncHomeDir()+"x509_crl.pem";
   }
-
   public static void setDefaults()
   {
     if (new File(getDefaultCA()).exists())
@@ -106,24 +72,14 @@ public class CSecurityTLS extends CSecurity {
     if (new File(getDefaultCRL()).exists())
       X509CRL.setDefaultStr(getDefaultCRL());
   }
-
-// FIXME:
-// Need to shutdown the connection cleanly
-
-// FIXME?
-// add a finalizer method that calls shutdown
-
   public boolean processMsg(CConnection cc) {
     is = (FdInStream)cc.getInStream();
     os = (FdOutStream)cc.getOutStream();
     client = cc;
-
     initGlobal();
-
     if (manager == null) {
       if (!is.checkNoWait(1))
         return false;
-
       if (is.readU8() == 0) {
         int result = is.readU32();
         String reason;
@@ -134,24 +90,19 @@ public class CSecurityTLS extends CSecurity {
           reason = new String("Authentication failure (protocol error)");
         throw new AuthFailureException(reason);
       }
-
       setParam();
     }
-
     try {
       manager = new SSLEngineManager(engine, is, os);
       manager.doHandshake();
     } catch(java.lang.Exception e) {
       throw new SystemException(e.toString());
     }
-
     cc.setStreams(new TLSInStream(is, manager),
 		              new TLSOutStream(os, manager));
     return true;
   }
-
   private void setParam() {
-
     if (anon) {
       try {
         ctx.init(null, null, null);
@@ -172,18 +123,15 @@ public class CSecurityTLS extends CSecurity {
     engine = ctx.createSSLEngine(client.getServerName(),
                                  client.getServerPort());
     engine.setUseClientMode(true);
-
     String[] supported = engine.getSupportedProtocols();
     ArrayList<String> enabled = new ArrayList<String>();
     for (int i = 0; i < supported.length; i++)
       if (supported[i].matches("TLS.*"))
 	      enabled.add(supported[i]);
     engine.setEnabledProtocols(enabled.toArray(new String[0]));
-
     if (anon) {
       supported = engine.getSupportedCipherSuites();
       enabled = new ArrayList<String>();
-      // prefer ECDH over DHE
       for (int i = 0; i < supported.length; i++)
         if (supported[i].matches("TLS_ECDH_anon.*"))
 	        enabled.add(supported[i]);
@@ -194,14 +142,10 @@ public class CSecurityTLS extends CSecurity {
     } else {
       engine.setEnabledCipherSuites(engine.getSupportedCipherSuites());
     }
-
   }
-
   class MyX509TrustManager implements X509TrustManager
   {
-
     X509TrustManager tm;
-
     MyX509TrustManager() throws java.security.GeneralSecurityException
     {
       KeyStore ks = KeyStore.getInstance("JKS");
@@ -245,15 +189,12 @@ public class CSecurityTLS extends CSecurity {
         throw new Exception(e.getMessage());
       }
     }
-
     public void checkClientTrusted(X509Certificate[] chain, String authType)
       throws CertificateException
     {
       tm.checkClientTrusted(chain, authType);
     }
-
     private final char[] hexCode = "0123456789ABCDEF".toCharArray();
-
     private String printHexBinary(byte[] data)
     {
       StringBuilder r = new StringBuilder(data.length*2);
@@ -263,7 +204,6 @@ public class CSecurityTLS extends CSecurity {
       }
       return r.toString();
     }
-
     public void checkServerTrusted(X509Certificate[] chain, String authType)
       throws CertificateException
     {
@@ -345,12 +285,10 @@ public class CSecurityTLS extends CSecurity {
         }
       }
     }
-
     public X509Certificate[] getAcceptedIssuers ()
     {
       return tm.getAcceptedIssuers();
     }
-
     private String getThumbprint(X509Certificate cert)
     {
       String thumbprint = null;
@@ -366,7 +304,6 @@ public class CSecurityTLS extends CSecurity {
       }
       return thumbprint;
     }
-
     private void verifyHostname(X509Certificate cert)
       throws CertificateParsingException
     {
@@ -411,16 +348,11 @@ public class CSecurityTLS extends CSecurity {
         throw new SystemException(e.getMessage());
       }
     }
-
     private class MyFileInputStream extends InputStream {
-      // Blank lines in a certificate file will cause Java 6 to throw a
-      // "DerInputStream.getLength(): lengthTag=127, too big" exception.
       ByteBuffer buf;
-
       public MyFileInputStream(String name) {
         this(new File(name));
       }
-
       public MyFileInputStream(File file) {
         StringBuffer sb = new StringBuffer();
         BufferedReader reader = null;
@@ -445,12 +377,10 @@ public class CSecurityTLS extends CSecurity {
         buf = ByteBuffer.wrap(sb.toString().getBytes(utf8));
         buf.limit(buf.capacity());
       }
-
       @Override
       public int read(byte[] b) throws IOException {
         return this.read(b, 0, b.length);
       }
-
       @Override
       public int read(byte[] b, int off, int len) throws IOException {
         if (!buf.hasRemaining())
@@ -459,7 +389,6 @@ public class CSecurityTLS extends CSecurity {
         buf.get(b, off, len);
         return len;
       }
-
       @Override
       public int read() throws IOException {
         if (!buf.hasRemaining())
@@ -468,22 +397,17 @@ public class CSecurityTLS extends CSecurity {
       }
     }
   }
-
   public final int getType() { return anon ? Security.secTypeTLSNone : Security.secTypeX509None; }
   public final String description()
     { return anon ? "TLS Encryption without VncAuth" : "X509 Encryption without VncAuth"; }
   public boolean isSecure() { return !anon; }
-
   protected CConnection client;
-
   private SSLContext ctx;
   private SSLEngine engine;
   private SSLEngineManager manager;
   private boolean anon;
-
   private String cafile, crlfile;
   private FdInStream is;
   private FdOutStream os;
-
   static LogWriter vlog = new LogWriter("CSecurityTLS");
 }

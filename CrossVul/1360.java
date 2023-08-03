@@ -1,19 +1,14 @@
 package com.bijay.onlinevotingsystem.dao;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
-
 import com.bijay.onlinevotingsystem.dto.Voter;
 import com.bijay.onlinevotingsystem.util.DbUtil;
-
 public class VoterDaoImpl implements VoterDao {
-
 	PreparedStatement ps = null;
-
 	@Override
 	public void saveVoterInfo(Voter voter) {
 		String sql = "insert into voter_table(voter_name, password, gender, state_no, district, email, dob, imageurl) values(?,?,?,?,?,?,?,?)";
@@ -32,7 +27,6 @@ public class VoterDaoImpl implements VoterDao {
 			e.printStackTrace();
 		}
 	}
-
 	@Override
 	public List<Voter> getAllVoterInfo() {
 		List<Voter> voterList = new ArrayList<>();
@@ -58,16 +52,11 @@ public class VoterDaoImpl implements VoterDao {
 		}
 		return voterList;
 	}
-
 	@Override
 	public void updateVoterInfo(Voter voter) {
-		// TODO Auto-generated method stub
-
 	}
-
 	@Override
 	public void deleteVoterInfo(int id) {
-
 		String sql = "delete from voter_table where id=?";
 		try {
 			ps = DbUtil.getConnection().prepareStatement(sql);
@@ -77,7 +66,6 @@ public class VoterDaoImpl implements VoterDao {
 			e.printStackTrace();
 		}
 	}
-
 	@Override
 	public boolean loginValidate(String userName, String password, String email) {
 		String sql = "select * from voter_table where voter_name=? and password=? and email=?";

@@ -1,50 +1,17 @@
-/*
- * Copyright (C) 2016 Southern Storm Software, Pty Ltd.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- */
 
 package com.southernstorm.noise.protocol;
-
 import java.util.Arrays;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.ShortBufferException;
-
 import com.southernstorm.noise.crypto.ChaChaCore;
 import com.southernstorm.noise.crypto.Poly1305;
-
-/**
- * Implements the ChaChaPoly cipher for Noise.
- */
 class ChaChaPolyCipherState implements CipherState {
-
 	private Poly1305 poly;
 	private int[] input;
 	private int[] output;
 	private byte[] polyKey;
 	long n;
 	private boolean haskey;
-	
-	/**
-	 * Constructs a new cipher state for the "ChaChaPoly" algorithm.
-	 */
 	public ChaChaPolyCipherState()
 	{
 		poly = new Poly1305();
@@ -54,7 +21,6 @@ class ChaChaPolyCipherState implements CipherState {
 		n = 0;
 		haskey = false;
 	}
-
 	@Override
 	public void destroy() {
 		poly.destroy();
@@ -62,44 +28,28 @@ class ChaChaPolyCipherState implements CipherState {
 		Arrays.fill(output, 0);
 		Noise.destroy(polyKey);
 	}
-
 	@Override
 	public String getCipherName() {
 		return "ChaChaPoly";
 	}
-
 	@Override
 	public int getKeyLength() {
 		return 32;
 	}
-
 	@Override
 	public int getMACLength() {
 		return haskey ? 16 : 0;
 	}
-
 	@Override
 	public void initializeKey(byte[] key, int offset) {
 		ChaChaCore.initKey256(input, key, offset);
 		n = 0;
 		haskey = true;
 	}
-
 	@Override
 	public boolean hasKey() {
 		return haskey;
 	}
-
-	/**
-	 * XOR's the output of ChaCha20 with a byte buffer.
-	 * 
-	 * @param input The input byte buffer.
-	 * @param inputOffset The offset of the first input byte.
-	 * @param output The output byte buffer (can be the same as the input).
-	 * @param outputOffset The offset of the first output byte.
-	 * @param length The number of bytes to XOR between 1 and 64.
-	 * @param block The ChaCha20 output block.
-	 */
 	private static void xorBlock(byte[] input, int inputOffset, byte[] output, int outputOffset, int length, int[] block)
 	{
 		int posn = 0;
@@ -128,12 +78,6 @@ class ChaChaPolyCipherState implements CipherState {
 			output[outputOffset] = (byte)(input[inputOffset] ^ value);
 		}
 	}
-	
-	/**
-	 * Set up to encrypt or decrypt the next packet.
-	 * 
-	 * @param ad The associated data for the packet.
-	 */
 	private void setup(byte[] ad)
 	{
 		if (n == -1L)
@@ -150,14 +94,6 @@ class ChaChaPolyCipherState implements CipherState {
 		if (++(input[12]) == 0)
 			++(input[13]);
 	}
-
-	/**
-	 * Puts a 64-bit integer into a buffer in little-endian order.
-	 * 
-	 * @param output The output buffer.
-	 * @param offset The offset into the output buffer.
-	 * @param value The 64-bit integer value.
-	 */
 	private static void putLittleEndian64(byte[] output, int offset, long value)
 	{
 		output[offset] = (byte)value;
@@ -169,13 +105,6 @@ class ChaChaPolyCipherState implements CipherState {
 		output[offset + 6] = (byte)(value >> 48);
 		output[offset + 7] = (byte)(value >> 56);
 	}
-
-	/**
-	 * Finishes up the authentication tag for a packet.
-	 * 
-	 * @param ad The associated data.
-	 * @param length The length of the plaintext data.
-	 */
 	private void finish(byte[] ad, int length)
 	{
 		poly.pad();
@@ -184,16 +113,6 @@ class ChaChaPolyCipherState implements CipherState {
 		poly.update(polyKey, 0, 16);
 		poly.finish(polyKey, 0);
 	}
-
-	/**
-	 * Encrypts or decrypts a buffer of bytes for the active packet.
-	 * 
-	 * @param plaintext The plaintext data to be encrypted.
-	 * @param plaintextOffset The offset to the first plaintext byte.
-	 * @param ciphertext The ciphertext data that results from encryption.
-	 * @param ciphertextOffset The offset to the first ciphertext byte.
-	 * @param length The number of bytes to encrypt.
-	 */
 	private void encrypt(byte[] plaintext, int plaintextOffset,
 			byte[] ciphertext, int ciphertextOffset, int length) {
 		while (length > 0) {
@@ -209,7 +128,6 @@ class ChaChaPolyCipherState implements CipherState {
 			length -= tempLen;
 		}
 	}
-
 	@Override
 	public int encryptWithAd(byte[] ad, byte[] plaintext, int plaintextOffset,
 			byte[] ciphertext, int ciphertextOffset, int length) throws ShortBufferException {
@@ -219,7 +137,6 @@ class ChaChaPolyCipherState implements CipherState {
 		else
 			space = ciphertext.length - ciphertextOffset;
 		if (!haskey) {
-			// The key is not set yet - return the plaintext as-is.
 			if (length > space)
 				throw new ShortBufferException();
 			if (plaintext != ciphertext || plaintextOffset != ciphertextOffset)
@@ -235,7 +152,6 @@ class ChaChaPolyCipherState implements CipherState {
 		System.arraycopy(polyKey, 0, ciphertext, ciphertextOffset + length, 16);
 		return length + 16;
 	}
-
 	@Override
 	public int decryptWithAd(byte[] ad, byte[] ciphertext,
 			int ciphertextOffset, byte[] plaintext, int plaintextOffset,
@@ -252,7 +168,6 @@ class ChaChaPolyCipherState implements CipherState {
 		else
 			space = plaintext.length - plaintextOffset;
 		if (!haskey) {
-			// The key is not set yet - return the ciphertext as-is.
 			if (length > space)
 				throw new ShortBufferException();
 			if (plaintext != ciphertext || plaintextOffset != ciphertextOffset)
@@ -275,14 +190,12 @@ class ChaChaPolyCipherState implements CipherState {
 		encrypt(ciphertext, ciphertextOffset, plaintext, plaintextOffset, dataLen);
 		return dataLen;
 	}
-
 	@Override
 	public CipherState fork(byte[] key, int offset) {
 		CipherState cipher = new ChaChaPolyCipherState();
 		cipher.initializeKey(key, offset);
 		return cipher;
 	}
-
 	@Override
 	public void setNonce(long nonce) {
 		n = nonce;

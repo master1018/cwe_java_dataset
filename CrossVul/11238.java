@@ -1,26 +1,5 @@
-/**
- * Licensed to The Apereo Foundation under one or more contributor license
- * agreements. See the NOTICE file distributed with this work for additional
- * information regarding copyright ownership.
- *
- *
- * The Apereo Foundation licenses this file to you under the Educational
- * Community License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License
- * at:
- *
- *   http://opensource.org/licenses/ecl2.txt
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
- * License for the specific language governing permissions and limitations under
- * the License.
- *
- */
 
 package org.opencastproject.userdirectory.endpoint;
-
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_CONFLICT;
 import static org.apache.http.HttpStatus.SC_CREATED;
@@ -31,7 +10,6 @@ import static org.apache.http.HttpStatus.SC_OK;
 import static org.opencastproject.util.RestUtil.getEndpointUrl;
 import static org.opencastproject.util.UrlSupport.uri;
 import static org.opencastproject.util.doc.rest.RestParameter.Type.STRING;
-
 import org.opencastproject.security.api.JaxbUser;
 import org.opencastproject.security.api.JaxbUserList;
 import org.opencastproject.security.api.SecurityService;
@@ -48,19 +26,16 @@ import org.opencastproject.util.doc.rest.RestParameter;
 import org.opencastproject.util.doc.rest.RestQuery;
 import org.opencastproject.util.doc.rest.RestResponse;
 import org.opencastproject.util.doc.rest.RestService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -72,10 +47,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-/**
- * Provides a sorted set of known users
- */
 @Path("/")
 @RestService(
   name = "UsersUtils",
@@ -83,39 +54,21 @@ import javax.ws.rs.core.Response;
   notes = "This service offers the default CRUD Operations for the internal Opencast users.",
   abstractText = "Provides operations for internal Opencast users")
 public class UserEndpoint {
-
-  /** The logger */
   private static final Logger logger = LoggerFactory.getLogger(UserEndpoint.class);
-
   private JpaUserAndRoleProvider jpaUserAndRoleProvider;
-
   private SecurityService securityService;
-
   private String endpointBaseUrl;
-
-  /** OSGi callback. */
   public void activate(ComponentContext cc) {
     logger.info("Start users endpoint");
     final Tuple<String, String> endpointUrl = getEndpointUrl(cc);
     endpointBaseUrl = UrlSupport.concat(endpointUrl.getA(), endpointUrl.getB());
   }
-
-  /**
-   * @param securityService
-   *          the securityService to set
-   */
   public void setSecurityService(SecurityService securityService) {
     this.securityService = securityService;
   }
-
-  /**
-   * @param jpaUserAndRoleProvider
-   *          the persistenceProperties to set
-   */
   public void setJpaUserAndRoleProvider(JpaUserAndRoleProvider jpaUserAndRoleProvider) {
     this.jpaUserAndRoleProvider = jpaUserAndRoleProvider;
   }
-
   @GET
   @Path("users.json")
   @Produces(MediaType.APPLICATION_JSON)
@@ -143,19 +96,15 @@ public class UserEndpoint {
     })
   public JaxbUserList getUsersAsJson(@QueryParam("limit") int limit, @QueryParam("offset") int offset)
           throws IOException {
-
-    // Set the maximum number of items to return to 100 if this limit parameter is not given
     if (limit < 1) {
       limit = 100;
     }
-
     JaxbUserList userList = new JaxbUserList();
     for (Iterator<User> i = jpaUserAndRoleProvider.findUsers("%", offset, limit); i.hasNext();) {
       userList.add(i.next());
     }
     return userList;
   }
-
   @GET
   @Path("{username}.json")
   @Produces(MediaType.APPLICATION_JSON)
@@ -185,7 +134,6 @@ public class UserEndpoint {
     }
     return Response.ok(JaxbUser.fromUser(user)).build();
   }
-
   @GET
   @Path("users/md5.json")
   @Produces(MediaType.APPLICATION_JSON)
@@ -205,7 +153,6 @@ public class UserEndpoint {
     }
     return userList;
   }
-
   @POST
   @Path("/")
   @RestQuery(
@@ -254,15 +201,11 @@ public class UserEndpoint {
     })
   public Response createUser(@FormParam("username") String username, @FormParam("password") String password,
           @FormParam("name") String name, @FormParam("email") String email, @FormParam("roles") String roles) {
-
     if (jpaUserAndRoleProvider.loadUser(username) != null) {
       return Response.status(SC_CONFLICT).build();
     }
-
     try {
       Set<JpaRole> rolesSet = parseRoles(roles);
-
-      /* Add new user */
       logger.debug("Updating user {}", username);
       JpaOrganization organization = (JpaOrganization) securityService.getOrganization();
       JpaUser user = new JpaUser(username, password, organization, name, email, jpaUserAndRoleProvider.getName(), true,
@@ -274,13 +217,11 @@ public class UserEndpoint {
       logger.debug("Create user failed", ex);
       return Response.status(Response.Status.FORBIDDEN).build();
     }
-
     } catch (IllegalArgumentException e) {
       logger.debug("Request with malformed ROLE data: {}", roles);
       return Response.status(SC_BAD_REQUEST).build();
     }
   }
-
   @PUT
   @Path("{username}.json")
   @RestQuery(
@@ -325,15 +266,12 @@ public class UserEndpoint {
         description = "User has been updated.")    })
   public Response setUser(@PathParam("username") String username, @FormParam("password") String password,
           @FormParam("name") String name, @FormParam("email") String email, @FormParam("roles") String roles) {
-
     try {
       User user = jpaUserAndRoleProvider.loadUser(username);
       if (user == null) {
         return createUser(username, password, name, email, roles);
       }
-
       Set<JpaRole> rolesSet = parseRoles(roles);
-
       logger.debug("Updating user {}", username);
       JpaOrganization organization = (JpaOrganization) securityService.getOrganization();
       jpaUserAndRoleProvider.updateUser(new JpaUser(username, password, organization, name, email,
@@ -350,7 +288,6 @@ public class UserEndpoint {
       return Response.status(SC_BAD_REQUEST).build();
     }
   }
-
   @DELETE
   @Path("{username}.json")
   @RestQuery(
@@ -386,28 +323,17 @@ public class UserEndpoint {
       logger.error("Error during deletion of user {}: {}", username, e);
       return Response.status(SC_INTERNAL_SERVER_ERROR).build();
     }
-
     logger.debug("User {} removed.", username);
     return Response.status(SC_OK).build();
   }
-
-  /**
-   * Parse JSON roles array.
-   *
-   * @param roles
-   *          String representation of JSON array containing roles
-   */
   private Set<JpaRole> parseRoles(String roles) throws IllegalArgumentException {
     JSONArray rolesArray = null;
-    /* Try parsing JSON. Return Bad Request if malformed. */
     try {
       rolesArray = (JSONArray) JSONValue.parseWithException(StringUtils.isEmpty(roles) ? "[]" : roles);
     } catch (Exception e) {
       throw new IllegalArgumentException("Error parsing JSON array", e);
     }
-
     Set<JpaRole> rolesSet = new HashSet<JpaRole>();
-    /* Add given roles */
     for (Object role : rolesArray) {
       try {
         rolesSet.add(new JpaRole((String) role, (JpaOrganization) securityService.getOrganization()));
@@ -415,8 +341,6 @@ public class UserEndpoint {
         throw new IllegalArgumentException("Error parsing array vales as String", e);
       }
     }
-
     return rolesSet;
   }
-
 }

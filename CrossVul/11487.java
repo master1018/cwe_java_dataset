@@ -1,30 +1,6 @@
-/////////////////////////////////////////////////////////////////////////////
-//
-// Project ProjectForge Community Edition
-//         www.projectforge.org
-//
-// Copyright (C) 2001-2013 Kai Reinhard (k.reinhard@micromata.de)
-//
-// ProjectForge is dual-licensed.
-//
-// This community edition is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License as published
-// by the Free Software Foundation; version 3 of the License.
-//
-// This community edition is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, see http://www.gnu.org/licenses/.
-//
-/////////////////////////////////////////////////////////////////////////////
 
 package org.projectforge.web.admin;
-
 import java.util.SortedSet;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -44,33 +20,19 @@ import org.projectforge.web.wicket.components.SingleButtonPanel;
 import org.projectforge.web.wicket.flowlayout.CheckBoxPanel;
 import org.projectforge.web.wicket.flowlayout.FieldsetPanel;
 import org.projectforge.web.wicket.flowlayout.MyComponentsRepeater;
-
 public class SystemUpdateForm extends AbstractForm<SystemUpdateForm, SystemUpdatePage>
 {
   private static final long serialVersionUID = 2492737003121592489L;
-
   protected WebMarkupContainer scripts;
-
   public boolean showOldUpdateScripts;
-
   private GridBuilder gridBuilder;
-
-  /**
-   * Cross site request forgery token.
-   */
   private final CsrfTokenHandler csrfTokenHandler;
-
-  /**
-   * List to create content menu in the desired order before creating the RepeatingView.
-   */
   protected MyComponentsRepeater<SingleButtonPanel> actionButtons;
-
   public SystemUpdateForm(final SystemUpdatePage parentPage)
   {
     super(parentPage);
     csrfTokenHandler = new CsrfTokenHandler(this);
   }
-
   @Override
   @SuppressWarnings("serial")
   protected void init()
@@ -81,9 +43,6 @@ public class SystemUpdateForm extends AbstractForm<SystemUpdateForm, SystemUpdat
     {
       final FieldsetPanel fs = gridBuilder.newFieldset("Show all");
       fs.add(new CheckBoxPanel(fs.newChildId(), new PropertyModel<Boolean>(this, "showOldUpdateScripts"), null, true) {
-        /**
-         * @see org.projectforge.web.wicket.flowlayout.CheckBoxPanel#onSelectionChanged(java.lang.Boolean)
-         */
         @Override
         protected void onSelectionChanged(final Boolean newSelection)
         {
@@ -94,7 +53,6 @@ public class SystemUpdateForm extends AbstractForm<SystemUpdateForm, SystemUpdat
     scripts = new WebMarkupContainer("scripts");
     add(scripts);
     updateEntryRows();
-
     actionButtons = new MyComponentsRepeater<SingleButtonPanel>("buttons");
     add(actionButtons.getRepeatingView());
     {
@@ -111,7 +69,6 @@ public class SystemUpdateForm extends AbstractForm<SystemUpdateForm, SystemUpdat
       setDefaultButton(refreshButton);
     }
   }
-
   @SuppressWarnings("serial")
   protected void updateEntryRows()
   {
@@ -162,17 +119,12 @@ public class SystemUpdateForm extends AbstractForm<SystemUpdateForm, SystemUpdat
       }
     }
   }
-
-  /**
-   * @see org.projectforge.web.wicket.AbstractForm#onBeforeRender()
-   */
   @Override
   public void onBeforeRender()
   {
     super.onBeforeRender();
     actionButtons.render();
   }
-
   @Override
   protected void onSubmit()
   {

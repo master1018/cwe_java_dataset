@@ -1,11 +1,9 @@
 package io.onedev.server.web;
-
 import org.apache.wicket.core.request.mapper.ResourceMapper;
 import org.apache.wicket.markup.html.pages.BrowserInfoPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.mapper.CompoundRequestMapper;
-
 import io.onedev.server.GeneralException;
 import io.onedev.server.web.asset.icon.IconScope;
 import io.onedev.server.web.mapper.BaseResourceMapper;
@@ -112,16 +110,13 @@ import io.onedev.server.web.resource.BuildLogResourceReference;
 import io.onedev.server.web.resource.RawBlobResourceReference;
 import io.onedev.server.web.resource.ServerLogResourceReference;
 import io.onedev.server.web.resource.SvgSpriteResourceReference;
-
 public class BaseUrlMapper extends CompoundRequestMapper {
-
 	@Override
 	public CompoundRequestMapper add(IRequestMapper mapper) {
 		if (mapper instanceof ResourceMapper && !(mapper instanceof BaseResourceMapper))
 			throw new GeneralException("Base resource mapper should be used");
 		return super.add(mapper);
 	}
-
 	public BaseUrlMapper(WebApplication app) {
 		add(new DynamicPathPageMapper("init", ServerInitPage.class));
 		add(new DynamicPathPageMapper("loading", BrowserInfoPage.class));
@@ -132,12 +127,9 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		addMyPages();
 		addAdministrationPages();
 		addSecurityPages();
-				
 		addResources();
-		
 		addErrorPages();
 	}
-
 	private void addMyPages() {
 		add(new DynamicPathPageMapper("my/profile", MyProfilePage.class));
 		add(new DynamicPathPageMapper("my/avatar", MyAvatarPage.class));
@@ -145,7 +137,6 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("my/ssh-keys", MySshKeysPage.class));
 		add(new DynamicPathPageMapper("my/access-token", MyAccessTokenPage.class));
 	}
-
 	private void addResources() {
 		add(new BaseResourceMapper("downloads/server-log", new ServerLogResourceReference()));
 		add(new BaseResourceMapper("downloads/projects/${project}/builds/${build}/log", new BuildLogResourceReference()));
@@ -156,11 +147,9 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 				new ArtifactResourceReference()));
 		add(new BaseResourceMapper(SvgSpriteResourceReference.DEFAULT_MOUNT_PATH, new SvgSpriteResourceReference(IconScope.class)));
 	}
-	
 	private void addErrorPages() {
 		add(new DynamicPathPageMapper("/errors/404", PageNotFoundErrorPage.class));
 	}
-	
 	private void addSecurityPages() {
 		add(new DynamicPathPageMapper("login", LoginPage.class));
 		add(new DynamicPathPageMapper("logout", LogoutPage.class));
@@ -168,7 +157,6 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("reset-password", PasswordResetPage.class));
 		add(new DynamicPathPageMapper(SsoProcessPage.MOUNT_PATH + "/${stage}/${connector}", SsoProcessPage.class));
 	}
- 	
 	private void addAdministrationPages() {
 		add(new DynamicPathPageMapper("administration", UserListPage.class));
 		add(new DynamicPathPageMapper("administration/users", UserListPage.class));
@@ -180,17 +168,14 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("administration/users/${user}/password", UserPasswordPage.class));
 		add(new DynamicPathPageMapper("administration/users/${user}/ssh-keys", UserSshKeysPage.class));
 		add(new DynamicPathPageMapper("administration/users/${user}/access-token", UserAccessTokenPage.class));
-		
 		add(new DynamicPathPageMapper("administration/roles", RoleListPage.class));
 		add(new DynamicPathPageMapper("administration/roles/new", NewRolePage.class));
 		add(new DynamicPathPageMapper("administration/roles/${role}", RoleDetailPage.class));
-		
 		add(new DynamicPathPageMapper("administration/groups", GroupListPage.class));
 		add(new DynamicPathPageMapper("administration/groups/new", NewGroupPage.class));
 		add(new DynamicPathPageMapper("administration/groups/${group}/profile", GroupProfilePage.class));
 		add(new DynamicPathPageMapper("administration/groups/${group}/members", GroupMembershipsPage.class));
 		add(new DynamicPathPageMapper("administration/groups/${group}/authorizations", GroupAuthorizationsPage.class));
-		
 		add(new DynamicPathPageMapper("administration/settings/system", SystemSettingPage.class));
 		add(new DynamicPathPageMapper("administration/settings/mail", MailSettingPage.class));
 		add(new DynamicPathPageMapper("administration/settings/backup", DatabaseBackupPage.class));
@@ -198,37 +183,30 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("administration/settings/authenticator", AuthenticatorPage.class));
 		add(new DynamicPathPageMapper("administration/settings/sso-connectors", SsoConnectorListPage.class));
 		add(new DynamicPathPageMapper("administration/settings/ssh", SshSettingPage.class));
-
 		add(new DynamicPathPageMapper("administration/settings/job-executors", JobExecutorsPage.class));
 		add(new DynamicPathPageMapper("administration/settings/groovy-scripts", GroovyScriptListPage.class));
-		
 		add(new DynamicPathPageMapper("administration/settings/issue-fields", IssueFieldListPage.class));
 		add(new DynamicPathPageMapper("administration/settings/issue-states", IssueStateListPage.class));
 		add(new DynamicPathPageMapper("administration/settings/state-transitions", StateTransitionListPage.class));
 		add(new DynamicPathPageMapper("administration/settings/issue-boards", DefaultBoardListPage.class));
 		add(new DynamicPathPageMapper("administration/settings/issue-templates", IssueTemplateListPage.class));
-		
 		add(new DynamicPathPageMapper("administration/server-log", ServerLogPage.class));
 		add(new DynamicPathPageMapper("administration/server-information", ServerInformationPage.class));
 	}
-	
 	private void addProjectPages() {
 		add(new DynamicPathPageMapper("projects", ProjectListPage.class));
 		add(new DynamicPathPageMapper("projects/new", NewProjectPage.class));
 		add(new DynamicPathPageMapper("projects/${project}", ProjectDashboardPage.class));
-
 		add(new DynamicPathPageMapper("projects/${project}/blob/#{revision}/#{path}", ProjectBlobPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/commits", ProjectCommitsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/commits/${revision}", CommitDetailPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/compare", RevisionComparePage.class));
 		add(new DynamicPathPageMapper("projects/${project}/stats/contribs", ProjectContribsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/stats/lines", SourceLinesPage.class));
-
 		add(new DynamicPathPageMapper("projects/${project}/branches", ProjectBranchesPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/tags", ProjectTagsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/code-comments", ProjectCodeCommentsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/code-comments/${code-comment}/invalid", InvalidCodeCommentPage.class));
-
 		add(new DynamicPathPageMapper("projects/${project}/pulls", ProjectPullRequestsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/pulls/new", NewPullRequestPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/pulls/${request}", PullRequestActivitiesPage.class));
@@ -237,7 +215,6 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("projects/${project}/pulls/${request}/changes", PullRequestChangesPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/pulls/${request}/merge-preview", MergePreviewPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/pulls/${request}/invalid", InvalidPullRequestPage.class));
-
 		add(new DynamicPathPageMapper("projects/${project}/issues/boards", IssueBoardsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/issues/boards/${board}", IssueBoardsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/issues/list", ProjectIssueListPage.class));
@@ -251,7 +228,6 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("projects/${project}/milestones/${milestone}", MilestoneDetailPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/milestones/${milestone}/edit", MilestoneEditPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/milestones/new", NewMilestonePage.class));
-		
 		add(new DynamicPathPageMapper("projects/${project}/builds", ProjectBuildsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/builds/${build}", BuildDashboardPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/builds/${build}/log", BuildLogPage.class));
@@ -259,7 +235,6 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("projects/${project}/builds/${build}/fixed-issues", FixedIssuesPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/builds/${build}/artifacts", BuildArtifactsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/builds/${build}/invalid", InvalidBuildPage.class));
-		
 		add(new DynamicPathPageMapper("projects/${project}/settings/general", GeneralSecuritySettingPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/settings/authorizations", ProjectAuthorizationsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/settings/avatar-edit", AvatarEditPage.class));
@@ -270,5 +245,4 @@ public class BaseUrlMapper extends CompoundRequestMapper {
 		add(new DynamicPathPageMapper("projects/${project}/settings/build/build-preserve-rules", BuildPreservationsPage.class));
 		add(new DynamicPathPageMapper("projects/${project}/settings/web-hooks", WebHooksPage.class));
 	}
-
 }

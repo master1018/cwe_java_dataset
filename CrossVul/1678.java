@@ -1,12 +1,10 @@
 package io.hawt.web.plugin.karaf.terminal;
-
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.apache.felix.service.threadio.ThreadIO;
 import org.apache.karaf.shell.console.jline.Console;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,28 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.util.zip.GZIPOutputStream;
-
-/**
- *
- */
 public class TerminalServlet extends HttpServlet {
-
     public static final int TERM_WIDTH = 120;
     public static final int TERM_HEIGHT = 39;
     private final static Logger LOG = LoggerFactory.getLogger(TerminalServlet.class);
-    /**
-     * Pseudo class version ID to keep the IDE quite.
-     */
     private static final long serialVersionUID = 1L;
-
     public CommandProcessor getCommandProcessor() {
         return CommandProcessorHolder.getCommandProcessor();
     }
-
     public ThreadIO getThreadIO() {
         return ThreadIOHolder.getThreadIO();
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String encoding = request.getHeader("Accept-Encoding");
@@ -64,28 +51,22 @@ public class TerminalServlet extends HttpServlet {
             }
         }
     }
-
     public class SessionTerminal implements Runnable {
-
         private Terminal terminal;
         private Console console;
         private PipedOutputStream in;
         private PipedInputStream out;
         private boolean closed;
-
         public SessionTerminal(CommandProcessor commandProcessor, ThreadIO threadIO) throws IOException {
             try {
                 this.terminal = new Terminal(TERM_WIDTH, TERM_HEIGHT);
-                terminal.write("\u001b\u005B20\u0068"); // set newline mode on
-
+                terminal.write("\u001b\u005B20\u0068"); 
                 in = new PipedOutputStream();
                 out = new PipedInputStream();
                 PrintStream pipedOut = new PrintStream(new PipedOutputStream(out), true);
-
                 Constructor ctr = Console.class.getConstructors()[0];
                 if (ctr.getParameterTypes().length <= 7) {
                     LOG.debug("Using old Karaf Console API");
-                    // the old API does not have the threadIO parameter, so its only 7 parameters
                     console = (Console) ctr.newInstance(commandProcessor,
                             new PipedInputStream(in),
                             pipedOut,
@@ -95,7 +76,6 @@ public class TerminalServlet extends HttpServlet {
                             null);
                 } else {
                     LOG.debug("Using new Karaf Console API");
-                    // use the new api directly which we compile against
                     console = new Console(commandProcessor,
                             threadIO,
                             new PipedInputStream(in),
@@ -105,7 +85,6 @@ public class TerminalServlet extends HttpServlet {
                             null,
                             null);
                 }
-
                 CommandSession session = console.getSession();
                 session.put("APPLICATION", System.getProperty("karaf.name", "root"));
                 session.put("USER", "karaf");
@@ -121,11 +100,9 @@ public class TerminalServlet extends HttpServlet {
             new Thread(console).start();
             new Thread(this).start();
         }
-
         public boolean isClosed() {
             return closed;
         }
-
         public String handle(String str, boolean forceDump) throws IOException {
             try {
                 if (str != null && str.length() > 0) {
@@ -145,7 +122,6 @@ public class TerminalServlet extends HttpServlet {
                 throw new InterruptedIOException(e.toString());
             }
         }
-
         public void run() {
             try {
                 for (; ; ) {
@@ -174,6 +150,5 @@ public class TerminalServlet extends HttpServlet {
                 closed = true;
             }
         }
-
     }
 }

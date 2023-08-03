@@ -1,20 +1,5 @@
-/*
- * Copyright (C) 2013 Square, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package retrofit2;
 
+package retrofit2;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
@@ -58,15 +43,12 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.QueryName;
 import retrofit2.http.Url;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
-
-@SuppressWarnings({"UnusedParameters", "unused"}) // Parameters inspected reflectively.
+@SuppressWarnings({"UnusedParameters", "unused"}) 
 public final class RequestFactoryTest {
   private static final MediaType TEXT_PLAIN = MediaType.get("text/plain");
-
   @Test public void customMethodNoBody() {
     class Example {
       @HTTP(method = "CUSTOM1", path = "/foo")
@@ -74,13 +56,11 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("CUSTOM1");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void customMethodWithBody() {
     class Example {
       @HTTP(method = "CUSTOM2", path = "/foo", hasBody = true)
@@ -88,19 +68,17 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     RequestBody body = RequestBody.create(TEXT_PLAIN, "hi");
     Request request = buildRequest(Example.class, body);
     assertThat(request.method()).isEqualTo("CUSTOM2");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "hi");
   }
-
   @Test public void onlyOneEncodingIsAllowedMultipartFirst() {
     class Example {
-      @Multipart //
-      @FormUrlEncoded //
-      @POST("/") //
+      @Multipart 
+      @FormUrlEncoded 
+      @POST("/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -113,12 +91,11 @@ public final class RequestFactoryTest {
           "Only one encoding annotation is allowed.\n    for method Example.method");
     }
   }
-
   @Test public void onlyOneEncodingIsAllowedFormEncodingFirst() {
     class Example {
-      @FormUrlEncoded //
-      @Multipart //
-      @POST("/") //
+      @FormUrlEncoded 
+      @Multipart 
+      @POST("/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -131,15 +108,13 @@ public final class RequestFactoryTest {
           "Only one encoding annotation is allowed.\n    for method Example.method");
     }
   }
-
   @Test public void invalidPathParam() throws Exception {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@Path("hey!") String thing) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class);
       fail();
@@ -149,10 +124,9 @@ public final class RequestFactoryTest {
               + " Found: hey! (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void pathParamNotAllowedInQuery() throws Exception {
     class Example {
-      @GET("/foo?bar={bar}") //
+      @GET("/foo?bar={bar}") 
       Call<ResponseBody> method(@Path("bar") String thing) {
         return null;
       }
@@ -166,10 +140,9 @@ public final class RequestFactoryTest {
               + " For dynamic query parameters use @Query.\n    for method Example.method");
     }
   }
-
   @Test public void multipleParameterAnnotationsNotAllowed() throws Exception {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@Body @Query("nope") String o) {
         return null;
       }
@@ -182,29 +155,25 @@ public final class RequestFactoryTest {
           "Multiple Retrofit annotations found, only one allowed. (parameter #1)\n    for method Example.method");
     }
   }
-
   @interface NonNull {}
-
   @Test public void multipleParameterAnnotationsOnlyOneRetrofitAllowed() throws Exception {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@Query("maybe") @NonNull Object o) {
         return null;
       }
     }
     Request request = buildRequest(Example.class, "yep");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/?maybe=yep");
+    assertThat(request.url().toString()).isEqualTo("http:
   }
-
   @Test public void twoMethodsFail() {
     class Example {
-      @PATCH("/foo") //
-      @POST("/foo") //
+      @PATCH("/foo") 
+      @POST("/foo") 
       Call<ResponseBody> method() {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class);
       fail();
@@ -214,7 +183,6 @@ public final class RequestFactoryTest {
                   "Only one HTTP method is allowed. Found: POST and PATCH.\n    for method Example.method");
     }
   }
-
   @Test public void lackingMethod() {
     class Example {
       Call<ResponseBody> method() {
@@ -229,10 +197,9 @@ public final class RequestFactoryTest {
           "HTTP method annotation is required (e.g., @GET, @POST, etc.).\n    for method Example.method");
     }
   }
-
   @Test public void implicitMultipartForbidden() {
     class Example {
-      @POST("/") //
+      @POST("/") 
       Call<ResponseBody> method(@Part("a") int a) {
         return null;
       }
@@ -245,10 +212,9 @@ public final class RequestFactoryTest {
           "@Part parameters can only be used with multipart encoding. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void implicitMultipartWithPartMapForbidden() {
     class Example {
-      @POST("/") //
+      @POST("/") 
       Call<ResponseBody> method(@PartMap Map<String, String> params) {
         return null;
       }
@@ -261,11 +227,10 @@ public final class RequestFactoryTest {
           "@PartMap parameters can only be used with multipart encoding. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void multipartFailsOnNonBodyMethod() {
     class Example {
-      @Multipart //
-      @GET("/") //
+      @Multipart 
+      @GET("/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -278,11 +243,10 @@ public final class RequestFactoryTest {
           "Multipart can only be specified on HTTP methods with request body (e.g., @POST).\n    for method Example.method");
     }
   }
-
   @Test public void multipartFailsWithNoParts() {
     class Example {
-      @Multipart //
-      @POST("/") //
+      @Multipart 
+      @POST("/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -295,10 +259,9 @@ public final class RequestFactoryTest {
           "Multipart method must contain at least one @Part.\n    for method Example.method");
     }
   }
-
   @Test public void implicitFormEncodingByFieldForbidden() {
     class Example {
-      @POST("/") //
+      @POST("/") 
       Call<ResponseBody> method(@Field("a") int a) {
         return null;
       }
@@ -311,10 +274,9 @@ public final class RequestFactoryTest {
           "@Field parameters can only be used with form encoding. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void implicitFormEncodingByFieldMapForbidden() {
     class Example {
-      @POST("/") //
+      @POST("/") 
       Call<ResponseBody> method(@FieldMap Map<String, String> a) {
         return null;
       }
@@ -327,11 +289,10 @@ public final class RequestFactoryTest {
           "@FieldMap parameters can only be used with form encoding. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void formEncodingFailsOnNonBodyMethod() {
     class Example {
-      @FormUrlEncoded //
-      @GET("/") //
+      @FormUrlEncoded 
+      @GET("/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -344,11 +305,10 @@ public final class RequestFactoryTest {
           "FormUrlEncoded can only be specified on HTTP methods with request body (e.g., @POST).\n    for method Example.method");
     }
   }
-
   @Test public void formEncodingFailsWithNoParts() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/") //
+      @FormUrlEncoded 
+      @POST("/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -360,11 +320,10 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Form-encoded method must contain at least one @Field.\n    for method Example.method");
     }
   }
-
   @Test public void headersFailWhenEmptyOnMethod() {
     class Example {
-      @GET("/") //
-      @Headers({}) //
+      @GET("/") 
+      @Headers({}) 
       Call<ResponseBody> method() {
         return null;
       }
@@ -376,11 +335,10 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("@Headers annotation is empty.\n    for method Example.method");
     }
   }
-
   @Test public void headersFailWhenMalformed() {
     class Example {
-      @GET("/") //
-      @Headers("Malformed") //
+      @GET("/") 
+      @Headers("Malformed") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -393,10 +351,9 @@ public final class RequestFactoryTest {
           "@Headers value must be in the form \"Name: Value\". Found: \"Malformed\"\n    for method Example.method");
     }
   }
-
   @Test public void pathParamNonPathParamAndTypedBytes() {
     class Example {
-      @PUT("/{a}") //
+      @PUT("/{a}") 
       Call<ResponseBody> method(@Path("a") int a, @Path("b") int b, @Body int c) {
         return null;
       }
@@ -409,10 +366,9 @@ public final class RequestFactoryTest {
           "URL \"/{a}\" does not contain \"{b}\". (parameter #2)\n    for method Example.method");
     }
   }
-
   @Test public void parameterWithoutAnnotation() {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(String a) {
         return null;
       }
@@ -425,10 +381,9 @@ public final class RequestFactoryTest {
           "No Retrofit annotation found. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void nonBodyHttpMethodWithSingleEntity() {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@Body String o) {
         return null;
       }
@@ -441,10 +396,9 @@ public final class RequestFactoryTest {
           "Non-body HTTP method cannot contain @Body.\n    for method Example.method");
     }
   }
-
   @Test public void queryMapMustBeAMap() {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@QueryMap List<String> a) {
         return null;
       }
@@ -457,33 +411,27 @@ public final class RequestFactoryTest {
           "@QueryMap parameter type must be Map. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void queryMapSupportsSubclasses() {
     class Foo extends HashMap<String, String> {
     }
-
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@QueryMap Foo a) {
         return null;
       }
     }
-
     Foo foo = new Foo();
     foo.put("hello", "world");
-
     Request request = buildRequest(Example.class, foo);
-    assertThat(request.url().toString()).isEqualTo("http://example.com/?hello=world");
+    assertThat(request.url().toString()).isEqualTo("http:
   }
-
   @Test public void queryMapRejectsNull() {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@QueryMap Map<String, String> a) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -491,19 +439,16 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Query map was null.");
     }
   }
-
   @Test public void queryMapRejectsNullKeys() {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@QueryMap Map<String, String> a) {
         return null;
       }
     }
-
     Map<String, String> queryParams = new LinkedHashMap<>();
     queryParams.put("ping", "pong");
     queryParams.put(null, "kat");
-
     try {
       buildRequest(Example.class, queryParams);
       fail();
@@ -511,19 +456,16 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Query map contained null key.");
     }
   }
-
   @Test public void queryMapRejectsNullValues() {
     class Example {
-      @GET("/") //
+      @GET("/") 
       Call<ResponseBody> method(@QueryMap Map<String, String> a) {
         return null;
       }
     }
-
     Map<String, String> queryParams = new LinkedHashMap<>();
     queryParams.put("ping", "pong");
     queryParams.put("kit", null);
-
     try {
       buildRequest(Example.class, queryParams);
       fail();
@@ -531,7 +473,6 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Query map contained null value for key 'kit'.");
     }
   }
-
   @Test public void getWithHeaderMap() {
     class Example {
       @GET("/search")
@@ -539,20 +480,17 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Map<String, Object> headers = new LinkedHashMap<>();
     headers.put("Accept", "text/plain");
     headers.put("Accept-Charset", "utf-8");
-
     Request request = buildRequest(Example.class, headers);
     assertThat(request.method()).isEqualTo("GET");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/search");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
     assertThat(request.headers().size()).isEqualTo(2);
     assertThat(request.header("Accept")).isEqualTo("text/plain");
     assertThat(request.header("Accept-Charset")).isEqualTo("utf-8");
   }
-
   @Test public void headerMapMustBeAMap() {
     class Example {
       @GET("/")
@@ -568,27 +506,22 @@ public final class RequestFactoryTest {
           "@HeaderMap parameter type must be Map. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void headerMapSupportsSubclasses() {
     class Foo extends HashMap<String, String> {
     }
-
     class Example {
       @GET("/search")
       Call<ResponseBody> method(@HeaderMap Foo headers) {
         return null;
       }
     }
-
     Foo headers = new Foo();
     headers.put("Accept", "text/plain");
-
     Request request = buildRequest(Example.class, headers);
-    assertThat(request.url().toString()).isEqualTo("http://example.com/search");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.headers().size()).isEqualTo(1);
     assertThat(request.header("Accept")).isEqualTo("text/plain");
   }
-
   @Test public void headerMapRejectsNull() {
     class Example {
       @GET("/")
@@ -596,7 +529,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, (Map<String, String>) null);
       fail();
@@ -604,7 +536,6 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Header map was null.");
     }
   }
-
   @Test public void headerMapRejectsNullKeys() {
     class Example {
       @GET("/")
@@ -612,11 +543,9 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Map<String, String> headers = new LinkedHashMap<>();
     headers.put("Accept", "text/plain");
     headers.put(null, "utf-8");
-
     try {
       buildRequest(Example.class, headers);
       fail();
@@ -624,7 +553,6 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Header map contained null key.");
     }
   }
-
   @Test public void headerMapRejectsNullValues() {
     class Example {
       @GET("/")
@@ -632,11 +560,9 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Map<String, String> headers = new LinkedHashMap<>();
     headers.put("Accept", "text/plain");
     headers.put("Accept-Charset", null);
-
     try {
       buildRequest(Example.class, headers);
       fail();
@@ -644,10 +570,9 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Header map contained null value for key 'Accept-Charset'.");
     }
   }
-
   @Test public void twoBodies() {
     class Example {
-      @PUT("/") //
+      @PUT("/") 
       Call<ResponseBody> method(@Body String o1, @Body String o2) {
         return null;
       }
@@ -660,11 +585,10 @@ public final class RequestFactoryTest {
           "Multiple @Body method annotations found. (parameter #2)\n    for method Example.method");
     }
   }
-
   @Test public void bodyInNonBodyRequest() {
     class Example {
-      @Multipart //
-      @PUT("/") //
+      @Multipart 
+      @PUT("/") 
       Call<ResponseBody> method(@Part("one") String o1, @Body String o2) {
         return null;
       }
@@ -677,10 +601,9 @@ public final class RequestFactoryTest {
           "@Body parameters cannot be used with form or multi-part encoding. (parameter #2)\n    for method Example.method");
     }
   }
-
   @Test public void get() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -688,13 +611,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void delete() {
     class Example {
-      @DELETE("/foo/bar/") //
+      @DELETE("/foo/bar/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -702,13 +624,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("DELETE");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertNull(request.body());
   }
-
   @Test public void head() {
     class Example {
-      @HEAD("/foo/bar/") //
+      @HEAD("/foo/bar/") 
       Call<Void> method() {
         return null;
       }
@@ -716,13 +637,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("HEAD");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void headWithoutVoidThrows() {
     class Example {
-      @HEAD("/foo/bar/") //
+      @HEAD("/foo/bar/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -734,10 +654,9 @@ public final class RequestFactoryTest {
           "HEAD method must use Void as response type.\n    for method Example.method");
     }
   }
-
   @Test public void post() {
     class Example {
-      @POST("/foo/bar/") //
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Body RequestBody body) {
         return null;
       }
@@ -746,13 +665,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, body);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "hi");
   }
-
   @Test public void put() {
     class Example {
-      @PUT("/foo/bar/") //
+      @PUT("/foo/bar/") 
       Call<ResponseBody> method(@Body RequestBody body) {
         return null;
       }
@@ -761,13 +679,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, body);
     assertThat(request.method()).isEqualTo("PUT");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "hi");
   }
-
   @Test public void patch() {
     class Example {
-      @PATCH("/foo/bar/") //
+      @PATCH("/foo/bar/") 
       Call<ResponseBody> method(@Body RequestBody body) {
         return null;
       }
@@ -776,13 +693,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, body);
     assertThat(request.method()).isEqualTo("PATCH");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "hi");
   }
-
   @Test public void options() {
     class Example {
-      @OPTIONS("/foo/bar/") //
+      @OPTIONS("/foo/bar/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -790,13 +706,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("OPTIONS");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithPathParam() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path("ping") String ping) {
         return null;
       }
@@ -804,13 +719,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "po ng");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/po%20ng/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithUnusedAndInvalidNamedPathParam() {
     class Example {
-      @GET("/foo/bar/{ping}/{kit,kat}/") //
+      @GET("/foo/bar/{ping}/{kit,kat}/") 
       Call<ResponseBody> method(@Path("ping") String ping) {
         return null;
       }
@@ -818,13 +732,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "pong");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/pong/%7Bkit,kat%7D/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithEncodedPathParam() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path(value = "ping", encoded = true) String ping) {
         return null;
       }
@@ -832,13 +745,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "po%20ng");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/po%20ng/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithEncodedPathSegments() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path(value = "ping", encoded = true) String ping) {
         return null;
       }
@@ -846,13 +758,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "baz/pong/more");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/baz/pong/more/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithUnencodedPathSegmentsPreventsRequestSplitting() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path(value = "ping", encoded = false) String ping) {
         return null;
       }
@@ -860,13 +771,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "baz/\r\nheader: blue");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/baz%2F%0D%0Aheader:%20blue/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithEncodedPathStillPreventsRequestSplitting() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path(value = "ping", encoded = true) String ping) {
         return null;
       }
@@ -874,21 +784,18 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "baz/\r\npong");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/baz/pong/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void pathParametersAndPathTraversal() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path(value = "ping") String ping) {
         return null;
       }
     }
-
     assertMalformedRequest(Example.class, ".");
     assertMalformedRequest(Example.class, "..");
-
     assertThat(buildRequest(Example.class, "./a").url().encodedPath())
         .isEqualTo("/foo/bar/.%2Fa/");
     assertThat(buildRequest(Example.class, "a/.").url().encodedPath())
@@ -899,21 +806,18 @@ public final class RequestFactoryTest {
         .isEqualTo("/foo/bar/..%2Fa/");
     assertThat(buildRequest(Example.class, "..\\..").url().encodedPath())
         .isEqualTo("/foo/bar/..%5C../");
-
     assertThat(buildRequest(Example.class, "%2E").url().encodedPath())
         .isEqualTo("/foo/bar/%252E/");
     assertThat(buildRequest(Example.class, "%2E%2E").url().encodedPath())
         .isEqualTo("/foo/bar/%252E%252E/");
   }
-
   @Test public void encodedPathParametersAndPathTraversal() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path(value = "ping", encoded = true) String ping) {
         return null;
       }
     }
-
     assertMalformedRequest(Example.class, ".");
     assertMalformedRequest(Example.class, "%2E");
     assertMalformedRequest(Example.class, "%2e");
@@ -930,7 +834,6 @@ public final class RequestFactoryTest {
     assertMalformedRequest(Example.class, "a/..");
     assertMalformedRequest(Example.class, "a/../b");
     assertMalformedRequest(Example.class, "a/%2e%2E/b");
-
     assertThat(buildRequest(Example.class, "...").url().encodedPath())
         .isEqualTo("/foo/bar/.../");
     assertThat(buildRequest(Example.class, "a..b").url().encodedPath())
@@ -944,25 +847,21 @@ public final class RequestFactoryTest {
     assertThat(buildRequest(Example.class, "..\\..").url().encodedPath())
         .isEqualTo("/foo/bar/..%5C../");
   }
-
   @Test public void dotDotsOkayWhenNotFullPathSegment() {
     class Example {
-      @GET("/foo{ping}bar/") //
+      @GET("/foo{ping}bar/") 
       Call<ResponseBody> method(@Path(value = "ping", encoded = true) String ping) {
         return null;
       }
     }
-
     assertMalformedRequest(Example.class, "/./");
     assertMalformedRequest(Example.class, "/../");
-
     assertThat(buildRequest(Example.class, ".").url().encodedPath()).isEqualTo("/foo.bar/");
     assertThat(buildRequest(Example.class, "..").url().encodedPath()).isEqualTo("/foo..bar/");
   }
-
   @Test public void pathParamRequired() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path("ping") String ping) {
         return null;
       }
@@ -974,10 +873,9 @@ public final class RequestFactoryTest {
       assertThat(e.getMessage()).isEqualTo("Path parameter \"ping\" value must not be null.");
     }
   }
-
   @Test public void getWithQueryParam() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Query("ping") String ping) {
         return null;
       }
@@ -985,13 +883,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "pong");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?ping=pong");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithEncodedQueryParam() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Query(value = "pi%20ng", encoded = true) String ping) {
         return null;
       }
@@ -999,36 +896,33 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "p%20o%20n%20g");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?pi%20ng=p%20o%20n%20g");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void queryParamOptionalOmitsQuery() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Query("ping") String ping) {
         return null;
       }
     }
     Request request = buildRequest(Example.class, new Object[] { null });
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
   }
-
   @Test public void queryParamOptional() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Query("foo") String foo, @Query("ping") String ping,
           @Query("kit") String kit) {
         return null;
       }
     }
     Request request = buildRequest(Example.class, "bar", null, "kat");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?foo=bar&kit=kat");
+    assertThat(request.url().toString()).isEqualTo("http:
   }
-
   @Test public void getWithQueryUrlAndParam() {
     class Example {
-      @GET("/foo/bar/?hi=mom") //
+      @GET("/foo/bar/?hi=mom") 
       Call<ResponseBody> method(@Query("ping") String ping) {
         return null;
       }
@@ -1036,13 +930,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "pong");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?hi=mom&ping=pong");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQuery() {
     class Example {
-      @GET("/foo/bar/?hi=mom") //
+      @GET("/foo/bar/?hi=mom") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -1050,34 +943,30 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?hi=mom");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithPathAndQueryParam() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path("ping") String ping, @Query("kit") String kit,
           @Query("riff") String riff) {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "pong", "kat", "raff");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/pong/?kit=kat&riff=raff");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryThenPathThrows() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Query("kit") String kit, @Path("ping") String ping) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, "kat", "pong");
       fail();
@@ -1086,15 +975,13 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithQueryNameThenPathThrows() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@QueryName String kit, @Path("ping") String ping) {
         throw new AssertionError();
       }
     }
-
     try {
       buildRequest(Example.class, "kat", "pong");
       fail();
@@ -1103,15 +990,13 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithQueryMapThenPathThrows() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@QueryMap Map<String, String> queries, @Path("ping") String ping) {
         throw new AssertionError();
       }
     }
-
     try {
       buildRequest(Example.class, Collections.singletonMap("kit", "kat"), "pong");
       fail();
@@ -1120,104 +1005,91 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithPathAndQueryQuestionMarkParam() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path("ping") String ping, @Query("kit") String kit) {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "pong?", "kat?");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
     assertThat(request.url().toString())
-        .isEqualTo("http://example.com/foo/bar/pong%3F/?kit=kat%3F");
+        .isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithPathAndQueryAmpersandParam() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path("ping") String ping, @Query("kit") String kit) {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "pong&", "kat&");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/pong&/?kit=kat%26");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithPathAndQueryHashParam() {
     class Example {
-      @GET("/foo/bar/{ping}/") //
+      @GET("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path("ping") String ping, @Query("kit") String kit) {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "pong#", "kat#");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/pong%23/?kit=kat%23");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryParamList() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Query("key") List<Object> keys) {
         return null;
       }
     }
-
     List<Object> values = Arrays.<Object>asList(1, 2, null, "three", "1");
     Request request = buildRequest(Example.class, values);
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?key=1&key=2&key=three&key=1");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryParamArray() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Query("key") Object[] keys) {
         return null;
       }
     }
-
     Object[] values = { 1, 2, null, "three", "1" };
     Request request = buildRequest(Example.class, new Object[] { values });
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?key=1&key=2&key=three&key=1");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryParamPrimitiveArray() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Query("key") int[] keys) {
         return null;
       }
     }
-
     int[] values = { 1, 2, 3, 1 };
     Request request = buildRequest(Example.class, new Object[] { values });
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?key=1&key=2&key=3&key=1");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryNameParam() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryName String ping) {
         return null;
       }
@@ -1225,13 +1097,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "pong");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?pong");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithEncodedQueryNameParam() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryName(encoded = true) String ping) {
         return null;
       }
@@ -1239,122 +1110,106 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "p%20o%20n%20g");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?p%20o%20n%20g");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void queryNameParamOptionalOmitsQuery() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryName String ping) {
         return null;
       }
     }
     Request request = buildRequest(Example.class, new Object[] { null });
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
   }
-
   @Test public void getWithQueryNameParamList() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryName List<Object> keys) {
         return null;
       }
     }
-
     List<Object> values = Arrays.<Object>asList(1, 2, null, "three", "1");
     Request request = buildRequest(Example.class, values);
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?1&2&three&1");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryNameParamArray() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryName Object[] keys) {
         return null;
       }
     }
-
     Object[] values = { 1, 2, null, "three", "1" };
     Request request = buildRequest(Example.class, new Object[] { values });
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?1&2&three&1");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryNameParamPrimitiveArray() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryName int[] keys) {
         return null;
       }
     }
-
     int[] values = { 1, 2, 3, 1 };
     Request request = buildRequest(Example.class, new Object[] { values });
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?1&2&3&1");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithQueryParamMap() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryMap Map<String, Object> query) {
         return null;
       }
     }
-
     Map<String, Object> params = new LinkedHashMap<>();
     params.put("kit", "kat");
     params.put("ping", "pong");
-
     Request request = buildRequest(Example.class, params);
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?kit=kat&ping=pong");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithEncodedQueryParamMap() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@QueryMap(encoded = true) Map<String, Object> query) {
         return null;
       }
     }
-
     Map<String, Object> params = new LinkedHashMap<>();
     params.put("kit", "k%20t");
     params.put("pi%20ng", "p%20g");
-
     Request request = buildRequest(Example.class, params);
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?kit=k%20t&pi%20ng=p%20g");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getAbsoluteUrl() {
     class Example {
-      @GET("http://example2.com/foo/bar/")
+      @GET("http:
       Call<ResponseBody> method() {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example2.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithStringUrl() {
     class Example {
       @GET
@@ -1362,14 +1217,12 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "foo/bar/");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithJavaUriUrl() {
     class Example {
       @GET
@@ -1377,14 +1230,12 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, URI.create("foo/bar/"));
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithStringUrlAbsolute() {
     class Example {
       @GET
@@ -1392,14 +1243,12 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
-    Request request = buildRequest(Example.class, "https://example2.com/foo/bar/");
+    Request request = buildRequest(Example.class, "https:
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("https://example2.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("https:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithJavaUriUrlAbsolute() {
     class Example {
       @GET
@@ -1407,14 +1256,12 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
-    Request request = buildRequest(Example.class, URI.create("https://example2.com/foo/bar/"));
+    Request request = buildRequest(Example.class, URI.create("https:
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("https://example2.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("https:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithUrlAbsoluteSameHost() {
     class Example {
       @GET
@@ -1422,14 +1269,12 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
-    Request request = buildRequest(Example.class, "http://example.com/foo/bar/");
+    Request request = buildRequest(Example.class, "http:
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithHttpUrl() {
     class Example {
       @GET
@@ -1437,14 +1282,12 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
-    Request request = buildRequest(Example.class, HttpUrl.get("http://example.com/foo/bar/"));
+    Request request = buildRequest(Example.class, HttpUrl.get("http:
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url()).isEqualTo(HttpUrl.get("http://example.com/foo/bar/"));
+    assertThat(request.url()).isEqualTo(HttpUrl.get("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void getWithNullUrl() {
     class Example {
       @GET
@@ -1452,7 +1295,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, (HttpUrl) null);
       fail();
@@ -1460,7 +1302,6 @@ public final class RequestFactoryTest {
       assertThat(expected).hasMessage("@Url parameter is null.");
     }
   }
-
   @Test public void getWithNonStringUrlThrows() {
     class Example {
       @GET
@@ -1468,7 +1309,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, "foo/bar");
       fail();
@@ -1479,7 +1319,6 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void getUrlAndUrlParamThrows() {
     class Example {
       @GET("foo/bar")
@@ -1487,7 +1326,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, "foo/bar");
       fail();
@@ -1496,7 +1334,6 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithoutUrlThrows() {
     class Example {
       @GET
@@ -1504,7 +1341,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class);
       fail();
@@ -1513,7 +1349,6 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithUrlThenPathThrows() {
     class Example {
       @GET
@@ -1521,7 +1356,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, "foo/bar");
       fail();
@@ -1530,7 +1364,6 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithPathThenUrlThrows() {
     class Example {
       @GET
@@ -1538,7 +1371,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, "foo/bar");
       fail();
@@ -1547,7 +1379,6 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithQueryThenUrlThrows() {
     class Example {
       @GET("foo/bar")
@@ -1555,7 +1386,6 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, "hey", "foo/bar/");
       fail();
@@ -1564,7 +1394,6 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithQueryNameThenUrlThrows() {
     class Example {
       @GET
@@ -1572,7 +1401,6 @@ public final class RequestFactoryTest {
         throw new AssertionError();
       }
     }
-
     try {
       buildRequest(Example.class, Collections.singletonMap("kit", "kat"), "foo/bar/");
       fail();
@@ -1581,7 +1409,6 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithQueryMapThenUrlThrows() {
     class Example {
       @GET
@@ -1589,7 +1416,6 @@ public final class RequestFactoryTest {
         throw new AssertionError();
       }
     }
-
     try {
       buildRequest(Example.class, Collections.singletonMap("kit", "kat"), "foo/bar/");
       fail();
@@ -1598,7 +1424,6 @@ public final class RequestFactoryTest {
           + "    for method Example.method");
     }
   }
-
   @Test public void getWithUrlThenQuery() {
     class Example {
       @GET
@@ -1606,13 +1431,11 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "foo/bar/", "hey!");
     assertThat(request.method()).isEqualTo("GET");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/?hey=hey%21");
+    assertThat(request.url().toString()).isEqualTo("http:
   }
-
   @Test public void postWithUrl() {
     class Example {
       @POST
@@ -1621,16 +1444,15 @@ public final class RequestFactoryTest {
       }
     }
     RequestBody body = RequestBody.create(TEXT_PLAIN, "hi");
-    Request request = buildRequest(Example.class, "http://example.com/foo/bar", body);
+    Request request = buildRequest(Example.class, "http:
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "hi");
   }
-
   @Test public void normalPostWithPathParam() {
     class Example {
-      @POST("/foo/bar/{ping}/") //
+      @POST("/foo/bar/{ping}/") 
       Call<ResponseBody> method(@Path("ping") String ping, @Body RequestBody body) {
         return null;
       }
@@ -1639,13 +1461,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "pong", body);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/pong/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "Hi!");
   }
-
   @Test public void emptyBody() {
     class Example {
-      @POST("/foo/bar/") //
+      @POST("/foo/bar/") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -1653,13 +1474,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "");
   }
-
   @Test public void customMethodEmptyBody() {
     class Example {
-      @HTTP(method = "CUSTOM", path = "/foo/bar/", hasBody = true) //
+      @HTTP(method = "CUSTOM", path = "/foo/bar/", hasBody = true) 
       Call<ResponseBody> method() {
         return null;
       }
@@ -1667,13 +1487,12 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.method()).isEqualTo("CUSTOM");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "");
   }
-
   @Test public void bodyRequired() {
     class Example {
-      @POST("/foo/bar/") //
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Body RequestBody body) {
         return null;
       }
@@ -1685,10 +1504,9 @@ public final class RequestFactoryTest {
       assertThat(e.getMessage()).isEqualTo("Body parameter value must not be null.");
     }
   }
-
   @Test public void bodyWithPathParams() {
     class Example {
-      @POST("/foo/bar/{ping}/{kit}/") //
+      @POST("/foo/bar/{ping}/{kit}/") 
       Call<ResponseBody> method(@Path("ping") String ping, @Body RequestBody body, @Path("kit") String kit) {
         return null;
       }
@@ -1697,81 +1515,69 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "pong", body, "kat");
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/pong/kat/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertBody(request.body(), "Hi!");
   }
-
   @Test public void simpleMultipart() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("ping") String ping, @Part("kit") RequestBody kit) {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "pong", RequestBody.create(
         TEXT_PLAIN, "kat"));
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"\r\n")
         .contains("\r\npong\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartArray() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("ping") String[] ping) {
         return null;
       }
     }
-
     Request request =
         buildRequest(Example.class, new Object[] { new String[] { "pong1", "pong2" } });
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"\r\n")
         .contains("\r\npong1\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"")
         .contains("\r\npong2\r\n--");
   }
-
   @Test public void multipartRequiresName() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part RequestBody part) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -1781,16 +1587,14 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartIterableRequiresName() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part List<RequestBody> part) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -1800,16 +1604,14 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartArrayRequiresName() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part RequestBody[] part) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -1819,16 +1621,14 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartOkHttpPartForbidsName() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("name") MultipartBody.Part part) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -1838,164 +1638,139 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartOkHttpPart() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part MultipartBody.Part part) {
         return null;
       }
     }
-
     MultipartBody.Part part = MultipartBody.Part.createFormData("kit", "kat");
     Request request = buildRequest(Example.class, part);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"\r\n")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartOkHttpIterablePart() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part List<MultipartBody.Part> part) {
         return null;
       }
     }
-
     MultipartBody.Part part1 = MultipartBody.Part.createFormData("foo", "bar");
     MultipartBody.Part part2 = MultipartBody.Part.createFormData("kit", "kat");
     Request request = buildRequest(Example.class, Arrays.asList(part1, part2));
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"foo\"\r\n")
         .contains("\r\nbar\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"\r\n")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartOkHttpArrayPart() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part MultipartBody.Part[] part) {
         return null;
       }
     }
-
     MultipartBody.Part part1 = MultipartBody.Part.createFormData("foo", "bar");
     MultipartBody.Part part2 = MultipartBody.Part.createFormData("kit", "kat");
     Request request =
         buildRequest(Example.class, new Object[] { new MultipartBody.Part[] { part1, part2 } });
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"foo\"\r\n")
         .contains("\r\nbar\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"\r\n")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartOkHttpPartWithFilename() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part MultipartBody.Part part) {
         return null;
       }
     }
-
     MultipartBody.Part part =
         MultipartBody.Part.createFormData("kit", "kit.txt", RequestBody.create(null, "kat"));
     Request request = buildRequest(Example.class, part);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"; filename=\"kit.txt\"\r\n")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartIterable() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("ping") List<String> ping) {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, Arrays.asList("pong1", "pong2"));
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"\r\n")
         .contains("\r\npong1\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"")
         .contains("\r\npong2\r\n--");
   }
-
   @Test public void multipartIterableOkHttpPart() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("ping") List<MultipartBody.Part> part) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -2005,16 +1780,14 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartArrayOkHttpPart() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("ping") MultipartBody.Part[] part) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -2024,120 +1797,101 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartWithEncoding() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part(value = "ping", encoding = "8-bit") String ping,
           @Part(value = "kit", encoding = "7-bit") RequestBody kit) {
         return null;
       }
     }
-
     Request request = buildRequest(Example.class, "pong", RequestBody.create(
         TEXT_PLAIN, "kat"));
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"\r\n")
         .contains("Content-Transfer-Encoding: 8-bit")
         .contains("\r\npong\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"")
         .contains("Content-Transfer-Encoding: 7-bit")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartPartMap() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap Map<String, RequestBody> parts) {
         return null;
       }
     }
-
     Map<String, RequestBody> params = new LinkedHashMap<>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put("kit", RequestBody.create(null, "kat"));
-
     Request request = buildRequest(Example.class, params);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"\r\n")
         .contains("\r\npong\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartPartMapWithEncoding() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap(encoding = "8-bit") Map<String, RequestBody> parts) {
         return null;
       }
     }
-
     Map<String, RequestBody> params = new LinkedHashMap<>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put("kit", RequestBody.create(null, "kat"));
-
     Request request = buildRequest(Example.class, params);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"\r\n")
         .contains("Content-Transfer-Encoding: 8-bit")
         .contains("\r\npong\r\n--");
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"kit\"")
         .contains("Content-Transfer-Encoding: 8-bit")
         .contains("\r\nkat\r\n--");
   }
-
   @Test public void multipartPartMapRejectsNonStringKeys() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap Map<Object, RequestBody> parts) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -2147,16 +1901,14 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartPartMapRejectsOkHttpPartValues() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap Map<String, MultipartBody.Part> parts) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -2166,16 +1918,14 @@ public final class RequestFactoryTest {
               + "    for method Example.method");
     }
   }
-
   @Test public void multipartPartMapRejectsNull() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap Map<String, RequestBody> parts) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -2183,20 +1933,17 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Part map was null.");
     }
   }
-
   @Test public void multipartPartMapRejectsNullKeys() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap Map<String, RequestBody> parts) {
         return null;
       }
     }
-
     Map<String, RequestBody> params = new LinkedHashMap<>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put(null, RequestBody.create(null, "kat"));
-
     try {
       buildRequest(Example.class, params);
       fail();
@@ -2204,20 +1951,17 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Part map contained null key.");
     }
   }
-
   @Test public void multipartPartMapRejectsNullValues() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap Map<String, RequestBody> parts) {
         return null;
       }
     }
-
     Map<String, RequestBody> params = new LinkedHashMap<>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put("kit", null);
-
     try {
       buildRequest(Example.class, params);
       fail();
@@ -2225,16 +1969,14 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Part map contained null value for key 'kit'.");
     }
   }
-
   @Test public void multipartPartMapMustBeMap() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap List<Object> parts) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, Collections.emptyList());
       fail();
@@ -2243,22 +1985,18 @@ public final class RequestFactoryTest {
           "@PartMap parameter type must be Map. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void multipartPartMapSupportsSubclasses() throws IOException {
     class Foo extends HashMap<String, String> {
     }
-
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@PartMap Foo parts) {
         return null;
       }
     }
-
     Foo foo = new Foo();
     foo.put("hello", "world");
-
     Request request = buildRequest(Example.class, foo);
     Buffer buffer = new Buffer();
     request.body().writeTo(buffer);
@@ -2266,11 +2004,10 @@ public final class RequestFactoryTest {
         .contains("name=\"hello\"")
         .contains("\r\n\r\nworld\r\n--");
   }
-
   @Test public void multipartNullRemovesPart() throws IOException {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("ping") String ping, @Part("fizz") String fizz) {
         return null;
       }
@@ -2278,23 +2015,20 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "pong", null);
     assertThat(request.method()).isEqualTo("POST");
     assertThat(request.headers().size()).isZero();
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
-
+    assertThat(request.url().toString()).isEqualTo("http:
     RequestBody body = request.body();
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String bodyString = buffer.readUtf8();
-
     assertThat(bodyString)
         .contains("Content-Disposition: form-data;")
         .contains("name=\"ping\"")
         .contains("\r\npong\r\n--");
   }
-
   @Test public void multipartPartOptional() {
     class Example {
-      @Multipart //
-      @POST("/foo/bar/") //
+      @Multipart 
+      @POST("/foo/bar/") 
       Call<ResponseBody> method(@Part("ping") RequestBody ping) {
         return null;
       }
@@ -2306,11 +2040,10 @@ public final class RequestFactoryTest {
       assertThat(e.getMessage()).isEqualTo("Multipart body must have at least one part.");
     }
   }
-
   @Test public void simpleFormEncoded() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@Field("foo") String foo, @Field("ping") String ping) {
         return null;
       }
@@ -2318,11 +2051,10 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "bar", "pong");
     assertBody(request.body(), "foo=bar&ping=pong");
   }
-
   @Test public void formEncodedWithEncodedNameFieldParam() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@Field(value = "na%20me", encoded = true) String foo) {
         return null;
       }
@@ -2330,11 +2062,10 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "ba%20r");
     assertBody(request.body(), "na%20me=ba%20r");
   }
-
   @Test public void formEncodedFieldOptional() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@Field("foo") String foo, @Field("ping") String ping,
           @Field("kit") String kit) {
         return null;
@@ -2343,92 +2074,78 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "bar", null, "kat");
     assertBody(request.body(), "foo=bar&kit=kat");
   }
-
   @Test public void formEncodedFieldList() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@Field("foo") List<Object> fields, @Field("kit") String kit) {
         return null;
       }
     }
-
     List<Object> values = Arrays.<Object>asList("foo", "bar", null, 3);
     Request request = buildRequest(Example.class, values, "kat");
     assertBody(request.body(), "foo=foo&foo=bar&foo=3&kit=kat");
   }
-
   @Test public void formEncodedFieldArray() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@Field("foo") Object[] fields, @Field("kit") String kit) {
         return null;
       }
     }
-
     Object[] values = { 1, 2, null, "three" };
     Request request = buildRequest(Example.class, values, "kat");
     assertBody(request.body(), "foo=1&foo=2&foo=three&kit=kat");
   }
-
   @Test public void formEncodedFieldPrimitiveArray() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@Field("foo") int[] fields, @Field("kit") String kit) {
         return null;
       }
     }
-
     int[] values = { 1, 2, 3 };
     Request request = buildRequest(Example.class, values, "kat");
     assertBody(request.body(), "foo=1&foo=2&foo=3&kit=kat");
   }
-
   @Test public void formEncodedWithEncodedNameFieldParamMap() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@FieldMap(encoded = true) Map<String, Object> fieldMap) {
         return null;
       }
     }
-
     Map<String, Object> fieldMap = new LinkedHashMap<>();
     fieldMap.put("k%20it", "k%20at");
     fieldMap.put("pin%20g", "po%20ng");
-
     Request request = buildRequest(Example.class, fieldMap);
     assertBody(request.body(), "k%20it=k%20at&pin%20g=po%20ng");
   }
-
   @Test public void formEncodedFieldMap() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/foo") //
+      @FormUrlEncoded 
+      @POST("/foo") 
       Call<ResponseBody> method(@FieldMap Map<String, Object> fieldMap) {
         return null;
       }
     }
-
     Map<String, Object> fieldMap = new LinkedHashMap<>();
     fieldMap.put("kit", "kat");
     fieldMap.put("ping", "pong");
-
     Request request = buildRequest(Example.class, fieldMap);
     assertBody(request.body(), "kit=kat&ping=pong");
   }
-
   @Test public void fieldMapRejectsNull() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/") //
+      @FormUrlEncoded 
+      @POST("/") 
       Call<ResponseBody> method(@FieldMap Map<String, Object> a) {
         return null;
       }
     }
-
     try {
       buildRequest(Example.class, new Object[] { null });
       fail();
@@ -2436,20 +2153,17 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Field map was null.");
     }
   }
-
   @Test public void fieldMapRejectsNullKeys() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/") //
+      @FormUrlEncoded 
+      @POST("/") 
       Call<ResponseBody> method(@FieldMap Map<String, Object> a) {
         return null;
       }
     }
-
     Map<String, Object> fieldMap = new LinkedHashMap<>();
     fieldMap.put("kit", "kat");
     fieldMap.put(null, "pong");
-
     try {
       buildRequest(Example.class, fieldMap);
       fail();
@@ -2457,20 +2171,17 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Field map contained null key.");
     }
   }
-
   @Test public void fieldMapRejectsNullValues() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/") //
+      @FormUrlEncoded 
+      @POST("/") 
       Call<ResponseBody> method(@FieldMap Map<String, Object> a) {
         return null;
       }
     }
-
     Map<String, Object> fieldMap = new LinkedHashMap<>();
     fieldMap.put("kit", "kat");
     fieldMap.put("foo", null);
-
     try {
       buildRequest(Example.class, fieldMap);
       fail();
@@ -2478,11 +2189,10 @@ public final class RequestFactoryTest {
       assertThat(e).hasMessage("Field map contained null value for key 'foo'.");
     }
   }
-
   @Test public void fieldMapMustBeAMap() {
     class Example {
-      @FormUrlEncoded //
-      @POST("/") //
+      @FormUrlEncoded 
+      @POST("/") 
       Call<ResponseBody> method(@FieldMap List<String> a) {
         return null;
       }
@@ -2495,28 +2205,23 @@ public final class RequestFactoryTest {
           "@FieldMap parameter type must be Map. (parameter #1)\n    for method Example.method");
     }
   }
-
   @Test public void fieldMapSupportsSubclasses() throws IOException {
     class Foo extends HashMap<String, String> {
     }
-
     class Example {
-      @FormUrlEncoded //
-      @POST("/") //
+      @FormUrlEncoded 
+      @POST("/") 
       Call<ResponseBody> method(@FieldMap Foo a) {
         return null;
       }
     }
-
     Foo foo = new Foo();
     foo.put("hello", "world");
-
     Request request = buildRequest(Example.class, foo);
     Buffer buffer = new Buffer();
     request.body().writeTo(buffer);
     assertThat(buffer.readUtf8()).isEqualTo("hello=world");
   }
-
   @Test public void simpleHeaders() {
     class Example {
       @GET("/foo/bar/")
@@ -2534,10 +2239,9 @@ public final class RequestFactoryTest {
     assertThat(headers.size()).isEqualTo(2);
     assertThat(headers.get("ping")).isEqualTo("pong");
     assertThat(headers.get("kit")).isEqualTo("kat");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void headersDoNotOverwriteEachOther() {
     class Example {
       @GET("/foo/bar/")
@@ -2556,13 +2260,12 @@ public final class RequestFactoryTest {
     assertThat(headers.size()).isEqualTo(3);
     assertThat(headers.get("ping")).isEqualTo("pong");
     assertThat(headers.values("kit")).containsOnly("kat", "-kat");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void headerParamToString() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Header("kit") BigInteger kit) {
         return null;
       }
@@ -2572,14 +2275,13 @@ public final class RequestFactoryTest {
     okhttp3.Headers headers = request.headers();
     assertThat(headers.size()).isEqualTo(1);
     assertThat(headers.get("kit")).isEqualTo("1234");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void headerParam() {
     class Example {
-      @GET("/foo/bar/") //
-      @Headers("ping: pong") //
+      @GET("/foo/bar/") 
+      @Headers("ping: pong") 
       Call<ResponseBody> method(@Header("kit") String kit) {
         return null;
       }
@@ -2590,13 +2292,12 @@ public final class RequestFactoryTest {
     assertThat(headers.size()).isEqualTo(2);
     assertThat(headers.get("ping")).isEqualTo("pong");
     assertThat(headers.get("kit")).isEqualTo("kat");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void headerParamList() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Header("foo") List<String> kit) {
         return null;
       }
@@ -2606,13 +2307,12 @@ public final class RequestFactoryTest {
     okhttp3.Headers headers = request.headers();
     assertThat(headers.size()).isEqualTo(2);
     assertThat(headers.values("foo")).containsExactly("bar", "baz");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void headerParamArray() {
     class Example {
-      @GET("/foo/bar/") //
+      @GET("/foo/bar/") 
       Call<ResponseBody> method(@Header("foo") String[] kit) {
         return null;
       }
@@ -2622,14 +2322,13 @@ public final class RequestFactoryTest {
     okhttp3.Headers headers = request.headers();
     assertThat(headers.size()).isEqualTo(2);
     assertThat(headers.values("foo")).containsExactly("bar", "baz");
-    assertThat(request.url().toString()).isEqualTo("http://example.com/foo/bar/");
+    assertThat(request.url().toString()).isEqualTo("http:
     assertThat(request.body()).isNull();
   }
-
   @Test public void contentTypeAnnotationHeaderOverrides() {
     class Example {
-      @POST("/") //
-      @Headers("Content-Type: text/not-plain") //
+      @POST("/") 
+      @Headers("Content-Type: text/not-plain") 
       Call<ResponseBody> method(@Body RequestBody body) {
         return null;
       }
@@ -2638,11 +2337,10 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, body);
     assertThat(request.body().contentType().toString()).isEqualTo("text/not-plain");
   }
-
   @Test public void malformedContentTypeHeaderThrows() {
     class Example {
-      @POST("/") //
-      @Headers("Content-Type: hello, world!") //
+      @POST("/") 
+      @Headers("Content-Type: hello, world!") 
       Call<ResponseBody> method(@Body RequestBody body) {
         return null;
       }
@@ -2654,14 +2352,13 @@ public final class RequestFactoryTest {
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("Malformed content type: hello, world!\n"
           + "    for method Example.method");
-      assertThat(e.getCause()).isInstanceOf(IllegalArgumentException.class); // OkHttp's cause.
+      assertThat(e.getCause()).isInstanceOf(IllegalArgumentException.class); 
     }
   }
-
   @Test public void contentTypeAnnotationHeaderAddsHeaderWithNoBody() {
     class Example {
-      @DELETE("/") //
-      @Headers("Content-Type: text/not-plain") //
+      @DELETE("/") 
+      @Headers("Content-Type: text/not-plain") 
       Call<ResponseBody> method() {
         return null;
       }
@@ -2669,10 +2366,9 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class);
     assertThat(request.headers().get("Content-Type")).isEqualTo("text/not-plain");
   }
-
   @Test public void contentTypeParameterHeaderOverrides() {
     class Example {
-      @POST("/") //
+      @POST("/") 
       Call<ResponseBody> method(@Header("Content-Type") String contentType, @Body RequestBody body) {
         return null;
       }
@@ -2681,10 +2377,9 @@ public final class RequestFactoryTest {
     Request request = buildRequest(Example.class, "text/not-plain", body);
     assertThat(request.body().contentType().toString()).isEqualTo("text/not-plain");
   }
-
   @Test public void malformedContentTypeParameterThrows() {
     class Example {
-      @POST("/") //
+      @POST("/") 
       Call<ResponseBody> method(@Header("Content-Type") String contentType, @Body RequestBody body) {
         return null;
       }
@@ -2695,13 +2390,12 @@ public final class RequestFactoryTest {
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage("Malformed content type: hello, world!");
-      assertThat(e.getCause()).isInstanceOf(IllegalArgumentException.class); // OkHttp's cause.
+      assertThat(e.getCause()).isInstanceOf(IllegalArgumentException.class); 
     }
   }
-
   @Test public void malformedAnnotationRelativeUrlThrows() {
     class Example {
-      @GET("ftp://example.org")
+      @GET("ftp:
       Call<ResponseBody> get() {
         return null;
       }
@@ -2711,10 +2405,9 @@ public final class RequestFactoryTest {
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage(
-          "Malformed URL. Base: http://example.com/, Relative: ftp://example.org");
+          "Malformed URL. Base: http:
     }
   }
-
   @Test public void malformedParameterRelativeUrlThrows() {
     class Example {
       @GET
@@ -2723,14 +2416,13 @@ public final class RequestFactoryTest {
       }
     }
     try {
-      buildRequest(Example.class, "ftp://example.org");
+      buildRequest(Example.class, "ftp:
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e).hasMessage(
-          "Malformed URL. Base: http://example.com/, Relative: ftp://example.org");
+          "Malformed URL. Base: http:
     }
   }
-
   @Test public void multipartPartsShouldBeInOrder() throws IOException {
     class Example {
       @Multipart
@@ -2741,44 +2433,34 @@ public final class RequestFactoryTest {
     }
     Request request = buildRequest(Example.class, "firstParam", "secondParam", "thirdParam");
     MultipartBody body = (MultipartBody) request.body();
-
     Buffer buffer = new Buffer();
     body.writeTo(buffer);
     String readBody = buffer.readUtf8();
-
     assertThat(readBody.indexOf("firstParam")).isLessThan(readBody.indexOf("secondParam"));
     assertThat(readBody.indexOf("secondParam")).isLessThan(readBody.indexOf("thirdParam"));
   }
-
   @Test public void queryParamsSkippedIfConvertedToNull() throws Exception {
     class Example {
       @GET("/query") Call<ResponseBody> queryPath(@Query("a") Object a) {
         return null;
       }
     }
-
     Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-        .baseUrl("http://example.com")
+        .baseUrl("http:
         .addConverterFactory(new NullObjectConverterFactory());
-
     Request request = buildRequest(Example.class, retrofitBuilder, "Ignored");
-
     assertThat(request.url().toString()).doesNotContain("Ignored");
   }
-
   @Test public void queryParamMapsConvertedToNullShouldError() throws Exception {
     class Example {
       @GET("/query") Call<ResponseBody> queryPath(@QueryMap Map<String, String> a) {
         return null;
       }
     }
-
     Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-        .baseUrl("http://example.com")
+        .baseUrl("http:
         .addConverterFactory(new NullObjectConverterFactory());
-
     Map<String, String> queryMap = Collections.singletonMap("kit", "kat");
-
     try {
       buildRequest(Example.class, retrofitBuilder, queryMap);
       fail();
@@ -2787,7 +2469,6 @@ public final class RequestFactoryTest {
           "Query map value 'kat' converted to null by retrofit2.helpers.NullObjectConverterFactory$1 for key 'kit'.");
     }
   }
-
   @Test public void fieldParamsSkippedIfConvertedToNull() throws Exception {
     class Example {
       @FormUrlEncoded
@@ -2795,16 +2476,12 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-        .baseUrl("http://example.com")
+        .baseUrl("http:
         .addConverterFactory(new NullObjectConverterFactory());
-
     Request request = buildRequest(Example.class, retrofitBuilder, "Ignored");
-
     assertThat(request.url().toString()).doesNotContain("Ignored");
   }
-
   @Test public void fieldParamMapsConvertedToNullShouldError() throws Exception {
     class Example {
       @FormUrlEncoded
@@ -2812,13 +2489,10 @@ public final class RequestFactoryTest {
         return null;
       }
     }
-
     Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-        .baseUrl("http://example.com")
+        .baseUrl("http:
         .addConverterFactory(new NullObjectConverterFactory());
-
     Map<String, String> queryMap = Collections.singletonMap("kit", "kat");
-
     try {
       buildRequest(Example.class, retrofitBuilder, queryMap);
       fail();
@@ -2827,7 +2501,6 @@ public final class RequestFactoryTest {
           "Field map value 'kat' converted to null by retrofit2.helpers.NullObjectConverterFactory$1 for key 'kit'.");
     }
   }
-
   private static void assertBody(RequestBody body, String expected) {
     assertThat(body).isNotNull();
     Buffer buffer = new Buffer();
@@ -2838,16 +2511,13 @@ public final class RequestFactoryTest {
       throw new RuntimeException(e);
     }
   }
-
   static <T> Request buildRequest(Class<T> cls, Retrofit.Builder builder, Object... args) {
     okhttp3.Call.Factory callFactory = new okhttp3.Call.Factory() {
       @Override public okhttp3.Call newCall(Request request) {
         throw new UnsupportedOperationException("Not implemented");
       }
     };
-
     Retrofit retrofit = builder.callFactory(callFactory).build();
-
     Method method = TestingUtils.onlyMethod(cls);
     try {
       return RequestFactory.parseAnnotations(retrofit, method).create(args);
@@ -2857,15 +2527,12 @@ public final class RequestFactoryTest {
       throw new AssertionError(e);
     }
   }
-
   static <T> Request buildRequest(Class<T> cls, Object... args) {
     Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-        .baseUrl("http://example.com/")
+        .baseUrl("http:
         .addConverterFactory(new ToStringConverterFactory());
-
     return buildRequest(cls, retrofitBuilder, args);
   }
-
   static void assertMalformedRequest(Class<?> cls, Object... args) {
     try {
       Request request = buildRequest(cls, args);

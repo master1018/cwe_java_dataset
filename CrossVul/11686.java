@@ -1,5 +1,4 @@
 package io.hawt.web;
-
 import java.io.IOException;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -13,7 +12,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import io.hawt.system.Authenticator;
 import io.hawt.system.ConfigManager;
 import io.hawt.system.Helpers;
@@ -21,27 +19,16 @@ import io.hawt.system.PrivilegedCallback;
 import io.hawt.web.tomcat.TomcatAuthenticationContainerDiscovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-/**
- * Filter for authentication. If the filter is enabled, then the login screen is shown.
- */
 public class AuthenticationFilter implements Filter {
-
     private static final transient Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
-
-    // JVM system properties
     public static final String HAWTIO_AUTHENTICATION_ENABLED = "hawtio.authenticationEnabled";
     public static final String HAWTIO_REALM = "hawtio.realm";
     public static final String HAWTIO_ROLE = "hawtio.role";
     public static final String HAWTIO_ROLE_PRINCIPAL_CLASSES = "hawtio.rolePrincipalClasses";
-
     private final AuthenticationConfiguration configuration = new AuthenticationConfiguration();
-
-    // add known SPI authentication container discovery
     private final AuthenticationContainerDiscovery[] discoveries = new AuthenticationContainerDiscovery[]{
             new TomcatAuthenticationContainerDiscovery()
     };
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ConfigManager config = (ConfigManager) filterConfig.getServletContext().getAttribute("ConfigManager");
@@ -51,8 +38,6 @@ public class AuthenticationFilter implements Filter {
             configuration.setRolePrincipalClasses(config.get("rolePrincipalClasses", ""));
             configuration.setEnabled(Boolean.parseBoolean(config.get("authenticationEnabled", "true")));
         }
-
-        // JVM system properties can override always
         if (System.getProperty(HAWTIO_AUTHENTICATION_ENABLED) != null) {
             configuration.setEnabled(Boolean.getBoolean(HAWTIO_AUTHENTICATION_ENABLED));
         }
@@ -65,7 +50,6 @@ public class AuthenticationFilter implements Filter {
         if (System.getProperty(HAWTIO_ROLE_PRINCIPAL_CLASSES) != null) {
             configuration.setRolePrincipalClasses(System.getProperty(HAWTIO_ROLE_PRINCIPAL_CLASSES));
         }
-
         if (configuration.isEnabled()) {
             for (AuthenticationContainerDiscovery discovery : discoveries) {
                 if (discovery.canAuthenticate(configuration)) {
@@ -74,7 +58,6 @@ public class AuthenticationFilter implements Filter {
                 }
             }
         }
-
         if (configuration.isEnabled()) {
             LOG.info("Starting hawtio authentication filter, JAAS realm: \"{}\" authorized role: \"{}\" role principal classes: \"{}\"",
                     new Object[]{configuration.getRealm(), configuration.getRole(), configuration.getRolePrincipalClasses()});
@@ -82,19 +65,16 @@ public class AuthenticationFilter implements Filter {
             LOG.info("Starting hawtio authentication filter, JAAS authentication disabled");
         }
     }
-
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getServletPath();
         LOG.debug("Handling request for path {}", path);
-
         if (configuration.getRealm() == null || configuration.getRealm().equals("") || !configuration.isEnabled()) {
             LOG.debug("No authentication needed for path {}", path);
             chain.doFilter(request, response);
             return;
         }
-
         HttpSession session = httpRequest.getSession(false);
         if (session != null) {
             Subject subject = (Subject) session.getAttribute("subject");
@@ -104,9 +84,7 @@ public class AuthenticationFilter implements Filter {
                 return;
             }
         }
-
         boolean doAuthenticate = true;
-
         if (doAuthenticate) {
             LOG.debug("Doing authentication and authorization for path {}", path);
             switch (Authenticator.authenticate(configuration.getRealm(), configuration.getRole(), configuration.getRolePrincipalClasses(),
@@ -116,13 +94,11 @@ public class AuthenticationFilter implements Filter {
                 }
             })) {
                 case AUTHORIZED:
-                    // request was executed using the authenticated subject, nothing more to do
                     break;
                 case NOT_AUTHORIZED:
                     Helpers.doForbidden((HttpServletResponse) response);
                     break;
                 case NO_CREDENTIALS:
-                    //doAuthPrompt((HttpServletResponse)response);
                     Helpers.doForbidden((HttpServletResponse) response);
                     break;
             }
@@ -131,7 +107,6 @@ public class AuthenticationFilter implements Filter {
             chain.doFilter(request, response);
         }
     }
-
     private static void executeAs(final ServletRequest request, final ServletResponse response, final FilterChain chain, Subject subject) {
         try {
             Subject.doAs(subject, new PrivilegedExceptionAction<Object>() {
@@ -145,7 +120,6 @@ public class AuthenticationFilter implements Filter {
             LOG.info("Failed to invoke action " + ((HttpServletRequest) request).getPathInfo() + " due to:", e);
         }
     }
-
     @Override
     public void destroy() {
         LOG.info("Destroying hawtio authentication filter");

@@ -1,5 +1,4 @@
 package io.onedev.server;
-
 import java.io.Serializable;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -18,7 +17,6 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -30,7 +28,6 @@ import javax.validation.Configuration;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
 import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.guice.aop.ShiroAopModule;
@@ -61,7 +58,6 @@ import org.hibernate.collection.internal.PersistentBag;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.type.Type;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -77,7 +73,6 @@ import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.core.JVM;
 import com.thoughtworks.xstream.mapper.MapperWrapper;
 import com.vladsch.flexmark.Extension;
-
 import io.onedev.commons.launcher.bootstrap.Bootstrap;
 import io.onedev.commons.launcher.loader.AbstractPlugin;
 import io.onedev.commons.launcher.loader.AbstractPluginModule;
@@ -290,24 +285,14 @@ import io.onedev.server.web.websocket.IssueEventBroadcaster;
 import io.onedev.server.web.websocket.PullRequestEventBroadcaster;
 import io.onedev.server.web.websocket.WebSocketManager;
 import io.onedev.server.web.websocket.WebSocketPolicyProvider;
-
-/**
- * NOTE: Do not forget to rename moduleClass property defined in the pom if you've renamed this class.
- *
- */
 public class CoreModule extends AbstractPluginModule {
-
 	@Override
 	protected void configure() {
 		super.configure();
-		
 		bind(JettyRunner.class).to(DefaultJettyRunner.class);
 		bind(ServletContextHandler.class).toProvider(DefaultJettyRunner.class);
-		
 		bind(ObjectMapper.class).toProvider(ObjectMapperProvider.class).in(Singleton.class);
-		
 		bind(ValidatorFactory.class).toProvider(new com.google.inject.Provider<ValidatorFactory>() {
-
 			@Override
 			public ValidatorFactory get() {
 				Configuration<?> configuration = Validation
@@ -316,25 +301,14 @@ public class CoreModule extends AbstractPluginModule {
 						.messageInterpolator(new ParameterMessageInterpolator());
 				return configuration.buildValidatorFactory();
 			}
-			
 		}).in(Singleton.class);
-		
 		bind(Validator.class).toProvider(ValidatorProvider.class).in(Singleton.class);
-
-		// configure markdown
 		bind(MarkdownManager.class).to(DefaultMarkdownManager.class);		
-		
 		configurePersistence();
 		configureRestServices();
 		configureWeb();
 		configureBuild();
-		
 		bind(GitConfig.class).toProvider(GitConfigProvider.class);
-
-		/*
-		 * Declare bindings explicitly instead of using ImplementedBy annotation as
-		 * HK2 to guice bridge can only search in explicit bindings in Guice   
-		 */
 		bind(StorageManager.class).to(DefaultStorageManager.class);
 		bind(SettingManager.class).to(DefaultSettingManager.class);
 		bind(DataManager.class).to(DefaultDataManager.class);
@@ -392,10 +366,8 @@ public class CoreModule extends AbstractPluginModule {
 		bind(CommitQuerySettingManager.class).to(DefaultCommitQuerySettingManager.class);
 		bind(BuildQuerySettingManager.class).to(DefaultBuildQuerySettingManager.class);
 		bind(WebHookManager.class);
-
 		contribute(ObjectMapperConfigurator.class, GitObjectMapperConfigurator.class);
 	    contribute(ObjectMapperConfigurator.class, HibernateObjectMapperConfigurator.class);
-	    
 		bind(Realm.class).to(OneAuthorizingRealm.class);
 		bind(RememberMeManager.class).to(OneRememberMeManager.class);
 		bind(WebSecurityManager.class).to(OneWebSecurityManager.class);
@@ -405,49 +377,36 @@ public class CoreModule extends AbstractPluginModule {
 		bind(ShiroFilter.class);
 		install(new ShiroAopModule());
         contribute(FilterChainConfigurator.class, new FilterChainConfigurator() {
-
             @Override
             public void configure(FilterChainManager filterChainManager) {
-                filterChainManager.createChain("/**/info/refs", "noSessionCreation, authcBasic");
-                filterChainManager.createChain("/**/git-upload-pack", "noSessionCreation, authcBasic");
-                filterChainManager.createChain("/**/git-receive-pack", "noSessionCreation, authcBasic");
+                filterChainManager.createChain("info/refs", "noSessionCreation, authcBasic");
+                filterChainManager.createChain("git-upload-pack", "noSessionCreation, authcBasic");
+                filterChainManager.createChain("git-receive-pack", "noSessionCreation, authcBasic");
             }
-            
         });
         contributeFromPackage(Authenticator.class, Authenticator.class);
-        
 		contribute(ImplementationProvider.class, new ImplementationProvider() {
-
 			@Override
 			public Class<?> getAbstractClass() {
 				return JobExecutor.class;
 			}
-
 			@Override
 			public Collection<Class<?>> getImplementations() {
 				return Sets.newHashSet(AutoDiscoveredJobExecutor.class);
 			}
-			
 		});
-		
 		contribute(CodePullAuthorizationSource.class, DefaultJobManager.class);
-        
 		bind(IndexManager.class).to(DefaultIndexManager.class);
 		bind(SearchManager.class).to(DefaultSearchManager.class);
-		
 		bind(EntityValidator.class).to(DefaultEntityValidator.class);
-		
 		bind(GitFilter.class);
 		bind(GitPreReceiveCallback.class);
 		bind(GitPostReceiveCallback.class);
-		
 	    bind(ExecutorService.class).toProvider(new Provider<ExecutorService>() {
-
 			@Override
 			public ExecutorService get() {
 		        return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, 
 		        		new SynchronousQueue<Runnable>()) {
-
 					@Override
 					public void execute(Runnable command) {
 						try {
@@ -457,130 +416,95 @@ public class CoreModule extends AbstractPluginModule {
 								throw ExceptionUtils.unchecked(e);
 						}
 					}
-
 		        };
 			}
-	    	
 	    }).in(Singleton.class);
-	    
 	    bind(ForkJoinPool.class).toInstance(new ForkJoinPool() {
-
 			@Override
 			public ForkJoinTask<?> submit(Runnable task) {
 				return super.submit(SecurityUtils.inheritSubject(task));
 			}
-
 			@Override
 			public void execute(Runnable task) {
 				super.execute(SecurityUtils.inheritSubject(task));
 			}
-
 			@Override
 			public <T> ForkJoinTask<T> submit(Callable<T> task) {
 				return super.submit(SecurityUtils.inheritSubject(task));
 			}
-
 			@Override
 			public <T> ForkJoinTask<T> submit(Runnable task, T result) {
 				return super.submit(SecurityUtils.inheritSubject(task), result);
 			}
-
 			@Override
 			public <T> T invokeAny(Collection<? extends Callable<T>> tasks)
 					throws InterruptedException, ExecutionException {
 				return super.invokeAny(SecurityUtils.inheritSubject(tasks));
 			}
-
 			@Override
 			public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
 					throws InterruptedException, ExecutionException, TimeoutException {
 				return super.invokeAny(SecurityUtils.inheritSubject(tasks), timeout, unit);
 			}
-
 			@Override
 			public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, 
 					long timeout, TimeUnit unit) throws InterruptedException {
 				return super.invokeAll(SecurityUtils.inheritSubject(tasks), timeout, unit);
 			}
-
 			@Override
 			public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) {
 				return super.invokeAll(SecurityUtils.inheritSubject(tasks));
 			}
-
 	    });
 	}
-	
 	private void configureRestServices() {
 		bind(ResourceConfig.class).toProvider(ResourceConfigProvider.class).in(Singleton.class);
 		bind(ServletContainer.class).to(DefaultServletContainer.class);
-		
 		contribute(FilterChainConfigurator.class, new FilterChainConfigurator() {
-
 			@Override
 			public void configure(FilterChainManager filterChainManager) {
 				filterChainManager.createChain("/rest/**", "noSessionCreation, authcBasic");
 			}
-			
 		});
-		
 		contribute(JerseyConfigurator.class, new JerseyConfigurator() {
-			
 			@Override
 			public void configure(ResourceConfig resourceConfig) {
 				resourceConfig.packages(RestConstants.class.getPackage().getName());
 			}
-			
 		});
 	}
-
 	private void configureWeb() {
 		bind(WicketServlet.class).to(DefaultWicketServlet.class);
 		bind(WicketFilter.class).to(DefaultWicketFilter.class);
 		bind(WebSocketPolicy.class).toProvider(WebSocketPolicyProvider.class);
 		bind(EditSupportRegistry.class).to(DefaultEditSupportRegistry.class);
 		bind(WebSocketManager.class).to(DefaultWebSocketManager.class);
-
 		bind(AttachmentUploadServlet.class);
-		
 		contributeFromPackage(EditSupport.class, EditSupport.class);
-		
 		bind(WebApplication.class).to(OneWebApplication.class);
 		bind(Application.class).to(OneWebApplication.class);
 		bind(AvatarManager.class).to(DefaultAvatarManager.class);
 		bind(WebSocketManager.class).to(DefaultWebSocketManager.class);
-		
 		contributeFromPackage(EditSupport.class, EditSupportLocator.class);
-		
 		contribute(WebApplicationConfigurator.class, new WebApplicationConfigurator() {
-			
 			@Override
 			public void configure(WebApplication application) {
 				application.mount(new OnePageMapper("/test", TestPage.class));
 			}
-			
 		});
-		
 		bind(CommitIndexedBroadcaster.class);
-		
 		contributeFromPackage(DiffRenderer.class, DiffRenderer.class);
 		contributeFromPackage(BlobRendererContribution.class, BlobRendererContribution.class);
-
 		contribute(Extension.class, new EmojiExtension());
 		contribute(Extension.class, new SourcePositionTrackExtension());
-		
 		contributeFromPackage(MarkdownProcessor.class, MarkdownProcessor.class);
-
 		contribute(ResourcePackScopeContribution.class, new ResourcePackScopeContribution() {
-			
 			@Override
 			public Collection<Class<?>> getResourcePackScopes() {
 				return Lists.newArrayList(OneWebApplication.class);
 			}
-			
 		});
 		contribute(ExpectedExceptionContribution.class, new ExpectedExceptionContribution() {
-			
 			@SuppressWarnings("unchecked")
 			@Override
 			public Collection<Class<? extends Exception>> getExpectedExceptionClasses() {
@@ -588,37 +512,28 @@ public class CoreModule extends AbstractPluginModule {
 						ObjectNotFoundException.class, StaleStateException.class, UnauthorizedException.class, 
 						OneException.class, PageExpiredException.class, StalePageException.class);
 			}
-			
 		});
-
 		bind(UrlManager.class).to(DefaultUrlManager.class);
 		bind(CodeCommentEventBroadcaster.class);
 		bind(PullRequestEventBroadcaster.class);
 		bind(IssueEventBroadcaster.class);
 		bind(BuildEventBroadcaster.class);
-		
 		bind(TaskButton.TaskFutureManager.class);
-		
 		bind(UICustomization.class).toInstance(new UICustomization() {
-			
 			@Override
 			public Class<? extends BasePage> getHomePage() {
 				return DashboardPage.class;
 			}
-			
 			@Override
 			public List<MainTab> getMainTabs() {
 				return Lists.newArrayList(
 						new ProjectListTab(), new IssueListTab(), 
 						new PullRequestListTab(), new BuildListTab());
 			}
-
 		});
 	}
-	
 	private void configureBuild() {
 		contribute(ScriptContribution.class, new ScriptContribution() {
-
 			@Override
 			public GroovyScript getScript() {
 				GroovyScript script = new GroovyScript();
@@ -626,10 +541,8 @@ public class CoreModule extends AbstractPluginModule {
 				script.setContent(Lists.newArrayList("io.onedev.server.util.script.ScriptContribution.determineBuildFailureInvestigator()"));
 				return script;
 			}
-			
 		});
 		contribute(ScriptContribution.class, new ScriptContribution() {
-
 			@Override
 			public GroovyScript getScript() {
 				GroovyScript script = new GroovyScript();
@@ -637,96 +550,70 @@ public class CoreModule extends AbstractPluginModule {
 				script.setContent(Lists.newArrayList("io.onedev.server.util.script.ScriptContribution.getBuildNumber()"));
 				return script;
 			}
-			
 		});
 	}
-	
 	private void configurePersistence() {
-		// Use an optional binding here in case our client does not like to 
-		// start persist service provided by this plugin
 		bind(Interceptor.class).to(HibernateInterceptor.class);
 		bind(PhysicalNamingStrategy.class).toInstance(new PrefixedNamingStrategy("o_"));
-		
 		bind(SessionManager.class).to(DefaultSessionManager.class);
 		bind(TransactionManager.class).to(DefaultTransactionManager.class);
 		bind(IdManager.class).to(DefaultIdManager.class);
 		bind(Dao.class).to(DefaultDao.class);
-		
 	    TransactionInterceptor transactionInterceptor = new TransactionInterceptor();
 	    requestInjection(transactionInterceptor);
-	    
 	    bindInterceptor(Matchers.any(), new AbstractMatcher<AnnotatedElement>() {
-
 			@Override
 			public boolean matches(AnnotatedElement element) {
 				return element.isAnnotationPresent(Transactional.class) && !((Method) element).isSynthetic();
 			}
-	    	
 	    }, transactionInterceptor);
-	    
 	    SessionInterceptor sessionInterceptor = new SessionInterceptor();
 	    requestInjection(sessionInterceptor);
-	    
 	    bindInterceptor(Matchers.any(), new AbstractMatcher<AnnotatedElement>() {
-
 			@Override
 			public boolean matches(AnnotatedElement element) {
 				return element.isAnnotationPresent(Sessional.class) && !((Method) element).isSynthetic();
 			}
-	    	
 	    }, sessionInterceptor);
-	    
 	    contributeFromPackage(LogInstruction.class, LogInstruction.class);
-	    
 	    contribute(PersistListener.class, new PersistListener() {
-			
 			@Override
 			public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types)
 					throws CallbackException {
 				return false;
 			}
-			
 			@Override
 			public boolean onLoad(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types)
 					throws CallbackException {
 				return false;
 			}
-			
 			@Override
 			public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
 					String[] propertyNames, Type[] types) throws CallbackException {
 				return false;
 			}
-			
 			@Override
 			public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types)
 					throws CallbackException {
 			}
-
 		});
-	    
 		bind(XStream.class).toProvider(new com.google.inject.Provider<XStream>() {
-
 			@SuppressWarnings("rawtypes")
 			@Override
 			public XStream get() {
 				ReflectionProvider reflectionProvider = JVM.newReflectionProvider();
 				XStream xstream = new XStream(reflectionProvider) {
-
 					@Override
 					protected MapperWrapper wrapMapper(MapperWrapper next) {
 						return new MapperWrapper(next) {
-							
 							@Override
 							public boolean shouldSerializeMember(Class definedIn, String fieldName) {
 								Field field = reflectionProvider.getField(definedIn, fieldName);
-								
 								return field.getAnnotation(XStreamOmitField.class) == null && 
 										field.getAnnotation(Transient.class) == null && 
 										field.getAnnotation(OneToMany.class) == null &&
 										field.getAnnotation(Version.class) == null;
 							}
-							
 							@Override
 							public String serializedClass(Class type) {
 								if (type == null)
@@ -738,16 +625,11 @@ public class CoreModule extends AbstractPluginModule {
 								else
 									return super.serializedClass(type);
 							}
-							
 						};
 					}
-					
 				};
 				XStream.setupDefaultSecurity(xstream);
 				xstream.allowTypesByWildcard(new String[] {"io.onedev.**"});				
-				
-				// register NullConverter as highest; otherwise NPE when unmarshal a map 
-				// containing an entry with value set to null.
 				xstream.registerConverter(new NullConverter(), XStream.PRIORITY_VERY_HIGH);
 				xstream.registerConverter(new StringConverter(), XStream.PRIORITY_VERY_HIGH);
 				xstream.registerConverter(new VersionedDocumentConverter(), XStream.PRIORITY_VERY_HIGH);
@@ -761,9 +643,7 @@ public class CoreModule extends AbstractPluginModule {
 				xstream.autodetectAnnotations(true);
 				return xstream;
 			}
-			
 		}).in(Singleton.class);
-		
 		if (Bootstrap.command != null) {
 			if (RestoreDatabase.COMMAND.equals(Bootstrap.command.getName()))
 				bind(PersistManager.class).to(RestoreDatabase.class);
@@ -785,10 +665,8 @@ public class CoreModule extends AbstractPluginModule {
 			bind(PersistManager.class).to(DefaultPersistManager.class);
 		}		
 	}
-	
 	@Override
 	protected Class<? extends AbstractPlugin> getPluginClass() {
 		return OneDev.class;
 	}
-
 }

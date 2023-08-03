@@ -1,5 +1,4 @@
 package org.jboss.seam.remoting;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,11 +17,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.jboss.seam.Component;
 import org.jboss.seam.ComponentType;
 import org.jboss.seam.Seam;
@@ -34,32 +31,11 @@ import org.jboss.seam.servlet.ContextualHttpServletRequest;
 import org.jboss.seam.util.EJB;
 import org.jboss.seam.util.Reflections;
 import org.jboss.seam.web.ServletContexts;
-
-/**
- * Generates JavaScript interface code.
- *
- * @author Shane Bryzak
- */
 public class InterfaceGenerator extends BaseRequestHandler implements RequestHandler
 {
    private static final LogProvider log = Logging.getLogProvider(InterfaceGenerator.class);
-
-  /**
-   * Maintain a cache of the accessible fields
-   */
   private static Map<Class,Set<String>> accessibleProperties = new HashMap<Class,Set<String>>();
-
-  /**
-   * A cache of component interfaces, keyed by component name.
-   */
   private Map<String,byte[]> interfaceCache = new HashMap<String,byte[]>();
-
-  /**
-   *
-   * @param request HttpServletRequest
-   * @param response HttpServletResponse
-   * @throws Exception
-   */
   public void handle(final HttpServletRequest request, final HttpServletResponse response)
       throws Exception
   {
@@ -69,22 +45,17 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
         public void process() throws Exception
         {
            ServletContexts.instance().setRequest(request);
-           
            if (request.getQueryString() == null)
            {
               throw new ServletException("Invalid request - no component specified");
            }
-                     
            Set<Component> components = new HashSet<Component>();
            Set<Type> types = new HashSet<Type>();
-           
            response.setContentType("text/javascript");
-
            Enumeration e = request.getParameterNames();
            while (e.hasMoreElements())
            {
               String componentName = ((String) e.nextElement()).trim();
-              
               Component component = Component.forName(componentName);
               if (component == null)
               {                 
@@ -96,19 +67,10 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
                  components.add(component);
               }
            }
-           
            generateComponentInterface(components, response.getOutputStream(), types);            
        }
      }.run();
   }
-
-  /**
-   * Generates the JavaScript code required to invoke the methods of a component/s.
-   *
-   * @param components Component[] The components to generate javascript for
-   * @param out OutputStream The OutputStream to write the generated javascript to
-   * @throws IOException Thrown if there is an error writing to the OutputStream
-   */
   public void generateComponentInterface(Set<Component> components, OutputStream out, Set<Type> types)
       throws IOException
   {
@@ -132,22 +94,10 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
       }
     }
   }
-
-  /**
-   * A helper method, used internally by InterfaceGenerator and also when
-   * serializing responses.  Returns a list of the property names for the specified
-   * class which should be included in the generated interface for the type.
-   *
-   * @param cls Class
-   * @return List
-   */
   public static Set<String> getAccessibleProperties(Class cls)
   {
-    /** @todo This is a hack to get the "real" class - find out if there is
-              an API method in CGLIB that can be used instead */
     if (cls.getName().contains("EnhancerByCGLIB"))
       cls = cls.getSuperclass();
-
     if (!accessibleProperties.containsKey(cls))
     {
       synchronized(accessibleProperties)
@@ -155,7 +105,6 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
         if (!accessibleProperties.containsKey(cls))
         {
           Set<String> properties = new HashSet<String>();
-
           Class c = cls;
           while (c != null && !c.equals(Object.class))
           {
@@ -170,7 +119,6 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
                 String setterName = String.format("set%s", fieldName);
                 Method getMethod = null;
                 Method setMethod = null;
-
                 try
                 {
                   getMethod = c.getMethod(getterName);
@@ -179,16 +127,14 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
                 {}
                 catch (NoSuchMethodException ex)
                 {
-                  // it might be an "is" method...
                   getterName = String.format("is%s", fieldName);
                   try
                   {
                     getMethod = c.getMethod(getterName);
                   }
                   catch (NoSuchMethodException ex2)
-                  { /* don't care */}
+                  { }
                 }
-
                 try
                 {
                   setMethod = c.getMethod(setterName, new Class[] {f.getType()});
@@ -196,8 +142,7 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
                 catch (SecurityException ex)
                 {}
                 catch (NoSuchMethodException ex)
-                { /* don't care */}
-
+                { }
                 if (Modifier.isPublic(f.getModifiers()) ||
                     (getMethod != null &&
                      Modifier.isPublic(getMethod.getModifiers()) ||
@@ -208,14 +153,11 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
                 }
               }
             }
-
-            //
             for (Method m : c.getDeclaredMethods())
             {
               if (m.getName().startsWith("get") || m.getName().startsWith("is"))
               {
                 int startIdx = m.getName().startsWith("get") ? 3 : 2;
-
                 try
                 {
                   c.getMethod(String.format("set%s",
@@ -225,57 +167,37 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
                 {
                   continue;
                 }
-
                 String propertyName = String.format("%s%s",
                     Character.toLowerCase(m.getName().charAt(startIdx)),
                     m.getName().substring(startIdx + 1));
-
                 if (!properties.contains(propertyName))
                   properties.add(propertyName);
               }
             }
-
             c = c.getSuperclass();
           }
-
           accessibleProperties.put(cls, properties);
         }
       }
     }
-
     return accessibleProperties.get(cls);
   }
-
-  /**
-   * Appends component interface code to an outputstream for a specified component.
-   *
-   * @param out OutputStream The OutputStream to write to
-   * @param component Component The component to generate an interface for
-   * @param types Set A list of types that have already been generated for this
-   * request.  If this component has already been generated (i.e. it is in the list)
-   * then it won't be generated again
-   * @throws IOException If there is an error writing to the OutputStream.
-   */
   private void appendComponentSource(OutputStream out, Component component, Set<Type> types)
       throws IOException
   {
     StringBuilder componentSrc = new StringBuilder();
-
     Set<Class> componentTypes = new HashSet<Class>();
-
     if (component.getType().isSessionBean() &&
         component.getBusinessInterfaces().size() > 0)
     {
       for (Class c : component.getBusinessInterfaces())
       {
-         // Use the Local interface
          if (c.isAnnotationPresent(EJB.LOCAL))
          {
             componentTypes.add(c);
             break;
          }
       }
-
       if (componentTypes.isEmpty())
         throw new RuntimeException(String.format(
         "Type cannot be determined for component [%s]. Please ensure that it has a local interface.", component));
@@ -287,8 +209,6 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
     }
     else if (component.getType().equals(ComponentType.JAVA_BEAN))
     {
-      // Check if any of the methods are annotated with @WebRemote, and if so
-      // treat it as an "action" component instead of a type component
       for (Method m : component.getBeanClass().getDeclaredMethods())
       {
         if (m.getAnnotation(WebRemote.class) != null)
@@ -297,7 +217,6 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
           break;
         }
       }
-
       if (componentTypes.isEmpty())
       {
         appendTypeSource(out, component.getBeanClass(), types);
@@ -308,8 +227,6 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
     {
       componentTypes.add(component.getBeanClass());
     }
-
-    // If types already contains all the component types, then return
     boolean foundNew = false;
     for (Class type : componentTypes)
     {
@@ -320,20 +237,16 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
       }
     }    
     if (!foundNew) return;    
-    
     if (component.getName().contains("."))
     {
        componentSrc.append("Seam.Remoting.createNamespace('");
        componentSrc.append(component.getName().substring(0, component.getName().lastIndexOf('.')));
        componentSrc.append("');\n");
-       
     }
-    
     componentSrc.append("Seam.Remoting.type.");
     componentSrc.append(component.getName());
     componentSrc.append(" = function() {\n");
     componentSrc.append("  this.__callback = new Object();\n");
-        
     for (Class type : componentTypes)
     {
        if (types.contains(type))
@@ -343,94 +256,64 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
        else
        {
           types.add(type);
-
           for (Method m : type.getDeclaredMethods())
           {
             if (m.getAnnotation(WebRemote.class) == null) continue;
-
-            // Append the return type to the source block
             appendTypeSource(out, m.getGenericReturnType(), types);
-
             componentSrc.append("  Seam.Remoting.type.");
             componentSrc.append(component.getName());
             componentSrc.append(".prototype.");
             componentSrc.append(m.getName());
             componentSrc.append(" = function(");
-
-            // Insert parameters p0..pN
             for (int i = 0; i < m.getGenericParameterTypes().length; i++)
             {
               appendTypeSource(out, m.getGenericParameterTypes()[i], types);
-
               if (i > 0) componentSrc.append(", ");
               componentSrc.append("p");
               componentSrc.append(i);
             }
-
             if (m.getGenericParameterTypes().length > 0) componentSrc.append(", ");
             componentSrc.append("callback, exceptionHandler) {\n");
-
             componentSrc.append("    return Seam.Remoting.execute(this, \"");
             componentSrc.append(m.getName());
             componentSrc.append("\", [");
-
             for (int i = 0; i < m.getParameterTypes().length; i++)
             {
               if (i > 0) componentSrc.append(", ");
               componentSrc.append("p");
               componentSrc.append(i);
             }
-
             componentSrc.append("], callback, exceptionHandler);\n");
-
             componentSrc.append("  }\n");
           }
        }
        componentSrc.append("}\n");
-
-       // Set the component name
        componentSrc.append("Seam.Remoting.type.");
        componentSrc.append(component.getName());
        componentSrc.append(".__name = \"");
        componentSrc.append(component.getName());
        componentSrc.append("\";\n\n");
-
-       // Register the component
        componentSrc.append("Seam.Component.register(Seam.Remoting.type.");
        componentSrc.append(component.getName());
        componentSrc.append(");\n\n");
-
        out.write(componentSrc.toString().getBytes());                 
     }       
   }
-
-  /**
-   * Append Javascript interface code for a specified class to a block of code.
-   *
-   * @param source StringBuilder The code block to append to
-   * @param type Class The type to generate a Javascript interface for
-   * @param types Set A list of the types already generated (only include each type once).
-   */
   private void appendTypeSource(OutputStream out, Type type, Set<Type> types)
       throws IOException
   {
     if (type instanceof Class)
     {
       Class classType = (Class) type;
-
       if (classType.isArray())
       {
         appendTypeSource(out, classType.getComponentType(), types);
         return;
       }
-
       if (classType.getName().startsWith("java.") ||
           types.contains(type) || classType.isPrimitive())
       return;
-
-      // Keep track of which types we've already added
       types.add(type);
-
       appendClassSource(out, classType, types);
     }
     else if (type instanceof ParameterizedType)
@@ -439,48 +322,28 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
         appendTypeSource(out, t, types);
     }
   }
-
-  /**
-   * Appends the interface code for a non-component class to an OutputStream.
-   *
-   * @param out OutputStream
-   * @param classType Class
-   * @param types Set
-   * @throws IOException
-   */
   private void appendClassSource(OutputStream out, Class classType, Set<Type> types)
       throws IOException
   {
-    // Don't generate interfaces for enums
     if (classType.isEnum())
       return;
-
     StringBuilder typeSource = new StringBuilder();
-
-    // Determine whether this class is a component; if so, use its name
-    // otherwise use its class name.
     String componentName = Seam.getComponentName(classType);
     if (componentName == null)
       componentName = classType.getName();
-
     String typeName = componentName.replace('.', '$');
-
     typeSource.append("Seam.Remoting.type.");
     typeSource.append(typeName);
     typeSource.append(" = function() {\n");
-
     StringBuilder fields = new StringBuilder();
     StringBuilder accessors = new StringBuilder();
     StringBuilder mutators = new StringBuilder();
     Map<String,String> metadata = new HashMap<String,String>();
-
     String getMethodName = null;
     String setMethodName = null;
-
     for ( String propertyName : getAccessibleProperties(classType) )
     {
       Type propertyType = null;
-
       Field f = null;
       try
       {
@@ -492,7 +355,6 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
         setMethodName = String.format("set%s%s",
             Character.toUpperCase(propertyName.charAt(0)),
               propertyName.substring(1));
-
         try
         {
           getMethodName = String.format("get%s%s",
@@ -507,20 +369,15 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
             getMethodName = String.format("is%s%s",
                 Character.toUpperCase(propertyName.charAt(0)),
                 propertyName.substring(1));
-
             propertyType = classType.getMethod(getMethodName).getGenericReturnType();
           }
           catch (NoSuchMethodException ex3)
           {
-            // ???
             continue;
           }
         }
       }
-
       appendTypeSource(out, propertyType, types);
-
-      // Include types referenced by generic declarations
       if (propertyType instanceof ParameterizedType)
       {
         for (Type t : ((ParameterizedType) propertyType).getActualTypeArguments())
@@ -529,14 +386,12 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
             appendTypeSource(out, t, types);
         }
       }
-
       if (f != null)
       {
         String fieldName = propertyName.substring(0, 1).toUpperCase() +
             propertyName.substring(1);
         String getterName = String.format("get%s", fieldName);
         String setterName = String.format("set%s", fieldName);
-
         try
         {
           classType.getMethod(getterName);
@@ -552,27 +407,22 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
               getMethodName = getterName;
           }
           catch (NoSuchMethodException ex2)
-          { /* don't care */}
+          { }
         }
-
         try
         {
           if (Modifier.isPublic(classType.getMethod(setterName, f.getType()).getModifiers()))
             setMethodName = setterName;
         }
         catch (SecurityException ex) {}
-        catch (NoSuchMethodException ex) { /* don't care */}
+        catch (NoSuchMethodException ex) { }
       }
-
-      // Construct the list of fields.
       if (getMethodName != null || setMethodName != null)
       {
         metadata.put(propertyName, getFieldType(propertyType));
-
         fields.append("  this.");
         fields.append(propertyName);
         fields.append(" = undefined;\n");
-
         if (getMethodName != null)
         {
           accessors.append("  Seam.Remoting.type.");
@@ -583,7 +433,6 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
           accessors.append(propertyName);
           accessors.append("; }\n");
         }
-
         if (setMethodName != null)
         {
           mutators.append("  Seam.Remoting.type.");
@@ -600,63 +449,39 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
         }
       }
     }
-
     typeSource.append(fields);
     typeSource.append(accessors);
     typeSource.append(mutators);
-
     typeSource.append("}\n\n");
-
-    // Append the type name
     typeSource.append("Seam.Remoting.type.");
     typeSource.append(typeName);
     typeSource.append(".__name = \"");
     typeSource.append(componentName);
     typeSource.append("\";\n");
-
-    // Append the metadata
     typeSource.append("Seam.Remoting.type.");
     typeSource.append(typeName);
     typeSource.append(".__metadata = [\n");
-
     boolean first = true;
-
     for (String key : metadata.keySet())
     {
       if (!first)
         typeSource.append(",\n");
-
       typeSource.append("  {field: \"");
       typeSource.append(key);
       typeSource.append("\", type: \"");
       typeSource.append(metadata.get(key));
       typeSource.append("\"}");
-
       first = false;
     }
-
     typeSource.append("];\n\n");
-
-    // Register the type under Seam.Component if it is a component, otherwise
-    // register it under Seam.Remoting
-
     if (classType.isAnnotationPresent(Name.class))
       typeSource.append("Seam.Component.register(Seam.Remoting.type.");
     else
       typeSource.append("Seam.Remoting.registerType(Seam.Remoting.type.");
-
     typeSource.append(typeName);
     typeSource.append(");\n\n");
-
     out.write(typeSource.toString().getBytes());
   }
-
-  /**
-   * Returns the remoting "type" for a specified class.
-   *
-   * @param type Class
-   * @return String
-   */
   protected String getFieldType(Type type)
   {
     if (type.equals(String.class) ||
@@ -687,13 +512,11 @@ public class InterfaceGenerator extends BaseRequestHandler implements RequestHan
     else if (type instanceof ParameterizedType)
     {
       ParameterizedType pt = (ParameterizedType) type;
-
       if (pt.getRawType() instanceof Class && Map.class.isAssignableFrom((Class) pt.getRawType()))
         return "map";
       else if (pt.getRawType() instanceof Class && Collection.class.isAssignableFrom((Class) pt.getRawType()))
         return "bag";
     }
-
     return "bean";
   }
 }

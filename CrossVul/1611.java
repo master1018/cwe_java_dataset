@@ -1,10 +1,7 @@
 package org.richfaces.demo.media;
-
 import java.awt.Color;
 import java.io.Serializable;
-
 public class MediaData implements Serializable{
-
 	private static final long serialVersionUID = 1L;
 	Integer Width=110;
 	Integer Height=50;

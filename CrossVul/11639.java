@@ -1,20 +1,13 @@
-/*
- * Copyright (c) 2004, PostgreSQL Global Development Group
- * See the LICENSE file in the project root for more information.
- */
 
 package org.postgresql.jdbc;
-
 import org.postgresql.core.BaseConnection;
 import org.postgresql.util.GT;
 import org.postgresql.util.PSQLException;
 import org.postgresql.util.PSQLState;
 import org.postgresql.xml.DefaultPGXmlFactoryFactory;
 import org.postgresql.xml.PGXmlFactoryFactory;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +19,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.SQLException;
 import java.sql.SQLXML;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -48,27 +40,21 @@ import javax.xml.transform.stax.StAXResult;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
 public class PgSQLXML implements SQLXML {
-
   private final BaseConnection conn;
-  private String data; // The actual data contained.
-  private boolean initialized; // Has someone assigned the data for this object?
-  private boolean active; // Is anyone in the process of loading data into us?
+  private String data; 
+  private boolean initialized; 
+  private boolean active; 
   private boolean freed;
-
   private ByteArrayOutputStream byteArrayOutputStream;
   private StringWriter stringWriter;
   private DOMResult domResult;
-
   public PgSQLXML(BaseConnection conn) {
     this(conn, null, false);
   }
-
   public PgSQLXML(BaseConnection conn, String data) {
     this(conn, data, true);
   }
-
   private PgSQLXML(BaseConnection conn, String data, boolean initialized) {
     this.conn = conn;
     this.data = data;
@@ -76,67 +62,46 @@ public class PgSQLXML implements SQLXML {
     this.active = false;
     this.freed = false;
   }
-
   private PGXmlFactoryFactory getXmlFactoryFactory() throws SQLException {
     if (conn != null) {
       return conn.getXmlFactoryFactory();
     }
     return DefaultPGXmlFactoryFactory.INSTANCE;
   }
-
   @Override
   public synchronized void free() {
     freed = true;
     data = null;
   }
-
   @Override
   public synchronized InputStream getBinaryStream() throws SQLException {
     checkFreed();
     ensureInitialized();
-
     if (data == null) {
       return null;
     }
-
     try {
       return new ByteArrayInputStream(conn.getEncoding().encode(data));
     } catch (IOException ioe) {
-      // This should be a can't happen exception. We just
-      // decoded this data, so it would be surprising that
-      // we couldn't encode it.
-      // For this reason don't make it translatable.
       throw new PSQLException("Failed to re-encode xml data.", PSQLState.DATA_ERROR, ioe);
     }
   }
-
   @Override
   public synchronized Reader getCharacterStream() throws SQLException {
     checkFreed();
     ensureInitialized();
-
     if (data == null) {
       return null;
     }
-
     return new StringReader(data);
   }
-
-  // We must implement this unsafely because that's what the
-  // interface requires. Because it says we're returning T
-  // which is unknown, none of the return values can satisfy it
-  // as Java isn't going to understand the if statements that
-  // ensure they are the same.
-  //
   @Override
   public synchronized <T extends Source> T getSource(Class<T> sourceClass) throws SQLException {
     checkFreed();
     ensureInitialized();
-
     if (data == null) {
       return null;
     }
-
     try {
       if (sourceClass == null || DOMSource.class.equals(sourceClass)) {
         DocumentBuilder builder = getXmlFactoryFactory().newDocumentBuilder();
@@ -156,18 +121,15 @@ public class PgSQLXML implements SQLXML {
     } catch (Exception e) {
       throw new PSQLException(GT.tr("Unable to decode xml data."), PSQLState.DATA_ERROR, e);
     }
-
     throw new PSQLException(GT.tr("Unknown XML Source class: {0}", sourceClass),
         PSQLState.INVALID_PARAMETER_TYPE);
   }
-
   @Override
   public synchronized String getString() throws SQLException {
     checkFreed();
     ensureInitialized();
     return data;
   }
-
   @Override
   public synchronized OutputStream setBinaryStream() throws SQLException {
     checkFreed();
@@ -176,7 +138,6 @@ public class PgSQLXML implements SQLXML {
     byteArrayOutputStream = new ByteArrayOutputStream();
     return byteArrayOutputStream;
   }
-
   @Override
   public synchronized Writer setCharacterStream() throws SQLException {
     checkFreed();
@@ -185,12 +146,10 @@ public class PgSQLXML implements SQLXML {
     stringWriter = new StringWriter();
     return stringWriter;
   }
-
   @Override
   public synchronized <T extends Result> T setResult(Class<T> resultClass) throws SQLException {
     checkFreed();
     initialize();
-
     if (resultClass == null || DOMResult.class.equals(resultClass)) {
       domResult = new DOMResult();
       active = true;
@@ -223,25 +182,21 @@ public class PgSQLXML implements SQLXML {
             PSQLState.UNEXPECTED_ERROR, xse);
       }
     }
-
     throw new PSQLException(GT.tr("Unknown XML Result class: {0}", resultClass),
         PSQLState.INVALID_PARAMETER_TYPE);
   }
-
   @Override
   public synchronized void setString(String value) throws SQLException {
     checkFreed();
     initialize();
     data = value;
   }
-
   private void checkFreed() throws SQLException {
     if (freed) {
       throw new PSQLException(GT.tr("This SQLXML object has already been freed."),
           PSQLState.OBJECT_NOT_IN_STATE);
     }
   }
-
   private void ensureInitialized() throws SQLException {
     if (!initialized) {
       throw new PSQLException(
@@ -249,12 +204,9 @@ public class PgSQLXML implements SQLXML {
               "This SQLXML object has not been initialized, so you cannot retrieve data from it."),
           PSQLState.OBJECT_NOT_IN_STATE);
     }
-
-    // Is anyone loading data into us at the moment?
     if (!active) {
       return;
     }
-
     if (byteArrayOutputStream != null) {
       try {
         data = conn.getEncoding().decode(byteArrayOutputStream.toByteArray());
@@ -266,16 +218,10 @@ public class PgSQLXML implements SQLXML {
         active = false;
       }
     } else if (stringWriter != null) {
-      // This is also handling the work for Stream, SAX, and StAX Results
-      // as they will use the same underlying stringwriter variable.
-      //
       data = stringWriter.toString();
       stringWriter = null;
       active = false;
     } else if (domResult != null) {
-      // Copy the content from the result to a source
-      // and use the identify transform to get it into a
-      // friendlier result format.
       try {
         TransformerFactory factory = getXmlFactoryFactory().newTransformerFactory();
         Transformer transformer = factory.newTransformer();
@@ -293,7 +239,6 @@ public class PgSQLXML implements SQLXML {
       }
     }
   }
-
   private void initialize() throws SQLException {
     if (initialized) {
       throw new PSQLException(

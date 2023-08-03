@@ -1,24 +1,5 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 
 package io.milton.http.webdav;
-
 import io.milton.common.ReadingException;
 import io.milton.common.StreamUtils;
 import io.milton.common.WritingException;
@@ -35,15 +16,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-/**
- *
- * @author brad
- */
 public class DefaultPropPatchParser implements PropPatchRequestParser {
-
     private final static Logger log = LoggerFactory.getLogger( DefaultPropPatchParser.class );
-
 	@Override
     public PropPatchParseResult getRequestedFields( InputStream in ) {
         log.debug( "getRequestedFields" );
@@ -62,17 +36,14 @@ public class DefaultPropPatchParser implements PropPatchRequestParser {
             throw new RuntimeException( ex );
         }
     }
-
     private PropPatchParseResult parseContent( byte[] arr ) throws IOException, SAXException {
         if( arr.length > 0 ) {
             log.debug( "processing content" );
             ByteArrayInputStream bin = new ByteArrayInputStream( arr );
             XMLReader reader = XMLReaderFactory.createXMLReader();
-			reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-			// https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Processing
-			reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-
+			reader.setFeature("http:
+			reader.setFeature("http:
+			reader.setFeature("http:
             PropPatchSaxHandler handler = new PropPatchSaxHandler();
             reader.setContentHandler( handler );
             reader.parse( new InputSource( bin ) );
@@ -82,6 +53,5 @@ public class DefaultPropPatchParser implements PropPatchRequestParser {
             log.debug( "empty content" );
             return new PropPatchParseResult( new HashMap<QName, String>(), new HashSet<QName>() );
         }
-
     }
 }

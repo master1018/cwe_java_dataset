@@ -1,5 +1,4 @@
 package org.codehaus.plexus.archiver.zip;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import org.codehaus.plexus.PlexusTestCase;
@@ -8,28 +7,19 @@ import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 import org.codehaus.plexus.util.FileUtils;
-
-/**
- * @author Jason van Zyl
- */
 public class ZipUnArchiverTest
     extends PlexusTestCase
 {
-
     public void testExtractingZipPreservesExecutableFlag()
         throws Exception
     {
-
         String s = "target/zip-unarchiver-tests";
         File testZip = new File( getBasedir(), "src/test/jars/test.zip" );
         File outputDirectory = new File( getBasedir(), s );
-
         FileUtils.deleteDirectory( outputDirectory );
-
         ZipUnArchiver zu = getZipUnArchiver( testZip );
         zu.extract( "", outputDirectory );
         File testScript = new File( outputDirectory, "test.sh" );
-
         final Method canExecute;
         try
         {
@@ -41,23 +31,17 @@ public class ZipUnArchiverTest
         {
         }
     }
-
     public void testZeroFileModeInZip()
         throws Exception
     {
-
         String s = "target/zip-unarchiver-filemode-tests";
         File testZip = new File( getBasedir(), "src/test/resources/zeroFileMode/foobar.zip" );
         File outputDirectory = new File( getBasedir(), s );
-
         FileUtils.deleteDirectory( outputDirectory );
-
         ZipUnArchiver zu = getZipUnArchiver( testZip );
         zu.setIgnorePermissions( false );
         zu.extract( "", outputDirectory );
-
         File testScript = new File( outputDirectory, "foo.txt" );
-
         final Method canRead;
         try
         {
@@ -69,13 +53,11 @@ public class ZipUnArchiverTest
         {
         }
     }
-
     public void testUnarchiveUtf8()
         throws Exception
     {
         File dest = new File( "target/output/unzip/utf8" );
         dest.mkdirs();
-
         final File zipFile = new File( "target/output/unzip/utf8-default.zip" );
         final ZipArchiver zipArchiver = getZipArchiver( zipFile );
         zipArchiver.addDirectory( new File( "src/test/resources/miscUtf8" ) );
@@ -87,43 +69,29 @@ public class ZipUnArchiverTest
         assertTrue( new File( dest, "an\u00FCmlaut.txt" ).exists() );
         assertTrue( new File( dest, "\u20acuro.txt" ).exists() );
     }
-
     private void runUnarchiver( String path, FileSelector[] selectors, boolean[] results )
         throws Exception
     {
         String s = "target/zip-unarchiver-tests";
-
         File testJar = new File( getBasedir(), "src/test/jars/test.jar" );
-
         File outputDirectory = new File( getBasedir(), s );
-
         ZipUnArchiver zu = getZipUnArchiver( testJar );
         zu.setFileSelectors( selectors );
-
         FileUtils.deleteDirectory( outputDirectory );
-
         zu.extract( path, outputDirectory );
-
         File f0 = new File( getBasedir(), s + "/resources/artifactId/test.properties" );
-
         assertEquals( results[0], f0.exists() );
-
         File f1 = new File( getBasedir(), s + "/resources/artifactId/directory/test.properties" );
-
         assertEquals( results[1], f1.exists() );
-
         File f2 = new File( getBasedir(), s + "/META-INF/MANIFEST.MF" );
-
         assertEquals( results[2], f2.exists() );
     }
-
     private ZipUnArchiver getZipUnArchiver( File testJar ) throws Exception
     {
         ZipUnArchiver zu = (ZipUnArchiver) lookup( UnArchiver.ROLE, "zip" );
         zu.setSourceFile( testJar );
         return zu;
     }
-
     public void testExtractingADirectoryFromAJarFile()
         throws Exception
     {
@@ -138,7 +106,6 @@ public class ZipUnArchiverTest
                            true, true, true
                        } );
     }
-
     public void testSelectors()
         throws Exception
     {
@@ -189,7 +156,6 @@ public class ZipUnArchiverTest
                            true, false, false
                        } );
     }
-
     public void testExtractingZipWithEntryOutsideDestDirThrowsException()
             throws Exception
     {
@@ -197,9 +163,7 @@ public class ZipUnArchiverTest
         String s = "target/zip-unarchiver-slip-tests";
         File testZip = new File( getBasedir(), "src/test/zips/zip-slip.zip" );
         File outputDirectory = new File( getBasedir(), s );
-
         FileUtils.deleteDirectory( outputDirectory );
-
         try
         {
             ZipUnArchiver zu = getZipUnArchiver( testZip );
@@ -209,11 +173,9 @@ public class ZipUnArchiverTest
         {
             ex = e;
         }
-
         assertNotNull( ex );
         assertTrue( ex.getMessage().startsWith( "Entry is outside of the target directory" ) );
     }
-
     private ZipArchiver getZipArchiver()
     {
         try
@@ -225,12 +187,10 @@ public class ZipUnArchiverTest
             throw new RuntimeException( e );
         }
     }
-
     private ZipArchiver getZipArchiver( File destFile )
     {
         final ZipArchiver zipArchiver = getZipArchiver();
         zipArchiver.setDestFile( destFile );
         return zipArchiver;
     }
-
 }

@@ -1,5 +1,4 @@
 package org.airsonic.player.security;
-
 import org.airsonic.player.service.JWTSecurityService;
 import org.airsonic.player.service.SecurityService;
 import org.airsonic.player.service.SettingsService;
@@ -21,31 +20,22 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class GlobalSecurityConfig extends GlobalAuthenticationConfigurerAdapter {
-
     private static Logger logger = LoggerFactory.getLogger(GlobalSecurityConfig.class);
-
     static final String FAILURE_URL = "/login?error=1";
-
     @Autowired
     private SecurityService securityService;
-
     @Autowired
     private CsrfSecurityRequestMatcher csrfSecurityRequestMatcher;
-
     @Autowired
     SettingsService settingsService;
-
     @Autowired
     CustomUserDetailsContextMapper customUserDetailsContextMapper;
-
     @Autowired
     ApplicationEventPublisher eventPublisher;
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         if (settingsService.isLdapEnabled()) {
@@ -68,27 +58,20 @@ public class GlobalSecurityConfig extends GlobalAuthenticationConfigurerAdapter 
         }
         auth.authenticationProvider(new JWTAuthenticationProvider(jwtKey));
     }
-
-
     @Configuration
     @Order(1)
     public class ExtSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
         public ExtSecurityConfiguration() {
             super(true);
         }
-
         @Bean(name = "jwtAuthenticationFilter")
         public JWTRequestParameterProcessingFilter jwtAuthFilter() throws Exception {
             return new JWTRequestParameterProcessingFilter(authenticationManager(), FAILURE_URL);
         }
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-
             http = http.addFilter(new WebAsyncManagerIntegrationFilter());
             http = http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
-
             http
                     .antMatcher("/ext/**")
                     .csrf().requireCsrfProtectionMatcher(csrfSecurityRequestMatcher).and()
@@ -104,20 +87,16 @@ public class GlobalSecurityConfig extends GlobalAuthenticationConfigurerAdapter 
                     .servletApi();
         }
     }
-
     @Configuration
     @Order(2)
     public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-
             RESTRequestParameterProcessingFilter restAuthenticationFilter = new RESTRequestParameterProcessingFilter();
             restAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
             restAuthenticationFilter.setSecurityService(securityService);
             restAuthenticationFilter.setEventPublisher(eventPublisher);
             http = http.addFilterBefore(restAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
             http
                     .csrf()
                     .requireCsrfProtectionMatcher(csrfSecurityRequestMatcher)
@@ -159,11 +138,9 @@ public class GlobalSecurityConfig extends GlobalAuthenticationConfigurerAdapter 
                     .failureUrl(FAILURE_URL)
                     .usernameParameter("j_username")
                     .passwordParameter("j_password")
-                    // see http://docs.spring.io/spring-security/site/docs/3.2.4.RELEASE/reference/htmlsingle/#csrf-logout
                     .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl(
                     "/login?logout")
                     .and().rememberMe().key("airsonic");
         }
-
     }
 }

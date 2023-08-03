@@ -1,20 +1,5 @@
-/*
- * Copyright 2010 Red Hat, Inc. and/or its affiliates.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package org.jbpm.designer.web.server;
 
+package org.jbpm.designer.web.server;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-
 import bpsim.impl.BpsimFactoryImpl;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -82,14 +66,6 @@ import org.jbpm.designer.web.profile.impl.JbpmProfileImpl;
 import org.jbpm.migration.JbpmMigration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-/**
- *
- * Transformer for svg process representation to
- * various formats.
- *
- * @author Tihomir Surdilovic
- */
 public class TransformerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger _logger = LoggerFactory.getLogger(TransformerServlet.class);
@@ -101,12 +77,10 @@ public class TransformerServlet extends HttpServlet {
     private static final String JSON_TO_BPMN2 = "json2bpmn2";
     private static final String HTML_TO_PDF = "html2pdf";
     private static final String RESPACTION_SHOWURL = "showurl";
-
     private static final String SVG_WIDTH_PARAM = "svgwidth";
     private static final String SVG_HEIGHT_PARAM = "svgheight";
     private static final float DEFAULT_PDF_WIDTH = (float) 750.0;
     private static final float DEFAULT_PDF_HEIGHT = (float) 500.0;
-
     static {
         StringTokenizer html2pdfTagsSupported = new StringTokenizer("ol ul li a pre font span br p div body table td th tr i b u sub sup em strong s strike h1 h2 h3 h4 h5 h6");
         HTMLWorker.tagsSupported.clear();
@@ -114,21 +88,16 @@ public class TransformerServlet extends HttpServlet {
             HTMLWorker.tagsSupported.put(html2pdfTagsSupported.nextToken(), null);
         }
     }
-
     private IDiagramProfile profile;
-    // For unit testing purpose only
     public void setProfile(IDiagramProfile profile) {
         this.profile = profile;
     }
-
     @Inject
     private IDiagramProfileService _profileService = null;
-
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -148,66 +117,49 @@ public class TransformerServlet extends HttpServlet {
         String sourceEnc = req.getParameter("enc");
         String convertServiceTasks = req.getParameter("convertservicetasks");
         String htmlSourceEnc = req.getParameter("htmlenc");
-
         String formattedSvg = ( formattedSvgEncoded == null ? "" : new String(Base64.decodeBase64(formattedSvgEncoded), "UTF-8") );
-
         String htmlSource = ( htmlSourceEnc == null ? "" : new String(Base64.decodeBase64(htmlSourceEnc), "UTF-8") );
-
         if(sourceEnc != null && sourceEnc.equals("true")) {
             bpmn2in = new String(Base64.decodeBase64(bpmn2in), "UTF-8");
         }
-
         if (profile == null) {
             profile = _profileService.findProfile(req, profileName);
         }
-
         DroolsFactoryImpl.init();
         BpsimFactoryImpl.init();
-
         Repository repository = profile.getRepository();
-
         if (transformto != null && transformto.equals(TO_PDF)) {
             if(respaction != null && respaction.equals(RESPACTION_SHOWURL)) {
-
                 try {
                     ByteArrayOutputStream pdfBout = new ByteArrayOutputStream();
                     Document pdfDoc = new Document(PageSize.A4);
                     PdfWriter pdfWriter = PdfWriter.getInstance(pdfDoc, pdfBout);
                     pdfDoc.open();
                     pdfDoc.addCreationDate();
-
                     PNGTranscoder t = new PNGTranscoder();
                     t.addTranscodingHint(ImageTranscoder.KEY_MEDIA, "screen");
-
                     float widthHint = getFloatParam(req, SVG_WIDTH_PARAM, DEFAULT_PDF_WIDTH);
                     float heightHint = getFloatParam(req, SVG_HEIGHT_PARAM, DEFAULT_PDF_HEIGHT);
                     String objStyle = "style=\"width:" + widthHint + "px;height:" + heightHint + "px;\"";
                     t.addTranscodingHint(SVGAbstractTranscoder.KEY_WIDTH, widthHint);
                     t.addTranscodingHint(SVGAbstractTranscoder.KEY_HEIGHT, heightHint);
-
-
                     ByteArrayOutputStream imageBout = new ByteArrayOutputStream();
                     TranscoderInput input = new TranscoderInput(new StringReader(
                             formattedSvg));
                     TranscoderOutput output = new TranscoderOutput(imageBout);
                     t.transcode(input, output);
-
                     Image processImage = Image.getInstance(imageBout.toByteArray());
                     scalePDFImage(pdfDoc, processImage);
                     pdfDoc.add(processImage);
-
                     pdfDoc.close();
-
                     resp.setCharacterEncoding("UTF-8");
                     resp.setContentType("text/plain");
-
                     resp.getWriter().write("<object type=\"application/pdf\" " + objStyle + " data=\"data:application/pdf;base64," + Base64.encodeBase64String(pdfBout.toByteArray()) + "\"></object>");
                 } catch(Exception e) {
                     resp.sendError(500, e.getMessage());
                 }
             } else {
                 storeInRepository(uuid, formattedSvg, transformto, processid, repository);
-
                 try {
                     resp.setCharacterEncoding("UTF-8");
                     resp.setContentType("application/pdf");
@@ -218,24 +170,20 @@ public class TransformerServlet extends HttpServlet {
                         resp.setHeader("Content-Disposition",
                                 "attachment; filename=\"" + uuid + ".pdf\"");
                     }
-
                     ByteArrayOutputStream bout = new ByteArrayOutputStream();
                     Document pdfDoc = new Document(PageSize.A4);
                     PdfWriter pdfWriter = PdfWriter.getInstance(pdfDoc, resp.getOutputStream());
                     pdfDoc.open();
                     pdfDoc.addCreationDate();
-
                     PNGTranscoder t = new PNGTranscoder();
                     t.addTranscodingHint(ImageTranscoder.KEY_MEDIA, "screen");
                     TranscoderInput input = new TranscoderInput(new StringReader(
                             formattedSvg));
                     TranscoderOutput output = new TranscoderOutput(bout);
                     t.transcode(input, output);
-
                     Image processImage = Image.getInstance(bout.toByteArray());
                     scalePDFImage(pdfDoc, processImage);
                     pdfDoc.add(processImage);
-
                     pdfDoc.close();
                 } catch(Exception e) {
                     resp.sendError(500, e.getMessage());
@@ -267,7 +215,6 @@ public class TransformerServlet extends HttpServlet {
                     } else {
                         resp.setHeader("Content-Disposition", "attachment; filename=\"" + uuid + ".png\"");
                     }
-
                     PNGTranscoder t = new PNGTranscoder();
                     t.addTranscodingHint(ImageTranscoder.KEY_MEDIA, "screen");
                     TranscoderInput input = new TranscoderInput(new StringReader(
@@ -285,14 +232,9 @@ public class TransformerServlet extends HttpServlet {
             try {
                 String bpmn2 = JbpmMigration.transform(jpdl);
                 Definitions def = ((JbpmProfileImpl) profile).getDefinitions(bpmn2);
-                // add bpmndi info to Definitions with help of gpd
                 addBpmnDiInfo(def, gpd);
-                // hack for now
                 revisitSequenceFlows(def, bpmn2);
-                // another hack if id == name
                 revisitNodeNames(def);
-
-                // get the xml from Definitions
                 ResourceSet rSet = new ResourceSetImpl();
                 rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("bpmn2", new JBPMBpmn2ResourceFactoryImpl());
                 JBPMBpmn2ResourceImpl bpmn2resource = (JBPMBpmn2ResourceImpl) rSet.createResource(URI.createURI("virtual.bpmn2"));
@@ -301,7 +243,6 @@ public class TransformerServlet extends HttpServlet {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 bpmn2resource.save(outputStream, new HashMap<Object, Object>());
                 String fullXmlModel =  outputStream.toString();
-                // convert to json and write response
                 String json = profile.createUnmarshaller().parseModel(fullXmlModel, profile, pp);
                 resp.setCharacterEncoding("UTF-8");
                 resp.setContentType("application/json");
@@ -317,12 +258,9 @@ public class TransformerServlet extends HttpServlet {
                     bpmn2in = bpmn2in.replaceAll("drools:taskName=\".*?\"", "drools:taskName=\"ReadOnlyService\"");
                     bpmn2in = bpmn2in.replaceAll("tns:taskName=\".*?\"", "tns:taskName=\"ReadOnlyService\"");
                 }
-
                 Definitions def = ((JbpmProfileImpl) profile).getDefinitions(bpmn2in);
-                def.setTargetNamespace("http://www.omg.org/bpmn20");
-
+                def.setTargetNamespace("http:
                 if(convertServiceTasks != null && convertServiceTasks.equals("true")) {
-                    // fix the data input associations for converted tasks
                     List<RootElement> rootElements =  def.getRootElements();
                     for(RootElement root : rootElements) {
                         if(root instanceof Process) {
@@ -330,8 +268,6 @@ public class TransformerServlet extends HttpServlet {
                         }
                     }
                 }
-
-                // get the xml from Definitions
                 ResourceSet rSet = new ResourceSetImpl();
                 rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("bpmn2", new JBPMBpmn2ResourceFactoryImpl());
                 JBPMBpmn2ResourceImpl bpmn2resource = (JBPMBpmn2ResourceImpl) rSet.createResource(URI.createURI("virtual.bpmn2"));
@@ -371,7 +307,6 @@ public class TransformerServlet extends HttpServlet {
                 resp.setContentType("application/xml");
                 resp.getWriter().print("");
             }
-
         } else if (transformto != null && transformto.equals(HTML_TO_PDF)) {
             try {
                 resp.setContentType("application/pdf");
@@ -382,7 +317,6 @@ public class TransformerServlet extends HttpServlet {
                     resp.setHeader("Content-Disposition",
                             "attachment; filename=\"" + uuid + ".pdf\"");
                 }
-
                 Document pdfDoc = new Document(PageSize.A4);
                 PdfWriter pdfWriter = PdfWriter.getInstance(pdfDoc, resp.getOutputStream());
                 pdfDoc.open();
@@ -390,7 +324,6 @@ public class TransformerServlet extends HttpServlet {
                 pdfDoc.addSubject("Business Process Documentation");
                 pdfDoc.addCreationDate();
                 pdfDoc.addTitle("Process Documentation");
-
                 HTMLWorker htmlWorker = new HTMLWorker(pdfDoc);
                 htmlWorker.parse(new StringReader(htmlSource));
                 pdfDoc.close();
@@ -399,7 +332,6 @@ public class TransformerServlet extends HttpServlet {
             }
         }
     }
-
     private void updateTaskDataInputs(FlowElementsContainer container, Definitions def) {
         List<FlowElement> flowElements = container.getFlowElements();
         for(FlowElement fe : flowElements) {
@@ -415,7 +347,6 @@ public class TransformerServlet extends HttpServlet {
                         }
                     }
                 }
-
                 if(foundReadOnlyServiceTask) {
                     if(task.getDataInputAssociations() != null) {
                         List<DataInputAssociation> dataInputAssociations = task.getDataInputAssociations();
@@ -431,7 +362,6 @@ public class TransformerServlet extends HttpServlet {
             }
         }
     }
-
     private void revisitNodeNames(Definitions def) {
         List<RootElement> rootElements =  def.getRootElements();
         for(RootElement root : rootElements) {
@@ -440,14 +370,12 @@ public class TransformerServlet extends HttpServlet {
                 List<FlowElement> flowElements = process.getFlowElements();
                 for(FlowElement fe : flowElements) {
                     if(fe.getName() != null && fe.getId().equals(fe.getName())) {
-                        // change the name so they are not the same
                         fe.setName("_" + fe.getName());
                     }
                 }
             }
         }
     }
-
     private void revisitSequenceFlows(Definitions def, String orig) {
         try {
             Map<String, Map<String, String>> sequenceFlowMapping = new HashMap<String, Map<String,String>>();
@@ -503,7 +431,6 @@ public class TransformerServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
     private FlowNode getFlowNode(Definitions def, String nodeId) {
         List<RootElement> rootElements =  def.getRootElements();
         for(RootElement root : rootElements) {
@@ -521,7 +448,6 @@ public class TransformerServlet extends HttpServlet {
         }
         return null;
     }
-
     private void addBpmnDiInfo(Definitions def, String gpd) {
         try {
             Map<String, Bounds> _bounds = new HashMap<String, Bounds>();
@@ -557,7 +483,6 @@ public class TransformerServlet extends HttpServlet {
                     }
                 }
             }
-
             for (RootElement rootElement: def.getRootElements()) {
                 if (rootElement instanceof Process) {
                     Process process = (Process) rootElement;
@@ -587,10 +512,6 @@ public class TransformerServlet extends HttpServlet {
                                 point.setY(sourceBounds.getY() + (sourceBounds.getHeight()/2));
                             }
                             edge.getWaypoint().add(point);
-//	    					List<Point> dockers = _dockers.get(sequenceFlow.getId());
-//	    					for (int i = 1; i < dockers.size() - 1; i++) {
-//	    						edge.getWaypoint().add(dockers.get(i));
-//	    					}
                             point = dcFactory.createPoint();
                             if(sequenceFlow.getTargetRef() != null) {
                                 Bounds targetBounds = _bounds.get(sequenceFlow.getTargetRef().getId());
@@ -601,7 +522,6 @@ public class TransformerServlet extends HttpServlet {
                             plane.getPlaneElement().add(edge);
                         }
                     }
-
                     def.getDiagrams().add(diagram);
                 }
             }
@@ -611,7 +531,6 @@ public class TransformerServlet extends HttpServlet {
             _logger.error("Exception adding bpmndi info: " + e.getMessage());
         }
     }
-
     protected void storeInRepository(String uuid, String svg, String transformto, String processid, Repository repository) {
         String assetFullName = "";
         try {
@@ -631,35 +550,27 @@ public class TransformerServlet extends HttpServlet {
                     assetExt = "-svg";
                     assetFileExt = ".svg";
                 }
-
                 if(processid.startsWith(".")) {
                     processid = processid.substring(1, processid.length());
                 }
                 assetFullName = processid + assetExt + assetFileExt;
-
                 repository.deleteAssetFromPath(processAsset.getAssetLocation() + File.separator +  assetFullName);
-
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
                 if (transformto.equals(TO_PDF)) {
-
                     ByteArrayOutputStream bout = new ByteArrayOutputStream();
                     Document pdfDoc = new Document(PageSize.A4);
                     PdfWriter pdfWriter = PdfWriter.getInstance(pdfDoc, outputStream);
                     pdfDoc.open();
                     pdfDoc.addCreationDate();
-
                     PNGTranscoder t = new PNGTranscoder();
                     t.addTranscodingHint(ImageTranscoder.KEY_MEDIA, "screen");
                     TranscoderInput input = new TranscoderInput(new StringReader(
                             svg));
                     TranscoderOutput output = new TranscoderOutput(bout);
                     t.transcode(input, output);
-
                     Image processImage = Image.getInstance(bout.toByteArray());
                     scalePDFImage(pdfDoc, processImage);
                     pdfDoc.add(processImage);
-
                     pdfDoc.close();
                 } else if (transformto.equals(TO_PNG)) {
                     PNGTranscoder t = new PNGTranscoder();
@@ -670,7 +581,6 @@ public class TransformerServlet extends HttpServlet {
                     try {
                         t.transcode(input, output);
                     } catch (Exception e) {
-                        // issue with batik here..do not make a big deal
                         _logger.debug(e.getMessage());
                     }
                 } else if(transformto.equals(TO_SVG)) {
@@ -679,19 +589,15 @@ public class TransformerServlet extends HttpServlet {
                     outStreamWriter.close();
                 }
                 AssetBuilder builder = AssetBuilderFactory.getAssetBuilder(Asset.AssetType.Byte);
-
                 builder.name(processid + assetExt)
                         .type(assetFileExt.substring(1))
                         .location(processAsset.getAssetLocation())
                         .version(processAsset.getVersion())
                         .content(outputStream.toByteArray());
-
                 Asset<byte[]> resourceAsset = builder.getAsset();
-
                 repository.createAsset(resourceAsset);
             }
         } catch (Exception e) {
-            // just log that error happened
             if (e.getMessage() != null) {
                 _logger.error(e.getMessage());
             }
@@ -701,19 +607,15 @@ public class TransformerServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
     private String getProcessContent(String uuid, Repository repository) {
         try {
-
             Asset<String> processAsset = repository.loadAsset(uuid);
             return processAsset.getAssetContent();
         } catch (Exception e) {
-            // we dont want to barf..just log that error happened
             _logger.error(e.getMessage());
             return "";
         }
     }
-
     private float getFloatParam(final HttpServletRequest req, final String paramName, final float defaultValue) {
         float value = defaultValue;
         String paramValue = req.getParameter(paramName);
@@ -726,11 +628,9 @@ public class TransformerServlet extends HttpServlet {
         }
         return value;
     }
-
     public void scalePDFImage(Document document, Image image) {
         float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
                 - document.rightMargin()) / image.getWidth()) * 100;
-
         image.scalePercent(scaler);
     }
 }

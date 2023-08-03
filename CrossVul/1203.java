@@ -1,39 +1,13 @@
 package org.bouncycastle.crypto.engines;
-
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.util.Pack;
-
-/**
- * an implementation of the AES (Rijndael), from FIPS-197.
- * <p>
- * For further details see: <a href="http://csrc.nist.gov/encryption/aes/">http://csrc.nist.gov/encryption/aes/</a>.
- *
- * This implementation is based on optimizations from Dr. Brian Gladman's paper and C code at
- * <a href="http://fp.gladman.plus.com/cryptography_technology/rijndael/">http://fp.gladman.plus.com/cryptography_technology/rijndael/</a>
- *
- * There are three levels of tradeoff of speed vs memory
- * Because java has no preprocessor, they are written as three separate classes from which to choose
- *
- * The fastest uses 8Kbytes of static tables to precompute round calculations, 4 256 word tables for encryption
- * and 4 for decryption.
- *
- * The middle performance version uses only one 256 word table for each, for a total of 2Kbytes,
- * adding 12 rotate operations per round to compute the values contained in the other tables from
- * the contents of the first.
- *
- * The slowest version uses no static tables at all and computes the values in each round.
- * <p>
- * This file contains the middle performance version with 2Kbytes of static tables for round precomputation.
- *
- */
 public class AESEngine
     implements BlockCipher
 {
-    // The S box
     private static final byte[] S = {
         (byte)99, (byte)124, (byte)119, (byte)123, (byte)242, (byte)107, (byte)111, (byte)197,
         (byte)48,   (byte)1, (byte)103,  (byte)43, (byte)254, (byte)215, (byte)171, (byte)118,
@@ -68,8 +42,6 @@ public class AESEngine
         (byte)140, (byte)161, (byte)137,  (byte)13, (byte)191, (byte)230,  (byte)66, (byte)104,
         (byte)65, (byte)153,  (byte)45,  (byte)15, (byte)176,  (byte)84, (byte)187,  (byte)22,
     };
-
-    // The inverse S-box
     private static final byte[] Si = {
         (byte)82,   (byte)9, (byte)106, (byte)213,  (byte)48,  (byte)54, (byte)165,  (byte)56,
         (byte)191,  (byte)64, (byte)163, (byte)158, (byte)129, (byte)243, (byte)215, (byte)251,
@@ -104,13 +76,9 @@ public class AESEngine
         (byte)23,  (byte)43,   (byte)4, (byte)126, (byte)186, (byte)119, (byte)214,  (byte)38,
         (byte)225, (byte)105,  (byte)20,  (byte)99,  (byte)85,  (byte)33,  (byte)12, (byte)125,
         };
-
-    // vector used in calculating key schedule (powers of x in GF(256))
     private static final int[] rcon = {
          0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
          0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91 };
-
-    // precomputation tables of calculations for rounds
     private static final int[] T0 =
     {
      0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6, 0x0df2f2ff, 
@@ -165,7 +133,6 @@ public class AESEngine
      0x31e6e6d7, 0xc6424284, 0xb86868d0, 0xc3414182, 0xb0999929, 
      0x772d2d5a, 0x110f0f1e, 0xcbb0b07b, 0xfc5454a8, 0xd6bbbb6d, 
      0x3a16162c};
-
 private static final int[] Tinv0 =
     {
      0x50a7f451, 0x5365417e, 0xc3a4171a, 0x965e273a, 0xcb6bab3b, 
@@ -220,25 +187,19 @@ private static final int[] Tinv0 =
      0x0c25e2bc, 0x8b493c28, 0x41950dff, 0x7101a839, 0xdeb30c08, 
      0x9ce4b4d8, 0x90c15664, 0x6184cb7b, 0x70b632d5, 0x745c6c48, 
      0x4257b8d0};
-
     private static int shift(int r, int shift)
     {
         return (r >>> shift) | (r << -shift);
     }
-
-    /* multiply four bytes in GF(2^8) by 'x' {02} in parallel */
-
     private static final int m1 = 0x80808080;
     private static final int m2 = 0x7f7f7f7f;
     private static final int m3 = 0x0000001b;
     private static final int m4 = 0xC0C0C0C0;
     private static final int m5 = 0x3f3f3f3f;
-
     private static int FFmulX(int x)
     {
         return (((x & m2) << 1) ^ (((x & m1) >>> 7) * m3));
     }
-
     private static int FFmulX2(int x)
     {
         int t0  = (x & m5) << 2;
@@ -246,17 +207,6 @@ private static final int[] Tinv0 =
             t1 ^= (t1 >>> 1);
         return t0 ^ (t1 >>> 2) ^ (t1 >>> 5);
     }
-
-    /* 
-       The following defines provide alternative definitions of FFmulX that might
-       give improved performance if a fast 32-bit multiply is not available.
-       
-       private int FFmulX(int x) { int u = x & m1; u |= (u >> 1); return ((x & m2) << 1) ^ ((u >>> 3) | (u >>> 6)); } 
-       private static final int  m4 = 0x1b1b1b1b;
-       private int FFmulX(int x) { int u = x & m1; return ((x & m2) << 1) ^ ((u - (u >>> 7)) & m4); } 
-
-    */
-
     private static int inv_mcol(int x)
     {
         int t0, t1;
@@ -267,18 +217,10 @@ private static final int[] Tinv0 =
         t0 ^= t1 ^ shift(t1, 16);
         return t0;
     }
-
     private static int subWord(int x)
     {
         return (S[x&255]&255 | ((S[(x>>8)&255]&255)<<8) | ((S[(x>>16)&255]&255)<<16) | S[(x>>24)&255]<<24);
     }
-
-    /**
-     * Calculate the necessary round keys
-     * The number of calculations depends on key size and block size
-     * AES specified a fixed block size of 128 bits and key sizes 128/192/256 bits
-     * This code is written assuming those are the only possible values
-     */
     private int[][] generateWorkingKey(byte[] key, boolean forEncryption)
     {
         int keyLen = key.length;
@@ -286,11 +228,9 @@ private static final int[] Tinv0 =
         {
             throw new IllegalArgumentException("Key length not 128/192/256 bits.");
         }
-
         int KC = keyLen >>> 2;
-        ROUNDS = KC + 6;  // This is not always true for the generalized Rijndael that allows larger block sizes
-        int[][] W = new int[ROUNDS+1][4];   // 4 words in a block
-
+        ROUNDS = KC + 6;  
+        int[][] W = new int[ROUNDS+1][4];   
         switch (KC)
         {
         case 4:
@@ -299,7 +239,6 @@ private static final int[] Tinv0 =
             int t1 = Pack.littleEndianToInt(key,  4); W[0][1] = t1;
             int t2 = Pack.littleEndianToInt(key,  8); W[0][2] = t2;
             int t3 = Pack.littleEndianToInt(key, 12); W[0][3] = t3;
-
             for (int i = 1; i <= 10; ++i)
             {
                 int u = subWord(shift(t3, 8)) ^ rcon[i - 1];
@@ -308,7 +247,6 @@ private static final int[] Tinv0 =
                 t2 ^= t1; W[i][2] = t2;
                 t3 ^= t2; W[i][3] = t3;
             }
-
             break;
         }
         case 6:
@@ -319,7 +257,6 @@ private static final int[] Tinv0 =
             int t3 = Pack.littleEndianToInt(key, 12); W[0][3] = t3;
             int t4 = Pack.littleEndianToInt(key, 16); W[1][0] = t4;
             int t5 = Pack.littleEndianToInt(key, 20); W[1][1] = t5;
-
             int rcon = 1;
             int u = subWord(shift(t5, 8)) ^ rcon; rcon <<= 1;
             t0 ^= u;  W[1][2] = t0;
@@ -328,7 +265,6 @@ private static final int[] Tinv0 =
             t3 ^= t2; W[2][1] = t3;
             t4 ^= t3; W[2][2] = t4;
             t5 ^= t4; W[2][3] = t5;
-
             for (int i = 3; i < 12; i += 3)
             {
                 u = subWord(shift(t5, 8)) ^ rcon; rcon <<= 1;
@@ -346,13 +282,11 @@ private static final int[] Tinv0 =
                 t4 ^= t3; W[i + 2][2] = t4;
                 t5 ^= t4; W[i + 2][3] = t5;
             }
-
             u = subWord(shift(t5, 8)) ^ rcon;
             t0 ^= u;  W[12][0] = t0;
             t1 ^= t0; W[12][1] = t1;
             t2 ^= t1; W[12][2] = t2;
             t3 ^= t2; W[12][3] = t3;
-
             break;
         }
         case 8:
@@ -365,9 +299,7 @@ private static final int[] Tinv0 =
             int t5 = Pack.littleEndianToInt(key, 20); W[1][1] = t5;
             int t6 = Pack.littleEndianToInt(key, 24); W[1][2] = t6;
             int t7 = Pack.littleEndianToInt(key, 28); W[1][3] = t7;
-
             int u, rcon = 1;
-
             for (int i = 2; i < 14; i += 2)
             {
                 u = subWord(shift(t7, 8)) ^ rcon; rcon <<= 1;
@@ -381,13 +313,11 @@ private static final int[] Tinv0 =
                 t6 ^= t5; W[i + 1][2] = t6;
                 t7 ^= t6; W[i + 1][3] = t7;
             }
-
             u = subWord(shift(t7, 8)) ^ rcon;
             t0 ^= u;  W[14][0] = t0;
             t1 ^= t0; W[14][1] = t1;
             t2 ^= t1; W[14][2] = t2;
             t3 ^= t2; W[14][3] = t3;
-
             break;
         }
         default:
@@ -395,7 +325,6 @@ private static final int[] Tinv0 =
             throw new IllegalStateException("Should never get here");
         }
         }
-
         if (!forEncryption)
         {
             for (int j = 1; j < ROUNDS; j++)
@@ -406,32 +335,16 @@ private static final int[] Tinv0 =
                 }
             }
         }
-
         return W;
     }
-
     private int         ROUNDS;
     private int[][]     WorkingKey = null;
     private int         C0, C1, C2, C3;
     private boolean     forEncryption;
-
     private static final int BLOCK_SIZE = 16;
-
-    /**
-     * default constructor - 128 bit block size.
-     */
     public AESEngine()
     {
     }
-
-    /**
-     * initialise an AES cipher.
-     *
-     * @param forEncryption whether or not we are for encryption.
-     * @param params the parameters required to set up the cipher.
-     * @exception IllegalArgumentException if the params argument is
-     * inappropriate.
-     */
     public void init(
         boolean           forEncryption,
         CipherParameters  params)
@@ -442,20 +355,16 @@ private static final int[] Tinv0 =
             this.forEncryption = forEncryption;
             return;
         }
-
         throw new IllegalArgumentException("invalid parameter passed to AES init - " + params.getClass().getName());
     }
-
     public String getAlgorithmName()
     {
         return "AES";
     }
-
     public int getBlockSize()
     {
         return BLOCK_SIZE;
     }
-
     public int processBlock(
         byte[] in,
         int inOff,
@@ -466,17 +375,14 @@ private static final int[] Tinv0 =
         {
             throw new IllegalStateException("AES engine not initialised");
         }
-
         if ((inOff + (32 / 2)) > in.length)
         {
             throw new DataLengthException("input buffer too short");
         }
-
         if ((outOff + (32 / 2)) > out.length)
         {
             throw new OutputLengthException("output buffer too short");
         }
-
         if (forEncryption)
         {
             unpackBlock(in, inOff);
@@ -489,75 +395,60 @@ private static final int[] Tinv0 =
             decryptBlock(WorkingKey);
             packBlock(out, outOff);
         }
-
         return BLOCK_SIZE;
     }
-
     public void reset()
     {
     }
-
     private void unpackBlock(
         byte[]      bytes,
         int         off)
     {
         int     index = off;
-
         C0 = (bytes[index++] & 0xff);
         C0 |= (bytes[index++] & 0xff) << 8;
         C0 |= (bytes[index++] & 0xff) << 16;
         C0 |= bytes[index++] << 24;
-
         C1 = (bytes[index++] & 0xff);
         C1 |= (bytes[index++] & 0xff) << 8;
         C1 |= (bytes[index++] & 0xff) << 16;
         C1 |= bytes[index++] << 24;
-
         C2 = (bytes[index++] & 0xff);
         C2 |= (bytes[index++] & 0xff) << 8;
         C2 |= (bytes[index++] & 0xff) << 16;
         C2 |= bytes[index++] << 24;
-
         C3 = (bytes[index++] & 0xff);
         C3 |= (bytes[index++] & 0xff) << 8;
         C3 |= (bytes[index++] & 0xff) << 16;
         C3 |= bytes[index++] << 24;
     }
-
     private void packBlock(
         byte[]      bytes,
         int         off)
     {
         int     index = off;
-
         bytes[index++] = (byte)C0;
         bytes[index++] = (byte)(C0 >> 8);
         bytes[index++] = (byte)(C0 >> 16);
         bytes[index++] = (byte)(C0 >> 24);
-
         bytes[index++] = (byte)C1;
         bytes[index++] = (byte)(C1 >> 8);
         bytes[index++] = (byte)(C1 >> 16);
         bytes[index++] = (byte)(C1 >> 24);
-
         bytes[index++] = (byte)C2;
         bytes[index++] = (byte)(C2 >> 8);
         bytes[index++] = (byte)(C2 >> 16);
         bytes[index++] = (byte)(C2 >> 24);
-
         bytes[index++] = (byte)C3;
         bytes[index++] = (byte)(C3 >> 8);
         bytes[index++] = (byte)(C3 >> 16);
         bytes[index++] = (byte)(C3 >> 24);
     }
-
-
     private void encryptBlock(int[][] KW)
     {
         int t0 = this.C0 ^ KW[0][0];
         int t1 = this.C1 ^ KW[0][1];
         int t2 = this.C2 ^ KW[0][2];
-
         int r = 1, r0, r1, r2, r3 = this.C3 ^ KW[0][3];
         while (r < ROUNDS - 1)
         {
@@ -570,26 +461,20 @@ private static final int[] Tinv0 =
             t2 = T0[r2&255] ^ shift(T0[(r3>>8)&255], 24) ^ shift(T0[(r0>>16)&255], 16) ^ shift(T0[(r1>>24)&255], 8) ^ KW[r][2];
             r3 = T0[r3&255] ^ shift(T0[(r0>>8)&255], 24) ^ shift(T0[(r1>>16)&255], 16) ^ shift(T0[(r2>>24)&255], 8) ^ KW[r++][3];
         }
-
         r0 = T0[t0&255] ^ shift(T0[(t1>>8)&255], 24) ^ shift(T0[(t2>>16)&255], 16) ^ shift(T0[(r3>>24)&255], 8) ^ KW[r][0];
         r1 = T0[t1&255] ^ shift(T0[(t2>>8)&255], 24) ^ shift(T0[(r3>>16)&255], 16) ^ shift(T0[(t0>>24)&255], 8) ^ KW[r][1];
         r2 = T0[t2&255] ^ shift(T0[(r3>>8)&255], 24) ^ shift(T0[(t0>>16)&255], 16) ^ shift(T0[(t1>>24)&255], 8) ^ KW[r][2];
         r3 = T0[r3&255] ^ shift(T0[(t0>>8)&255], 24) ^ shift(T0[(t1>>16)&255], 16) ^ shift(T0[(t2>>24)&255], 8) ^ KW[r++][3];
-
-        // the final round's table is a simple function of S so we don't use a whole other four tables for it
-
         this.C0 = (S[r0&255]&255) ^ ((S[(r1>>8)&255]&255)<<8) ^ ((S[(r2>>16)&255]&255)<<16) ^ (S[(r3>>24)&255]<<24) ^ KW[r][0];
         this.C1 = (S[r1&255]&255) ^ ((S[(r2>>8)&255]&255)<<8) ^ ((S[(r3>>16)&255]&255)<<16) ^ (S[(r0>>24)&255]<<24) ^ KW[r][1];
         this.C2 = (S[r2&255]&255) ^ ((S[(r3>>8)&255]&255)<<8) ^ ((S[(r0>>16)&255]&255)<<16) ^ (S[(r1>>24)&255]<<24) ^ KW[r][2];
         this.C3 = (S[r3&255]&255) ^ ((S[(r0>>8)&255]&255)<<8) ^ ((S[(r1>>16)&255]&255)<<16) ^ (S[(r2>>24)&255]<<24) ^ KW[r][3];
     }
-
     private void decryptBlock(int[][] KW)
     {
         int t0 = this.C0 ^ KW[ROUNDS][0];
         int t1 = this.C1 ^ KW[ROUNDS][1];
         int t2 = this.C2 ^ KW[ROUNDS][2];
-
         int r = ROUNDS - 1, r0, r1, r2, r3 = this.C3 ^ KW[ROUNDS][3];
         while (r > 1)
         {
@@ -602,14 +487,10 @@ private static final int[] Tinv0 =
             t2 = Tinv0[r2&255] ^ shift(Tinv0[(r1>>8)&255], 24) ^ shift(Tinv0[(r0>>16)&255], 16) ^ shift(Tinv0[(r3>>24)&255], 8) ^ KW[r][2];
             r3 = Tinv0[r3&255] ^ shift(Tinv0[(r2>>8)&255], 24) ^ shift(Tinv0[(r1>>16)&255], 16) ^ shift(Tinv0[(r0>>24)&255], 8) ^ KW[r--][3];
         }
-
         r0 = Tinv0[t0&255] ^ shift(Tinv0[(r3>>8)&255], 24) ^ shift(Tinv0[(t2>>16)&255], 16) ^ shift(Tinv0[(t1>>24)&255], 8) ^ KW[r][0];
         r1 = Tinv0[t1&255] ^ shift(Tinv0[(t0>>8)&255], 24) ^ shift(Tinv0[(r3>>16)&255], 16) ^ shift(Tinv0[(t2>>24)&255], 8) ^ KW[r][1];
         r2 = Tinv0[t2&255] ^ shift(Tinv0[(t1>>8)&255], 24) ^ shift(Tinv0[(t0>>16)&255], 16) ^ shift(Tinv0[(r3>>24)&255], 8) ^ KW[r][2];
         r3 = Tinv0[r3&255] ^ shift(Tinv0[(t2>>8)&255], 24) ^ shift(Tinv0[(t1>>16)&255], 16) ^ shift(Tinv0[(t0>>24)&255], 8) ^ KW[r][3];
-        
-        // the final round's table is a simple function of Si so we don't use a whole other four tables for it
-
         this.C0 = (Si[r0&255]&255) ^ ((Si[(r3>>8)&255]&255)<<8) ^ ((Si[(r2>>16)&255]&255)<<16) ^ (Si[(r1>>24)&255]<<24) ^ KW[0][0];
         this.C1 = (Si[r1&255]&255) ^ ((Si[(r0>>8)&255]&255)<<8) ^ ((Si[(r3>>16)&255]&255)<<16) ^ (Si[(r2>>24)&255]<<24) ^ KW[0][1];
         this.C2 = (Si[r2&255]&255) ^ ((Si[(r1>>8)&255]&255)<<8) ^ ((Si[(r0>>16)&255]&255)<<16) ^ (Si[(r3>>24)&255]<<24) ^ KW[0][2];

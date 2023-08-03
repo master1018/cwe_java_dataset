@@ -1,16 +1,10 @@
 package org.uberfire.io.regex;
-
 import java.net.URI;
 import java.util.Collection;
-
 import org.uberfire.java.nio.file.Path;
-
 import static org.uberfire.commons.validation.Preconditions.*;
-
 public final class AntPathMatcher {
-
     private static org.uberfire.commons.regex.util.AntPathMatcher matcher = new org.uberfire.commons.regex.util.AntPathMatcher();
-
     public static boolean filter( final Collection<String> includes,
                                   final Collection<String> excludes,
                                   final Path path ) {
@@ -26,7 +20,6 @@ public final class AntPathMatcher {
         }
         return includes( includes, path ) && !( excludes( excludes, path ) );
     }
-
     public static boolean filter( final Collection<String> includes,
                                   final Collection<String> excludes,
                                   final URI uri ) {
@@ -42,40 +35,34 @@ public final class AntPathMatcher {
         }
         return includes( includes, uri ) && !( excludes( excludes, uri ) );
     }
-
     public static boolean includes( final Collection<String> patterns,
                                     final Path path ) {
         checkNotNull( "patterns", patterns );
         checkNotNull( "path", path );
         return matches( patterns, path );
     }
-
     public static boolean includes( final Collection<String> patterns,
                                     final URI uri ) {
         checkNotNull( "patterns", patterns );
         checkNotNull( "uri", uri );
         return matches( patterns, uri );
     }
-
     public static boolean excludes( final Collection<String> patterns,
                                     final URI uri ) {
         checkNotNull( "patterns", patterns );
         checkNotNull( "uri", uri );
         return matches( patterns, uri );
     }
-
     public static boolean excludes( final Collection<String> patterns,
                                     final Path path ) {
         checkNotNull( "patterns", patterns );
         checkNotNull( "path", path );
         return matches( patterns, path );
     }
-
     private static boolean matches( final Collection<String> patterns,
                                     final Path path ) {
         return matches( patterns, path.toUri() );
     }
-
     private static boolean matches( final Collection<String> patterns,
                                     final URI uri ) {
         for ( final String pattern : patterns ) {
@@ -85,5 +72,4 @@ public final class AntPathMatcher {
         }
         return false;
     }
-
 }

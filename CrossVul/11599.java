@@ -1,26 +1,5 @@
-/**
- * JBoss, Home of Professional Open Source
- * Copyright 2010, Red Hat, Inc. and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
- * full listing of individual contributors.
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- **/
-package org.ajax4jsf.resource;
 
+package org.ajax4jsf.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
@@ -33,17 +12,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-/**
- * When deserializing objects, first check that the class being deserialized is in the allowed whitelist.
- *
- * @author <a href="http://community.jboss.org/people/bleathem">Brian Leathem</a>
- */
 public class LookAheadObjectInputStream extends ObjectInputStream {
     private static final Map<String, Class<?>> PRIMITIVE_TYPES = new HashMap<String, Class<?>>(9, 1.0F);
     private static Set<Class> whitelistBaseClasses = new HashSet<Class>();
     private static Set<String> whitelistClassNameCache = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
-
     static {
         PRIMITIVE_TYPES.put("bool", Boolean.TYPE);
         PRIMITIVE_TYPES.put("byte", Byte.TYPE);
@@ -54,7 +26,6 @@ public class LookAheadObjectInputStream extends ObjectInputStream {
         PRIMITIVE_TYPES.put("float", Float.TYPE);
         PRIMITIVE_TYPES.put("double", Double.TYPE);
         PRIMITIVE_TYPES.put("void", Void.TYPE);
-
         whitelistClassNameCache.add(new Object[0].getClass().getName());
         whitelistClassNameCache.add(new String[0].getClass().getName());
         whitelistClassNameCache.add(new Boolean[0].getClass().getName());
@@ -66,23 +37,16 @@ public class LookAheadObjectInputStream extends ObjectInputStream {
         whitelistClassNameCache.add(new Float[0].getClass().getName());
         whitelistClassNameCache.add(new Double[0].getClass().getName());
         whitelistClassNameCache.add(new Void[0].getClass().getName());
-
         whitelistBaseClasses.add(String.class);
         whitelistBaseClasses.add(Boolean.class);
         whitelistBaseClasses.add(Byte.class);
         whitelistBaseClasses.add(Character.class);
         whitelistBaseClasses.add(Number.class);
-
         loadWhitelist();
     }
-
     public LookAheadObjectInputStream(InputStream in) throws IOException {
         super(in);
     }
-
-    /**
-     * Only deserialize primitive or whitelisted classes
-     */
     @Override
     protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
         Class<?> primitiveType = PRIMITIVE_TYPES.get(desc.getName());
@@ -94,10 +58,6 @@ public class LookAheadObjectInputStream extends ObjectInputStream {
         }
         return super.resolveClass(desc);
     }
-
-    /**
-     * Determine if the given requestedClassName is allowed by the whitelist
-     */
     boolean isClassValid(String requestedClassName) {
         if (whitelistClassNameCache.contains(requestedClassName)) {
             return true;
@@ -115,10 +75,6 @@ public class LookAheadObjectInputStream extends ObjectInputStream {
         }
         return false;
     }
-
-    /**
-     * Load the whitelist from the properties file
-     */
     static void loadWhitelist() {
         Properties whitelistProperties = new Properties();
         InputStream stream = null;

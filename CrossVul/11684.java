@@ -1,17 +1,9 @@
 package io.hawt.web.plugin.karaf.terminal;
-
 import io.hawt.system.ConfigManager;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-/**
- * @author Stan Lewis
- */
 public class KarafTerminalContextListener implements ServletContextListener {
-
   private ConfigManager configManager = new ConfigManager();
-
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
@@ -21,7 +13,6 @@ public class KarafTerminalContextListener implements ServletContextListener {
     }
     sce.getServletContext().setAttribute("ConfigManager", configManager);
   }
-
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
     try {
@@ -29,10 +20,8 @@ public class KarafTerminalContextListener implements ServletContextListener {
     } catch (Exception e) {
       throw createServletException(e);
     }
-
   }
   protected RuntimeException createServletException(Exception e) {
     return new RuntimeException(e);
   }
-
 }

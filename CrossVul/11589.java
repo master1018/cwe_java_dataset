@@ -1,26 +1,5 @@
-/**
- * License Agreement.
- *
- * Rich Faces - Natural Ajax for Java Server Faces (JSF)
- *
- * Copyright (C) 2007 Exadel, Inc.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License version 2.1 as published by the Free Software Foundation.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
- */
 
 package org.ajax4jsf.resource;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,12 +19,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
-
 import org.ajax4jsf.Messages;
 import org.ajax4jsf.resource.util.URLToStreamHelper;
 import org.ajax4jsf.util.base64.Codec;
@@ -56,50 +33,22 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-/**
- * Produce instances of InternetResource's for any types - jar resource, dynamic
- * created image, component-incapsulated etc. Realised as singleton class to
- * support cache, configuration etc.
- * 
- * @author shura (latest modification by $Author: alexsmirnov $)
- * @version $Revision: 1.1.2.1 $ $Date: 2007/01/09 18:56:58 $
- * 
- */
 public class ResourceBuilderImpl extends InternetResourceBuilder {
-
 	private static final Log log = LogFactory.getLog(ResourceBuilderImpl.class);
-
 	private static final String DATA_SEPARATOR = "/DATA/";
 	private static final String DATA_BYTES_SEPARATOR = "/DATB/";
-
 	private static final Pattern DATA_SEPARATOR_PATTERN = Pattern
 			.compile("/DAT(A|B)/");
-
-
 	private static final ResourceRenderer defaultRenderer = new MimeRenderer(null);
-
 	private Map<String, ResourceRenderer> renderers;
-	/**
-	 * keep resources instances . TODO - put this map to application-scope
-	 * attribute, for support clastering environment.
-	 */
 	private Map<String, InternetResource> resources = Collections.synchronizedMap(new HashMap<String, InternetResource>());
-
 	private long _startTime;
-
 	private Codec codec;
-
 	private static final ResourceRenderer scriptRenderer = new ScriptRenderer();
-	
 	private static final ResourceRenderer styleRenderer = new StyleRenderer();
-
 	static {
-		// renderers.put(".htc",new BehaviorRenderer());
-		// set in-memory caching ImageIO
 		Thread thread = Thread.currentThread();
 		ClassLoader initialTCCL = thread.getContextClassLoader();
-		
 		try {
 			ClassLoader systemCL = ClassLoader.getSystemClassLoader();
 			thread.setContextClassLoader(systemCL);
@@ -107,9 +56,7 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 		} finally {
 			thread.setContextClassLoader(initialTCCL);
 		}
-
 	}
-
 	public WebXml getWebXml(FacesContext context) {
 		WebXml webXml = WebXml.getInstance(context);
 		if (null == webXml) {
@@ -118,13 +65,11 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 		}
 		return webXml;
 	}
-
 	public ResourceBuilderImpl() {
 		super();
 		_startTime = System.currentTimeMillis();
 		codec = new Codec();
 		renderers = new HashMap<String, ResourceRenderer>();
-		// append known renderers for extentions.
 		renderers.put(".gif", new GifRenderer());
 		ResourceRenderer renderer = new JpegRenderer();
 		renderers.put(".jpeg", renderer);
@@ -139,10 +84,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 		renderers.put(".xcss", new TemplateCSSRenderer());
 		renderers.put(".swf", new MimeRenderer("application/x-shockwave-flash"));
 	}
-
-	/**
-	 * @throws FacesException
-	 */
 	protected void registerResources() throws FacesException {
 		try {
 			ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -156,20 +97,17 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			throw new FacesException(e);
 		}
 	}
-
 	private void registerConfig(URL resourceConfig) {
 		try {
 			if (log.isDebugEnabled()) {
 				log.debug("Process resources configuration file "
 						+ resourceConfig.toExternalForm());
 			}
-
 			InputStream in = URLToStreamHelper.urlToStream(resourceConfig);
 			try {
 				Digester digester = new Digester();
 				digester.setValidating(false);
 				digester.setEntityResolver(new EntityResolver() {
-					// Dummi resolver - alvays do nothing
 					public InputSource resolveEntity(String publicId,
 							String systemId) throws SAXException, IOException {
 						return new InputSource(new StringReader(""));
@@ -216,31 +154,11 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			throw new FacesException(e);
 		}
 	}
-
-	/**
-	 */
 	public void init() throws FacesException {
-		// TODO - mace codec configurable.
 		registerResources();
 	}
-
-	/**
-	 * Base point for creating resource. Must detect type and build appropriate
-	 * instance. Currently - make static resource for ordinary request, or
-	 * instance of class.
-	 * 
-	 * @param base
-	 *            base object for resource ( resourcess in classpath will be get
-	 *            relative to it package )
-	 * @param path
-	 *            key - path to resource, resource class name etc.
-	 * @return
-	 * @throws FacesException
-	 */
 	public InternetResource createResource(Object base, String path)
 			throws FacesException {
-		// TODO - detect type of resource ( for example, resources location path
-		// in Skin
 		try {
 			return getResource(path);
 		} catch (ResourceNotFoundException e) {
@@ -253,7 +171,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 				}
 			}
 		}
-		// path - is class name ?
 		InternetResource res;
 		try {
 			Class<?> resourceClass = Class.forName(path);
@@ -264,11 +181,9 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			} catch (ResourceNotFoundException ex) {
 				res = createStaticResource(path);
 			}
-			// TODO - if resource not found, create static ?
 		}
 		return res;
 	}
-
 	private String buildKey(Object base, String path) {
 		if (path.startsWith("/")) {
 			return path.substring(1);
@@ -280,12 +195,10 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 				.getPackage().getName().replace('.', '/'));
 		return packageName.append("/").append(path).toString();
 	}
-
 	public String getUri(InternetResource resource, FacesContext context,
 			Object storeData) {
-		StringBuffer uri = new StringBuffer();// ResourceServlet.DEFAULT_SERVLET_PATH).append("/");
+		StringBuffer uri = new StringBuffer();
 		uri.append(resource.getKey());
-		// append serialized data as Base-64 encoded request string.
 		if (storeData != null) {
 			try {
 				byte[] objectData;
@@ -306,22 +219,14 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 				}
 				byte[] dataArray = encrypt(objectData);
 				uri.append(new String(dataArray, "ISO-8859-1"));
-
-				// / byte[] objectData = dataSteram.toByteArray();
-				// / uri.append("?").append(new
-				// String(Base64.encodeBase64(objectData),
-				// / "ISO-8859-1"));
 			} catch (Exception e) {
-				// Ignore errors, log it
 				log.error(Messages
 						.getMessage(Messages.QUERY_STRING_BUILDING_ERROR), e);
 			}
 		}
-		
 		boolean isGlobal = !resource.isSessionAware();
-		
 		String resourceURL = getWebXml(context).getFacesResourceURL(context,
-				uri.toString(), isGlobal);// context.getApplication().getViewHandler().getResourceURL(context,uri.toString());
+				uri.toString(), isGlobal);
 		if (!isGlobal) {
 			resourceURL = context.getExternalContext().encodeResourceURL(
 					resourceURL);
@@ -330,26 +235,17 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			log.debug(Messages.getMessage(Messages.BUILD_RESOURCE_URI_INFO,
 					resource.getKey(), resourceURL));
 		}
-		return resourceURL;// context.getExternalContext().encodeResourceURL(resourceURL);
-
+		return resourceURL;
 	}
-
-	/**
-	 * @param key
-	 * @return
-	 */
 	public InternetResource getResourceForKey(String key)
 			throws ResourceNotFoundException {
-
 		Matcher matcher = DATA_SEPARATOR_PATTERN.matcher(key);
 		if (matcher.find()) {
 			int data = matcher.start();
 			key = key.substring(0, data);
 		}
-
 		return getResource(key);
 	}
-
 	public Object getResourceDataForKey(String key) {
 		Object data = null;
 		String dataString = null;
@@ -368,7 +264,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 				dataArray = dataString.getBytes("ISO-8859-1");
 				objectArray = decrypt(dataArray);
 			} catch (UnsupportedEncodingException e1) {
-				// default encoding always presented.
 			}
 			if ("B".equals(matcher.group(1))) {
 				data = objectArray;
@@ -392,13 +287,10 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 				}
 			}
 		}
-
 		return data;
 	}
-
 	public InternetResource getResource(String path)
 			throws ResourceNotFoundException {
-
 		InternetResource internetResource = (InternetResource) resources
 				.get(path);
 		if (null == internetResource) {
@@ -408,7 +300,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			return internetResource;
 		}
 	}
-
 	public void addResource(InternetResource resource) {
 		resources.put(resource.getKey(), resource);
 		ResourceRenderer renderer = resource.getRenderer(null);
@@ -416,28 +307,13 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			setRenderer(resource, resource.getKey());
 		}
 	}
-
 	public void addResource(String key, InternetResource resource) {
 		resources.put(key, resource);
 		resource.setKey(key);
-		// TODO - set renderer ?
 	}
-
-	// public String getFacesResourceKey(HttpServletRequest request) {
-	// return getWebXml(context).getFacesResourceKey(request);
-	// }
-
 	public String getFacesResourceURL(FacesContext context, String Url, boolean isGlobal) {
 		return getWebXml(context).getFacesResourceURL(context, Url, isGlobal);
 	}
-
-	/**
-	 * Build resource for link to static context in webapp.
-	 * 
-	 * @param path
-	 * @return
-	 * @throws FacesException
-	 */
 	protected InternetResource createStaticResource(String path)
 			throws ResourceNotFoundException, FacesException {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -462,7 +338,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 		throw new ResourceNotFoundException(Messages.getMessage(
 				Messages.STATIC_RESOURCE_NOT_FOUND_ERROR, path));
 	}
-
 	private void setRenderer(InternetResource res, String path)
 			throws FacesException {
 		int lastPoint = path.lastIndexOf('.');
@@ -477,30 +352,14 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 							Messages.NO_RESOURCE_REGISTERED_ERROR_2, path,
 							renderers.keySet()));
 				}
-
-				// String mimeType = servletContext.getMimeType(path);
 				res.setRenderer(defaultRenderer);
 			}
 		}
 	}
-
-	/**
-	 * @param ext
-	 * @return
-	 */
 	protected ResourceRenderer getRendererByExtension(String ext) {
 		return renderers
 				.get(ext);
 	}
-
-	/**
-	 * Create resurce to send from classpath relative to base class.
-	 * 
-	 * @param base
-	 * @param path
-	 * @return
-	 * @throws FacesException
-	 */
 	protected InternetResource createJarResource(Object base, String path)
 			throws ResourceNotFoundException, FacesException {
 		String key = buildKey(base, path);
@@ -515,16 +374,7 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			throw new ResourceNotFoundException(Messages.getMessage(
 					Messages.NO_RESOURCE_EXISTS_ERROR, key));
 		}
-
 	}
-
-	/**
-	 * Create resource by instatiate given class.
-	 * 
-	 * @param path
-	 * @param instatiate
-	 * @return
-	 */
 	protected InternetResource createDynamicResource(String path,
 			Class<?> instatiate) throws ResourceNotFoundException {
 		if (InternetResource.class.isAssignableFrom(instatiate)) {
@@ -544,17 +394,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 		throw new FacesException(Messages
 				.getMessage(Messages.INSTANTIATE_CLASS_ERROR));
 	}
-
-	/**
-	 * Create resource by instatiate {@link UserResource} class with given
-	 * properties ( or got from cache ).
-	 * 
-	 * @param cacheable
-	 * @param session
-	 * @param mime
-	 * @return
-	 * @throws FacesException
-	 */
 	public InternetResource createUserResource(boolean cacheable,
 			boolean session, String mime) throws FacesException {
 		String path = getUserResourceKey(cacheable, session, mime);
@@ -567,15 +406,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 		}
 		return userResource;
 	}
-
-	/**
-	 * Generate resource key for user-generated resource with given properties.
-	 * 
-	 * @param cacheable
-	 * @param session
-	 * @param mime
-	 * @return
-	 */
 	private String getUserResourceKey(boolean cacheable, boolean session,
 			String mime) {
 		StringBuffer pathBuffer = new StringBuffer(UserResource.class.getName());
@@ -587,14 +417,9 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 		String path = pathBuffer.toString();
 		return path;
 	}
-
-	/**
-	 * @return Returns the startTime for application.
-	 */
 	public long getStartTime() {
 		return _startTime;
 	}
-
 	protected byte[] encrypt(byte[] src) {
 		try {
 			Deflater compressor = new Deflater(Deflater.BEST_SPEED);
@@ -610,7 +435,6 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			throw new FacesException("Error encode resource data", e);
 		}
 	}
-
 	protected byte[] decrypt(byte[] src) {
 		try {
 			byte[] zipsrc = codec.decode(src);
@@ -626,12 +450,10 @@ public class ResourceBuilderImpl extends InternetResourceBuilder {
 			throw new FacesException("Error decode resource data", e);
 		}
 	}
-
 	@Override
 	public ResourceRenderer getScriptRenderer() {
 		return scriptRenderer;
 	}
-
 	@Override
 	public ResourceRenderer getStyleRenderer() {
 		return styleRenderer;

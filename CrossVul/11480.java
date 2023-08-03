@@ -1,32 +1,8 @@
-/////////////////////////////////////////////////////////////////////////////
-//
-// Project ProjectForge Community Edition
-//         www.projectforge.org
-//
-// Copyright (C) 2001-2013 Kai Reinhard (k.reinhard@micromata.de)
-//
-// ProjectForge is dual-licensed.
-//
-// This community edition is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License as published
-// by the Free Software Foundation; version 3 of the License.
-//
-// This community edition is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-// Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, see http://www.gnu.org/licenses/.
-//
-/////////////////////////////////////////////////////////////////////////////
 
 package org.projectforge.web.fibu;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -64,36 +40,17 @@ import org.projectforge.web.wicket.flowlayout.ButtonPanel;
 import org.projectforge.web.wicket.flowlayout.IconButtonPanel;
 import org.projectforge.web.wicket.flowlayout.IconType;
 import org.projectforge.web.wicket.flowlayout.MyAjaxComponentHolder;
-
-/**
- * @author Kai Reinhard (k.reinhard@micromata.de)
- * 
- */
 public class RechnungCostEditTablePanel extends Panel
 {
   private static final long serialVersionUID = -5732520730823126042L;
-
   private final RepeatingView rows;
-
   private final Form<AbstractRechnungsPositionDO> form;
-
   private final FeedbackPanel feedbackPanel;
-
   @SpringBean(name = "kost2Dao")
   private Kost2Dao kost2Dao;
-
   private AbstractRechnungsPositionDO position;
-
   MyAjaxComponentHolder ajaxComponents = new MyAjaxComponentHolder();
-
-  /**
-   * Cross site request forgery token.
-   */
   private final CsrfTokenHandler csrfTokenHandler;
-
-  /**
-   * @param id
-   */
   @SuppressWarnings("serial")
   public RechnungCostEditTablePanel(final String id)
   {
@@ -114,15 +71,10 @@ public class RechnungCostEditTablePanel extends Panel
     rows = new RepeatingView("rows");
     form.add(rows);
   }
-
-  /**
-   * @return the position
-   */
   public AbstractRechnungsPositionDO getPosition()
   {
     return position;
   }
-
   @SuppressWarnings("serial")
   public RechnungCostEditTablePanel add(final AbstractRechnungsPositionDO origPosition)
   {
@@ -143,9 +95,6 @@ public class RechnungCostEditTablePanel extends Panel
       rows.add(row);
     }
     final Label restLabel = new Label("restValue", new Model<String>() {
-      /**
-       * @see org.apache.wicket.model.Model#getObject()
-       */
       @Override
       public String getObject()
       {
@@ -168,37 +117,30 @@ public class RechnungCostEditTablePanel extends Panel
         ajaxComponents.addTargetComponents(target);
         target.prependJavaScript(prependJavascriptBuf.toString());
       }
-
       @Override
       protected void onError(final AjaxRequestTarget target, final Form< ? > form)
       {
         target.add(feedbackPanel);
       }
     };
-    // addRowButton.setDefaultFormProcessing(false);
     final SingleButtonPanel addPositionButtonPanel = new SingleButtonPanel("addRowButton", addRowButton, getString("add"));
     form.add(addPositionButtonPanel);
-
     final AjaxButton recalculateButton = new AjaxButton(ButtonPanel.BUTTON_ID, form) {
       @Override
       protected void onSubmit(final AjaxRequestTarget target, final Form< ? > form)
       {
         ajaxComponents.addTargetComponents(target);
       }
-
       @Override
       protected void onError(final AjaxRequestTarget target, final Form< ? > form)
       {
         target.add(feedbackPanel);
       }
     };
-    // recalculateButton.setDefaultFormProcessing(false);
     final SingleButtonPanel recalculateButtonPanel = new SingleButtonPanel("recalculateButton", recalculateButton, getString("recalculate"));
     form.add(recalculateButtonPanel);
-
     return this;
   }
-
   @SuppressWarnings("serial")
   private WebMarkupContainer createRow(final String id, final AbstractRechnungsPositionDO position, final KostZuweisungDO zuweisung)
   {
@@ -212,7 +154,6 @@ public class RechnungCostEditTablePanel extends Panel
     kost2.setLabel(new Model<String>(getString("fibu.kost2")));
     row.add(kost2);
     ajaxComponents.register(kost2);
-
     final MinMaxNumberField<BigDecimal> netto = new MinMaxNumberField<BigDecimal>("netto",
         new PropertyModel<BigDecimal>(zuweisung, "netto"), Constants.TEN_BILLION_NEGATIVE, Constants.TEN_BILLION) {
       @SuppressWarnings({ "rawtypes", "unchecked"})
@@ -225,11 +166,8 @@ public class RechnungCostEditTablePanel extends Panel
     netto.setLabel(new Model<String>(getString("fibu.common.netto")));
     WicketUtils.addTooltip(netto, getString("currencyConverter.percentage.help"));
     row.add(netto);
-    ajaxComponents.register(netto); // Should be updated if e. g. percentage value is given.
+    ajaxComponents.register(netto); 
     final Label pLabel = new Label("percentage", new Model<String>() {
-      /**
-       * @see org.apache.wicket.model.Model#getObject()
-       */
       @Override
       public String getObject()
       {
@@ -249,7 +187,6 @@ public class RechnungCostEditTablePanel extends Panel
     });
     ajaxComponents.register(pLabel);
     row.add(pLabel);
-
     if (position.isKostZuweisungDeletable(zuweisung) == true) {
       final AjaxButton deleteRowButton = new AjaxButton(ButtonPanel.BUTTON_ID, form) {
         @Override
@@ -262,7 +199,6 @@ public class RechnungCostEditTablePanel extends Panel
           rows.remove(row);
           target.prependJavaScript(prependJavascriptBuf.toString());
         }
-
         @Override
         protected void onError(final AjaxRequestTarget target, final Form< ? > form)
         {
@@ -272,12 +208,10 @@ public class RechnungCostEditTablePanel extends Panel
       deleteRowButton.setDefaultFormProcessing(false);
       row.add(new IconButtonPanel("deleteEntry", deleteRowButton, IconType.TRASH, null).setLight());
     } else {
-      // Don't show a delete button.
       row.add(new Label("deleteEntry", "&nbsp;").setEscapeModelStrings(false).setRenderBodyOnly(true));
     }
     return row;
   }
-
   private KostZuweisungDO addZuweisung(final AbstractRechnungsPositionDO position)
   {
     final KostZuweisungDO kostZuweisung = new KostZuweisungDO();
@@ -285,12 +219,11 @@ public class RechnungCostEditTablePanel extends Panel
     if (kostZuweisung.getIndex() > 0) {
       final KostZuweisungDO predecessor = position.getKostZuweisung(kostZuweisung.getIndex() - 1);
       if (predecessor != null) {
-        kostZuweisung.setKost1(predecessor.getKost1()); // Preset kost1 from the predecessor position.
-        kostZuweisung.setKost2(predecessor.getKost2()); // Preset kost2 from the predecessor position.
+        kostZuweisung.setKost1(predecessor.getKost1()); 
+        kostZuweisung.setKost2(predecessor.getKost2()); 
       }
     }
     if (RechnungsPositionDO.class.isAssignableFrom(position.getClass()) == true && kostZuweisung.getKost2() == null) {
-      // Preset kost2 with first kost2 found for the projekt.
       final RechnungsPositionDO rechnungsPosition = (RechnungsPositionDO) position;
       if (rechnungsPosition != null) {
         final RechnungDO rechnung = rechnungsPosition.getRechnung();
@@ -308,10 +241,6 @@ public class RechnungCostEditTablePanel extends Panel
     kostZuweisung.setNetto(position.getKostZuweisungNetFehlbetrag().negate());
     return kostZuweisung;
   }
-
-  /**
-   * @return the form
-   */
   public Form<AbstractRechnungsPositionDO> getForm()
   {
     return form;

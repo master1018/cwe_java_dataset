@@ -1,72 +1,36 @@
 package org.uberfire.commons.regex.util;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-/**
- * PathMatcher implementation for Ant-style path patterns.
- * <p/>
- * This code has been borrowed from <a href="http://camel.apache.org">Apache Camel</a>.
- * <p/>
- */
 public class AntPathMatcher {
-
-    /**
-     * Default path separator: "/"
-     */
     public static final String DEFAULT_PATH_SEPARATOR = "/";
-
     private String pathSeparator = DEFAULT_PATH_SEPARATOR;
-
-    /**
-     * Set the path separator to use for pattern parsing. Default is "/", as in
-     * Ant.
-     */
     public void setPathSeparator( final String pathSeparator ) {
         this.pathSeparator = pathSeparator != null ? pathSeparator : DEFAULT_PATH_SEPARATOR;
     }
-
     public boolean isPattern( final String path ) {
         return path.indexOf( '*' ) != -1 || path.indexOf( '?' ) != -1;
     }
-
     public boolean match( final String pattern,
                           final String path ) {
         return doMatch( pattern, path, true );
     }
-
     public boolean matchStart( final String pattern,
                                final String path ) {
         return doMatch( pattern, path, false );
     }
-
-    /**
-     * Actually match the given <code>path</code> against the given
-     * <code>pattern</code>.
-     * @param pattern the pattern to match against
-     * @param path the path String to test
-     * @param fullMatch whether a full pattern match is required (else a pattern
-     * match as far as the given base path goes is sufficient)
-     * @return <code>true</code> if the supplied <code>path</code> matched,
-     * <code>false</code> if it didn't
-     */
     protected boolean doMatch( String pattern,
                                String path,
                                boolean fullMatch ) {
         if ( path.startsWith( this.pathSeparator ) != pattern.startsWith( this.pathSeparator ) ) {
             return false;
         }
-
         String[] pattDirs = tokenizeToStringArray( pattern, this.pathSeparator );
         String[] pathDirs = tokenizeToStringArray( path, this.pathSeparator );
-
         int pattIdxStart = 0;
         int pattIdxEnd = pattDirs.length - 1;
         int pathIdxStart = 0;
         int pathIdxEnd = pathDirs.length - 1;
-
-        // Match all elements up to the first **
         while ( pattIdxStart <= pattIdxEnd && pathIdxStart <= pathIdxEnd ) {
             String patDir = pattDirs[ pattIdxStart ];
             if ( "**".equals( patDir ) ) {
@@ -78,9 +42,7 @@ public class AntPathMatcher {
             pattIdxStart++;
             pathIdxStart++;
         }
-
         if ( pathIdxStart > pathIdxEnd ) {
-            // Path is exhausted, only match if rest of pattern is * or **'s
             if ( pattIdxStart > pattIdxEnd ) {
                 return pattern.endsWith( this.pathSeparator ) ? path.endsWith( this.pathSeparator ) : !path
                         .endsWith( this.pathSeparator );
@@ -99,14 +61,10 @@ public class AntPathMatcher {
             }
             return true;
         } else if ( pattIdxStart > pattIdxEnd ) {
-            // String not exhausted, but pattern is. Failure.
             return false;
         } else if ( !fullMatch && "**".equals( pattDirs[ pattIdxStart ] ) ) {
-            // Path start definitely matches due to "**" part in pattern.
             return true;
         }
-
-        // up to last '**'
         while ( pattIdxStart <= pattIdxEnd && pathIdxStart <= pathIdxEnd ) {
             String patDir = pattDirs[ pattIdxEnd ];
             if ( patDir.equals( "**" ) ) {
@@ -119,7 +77,6 @@ public class AntPathMatcher {
             pathIdxEnd--;
         }
         if ( pathIdxStart > pathIdxEnd ) {
-            // String is exhausted
             for ( int i = pattIdxStart; i <= pattIdxEnd; i++ ) {
                 if ( !pattDirs[ i ].equals( "**" ) ) {
                     return false;
@@ -127,7 +84,6 @@ public class AntPathMatcher {
             }
             return true;
         }
-
         while ( pattIdxStart != pattIdxEnd && pathIdxStart <= pathIdxEnd ) {
             int patIdxTmp = -1;
             for ( int i = pattIdxStart + 1; i <= pattIdxEnd; i++ ) {
@@ -137,16 +93,12 @@ public class AntPathMatcher {
                 }
             }
             if ( patIdxTmp == pattIdxStart + 1 ) {
-                // '**/**' situation, so skip one
                 pattIdxStart++;
                 continue;
             }
-            // Find the pattern between padIdxStart & padIdxTmp in str between
-            // strIdxStart & strIdxEnd
             int patLength = patIdxTmp - pattIdxStart - 1;
             int strLength = pathIdxEnd - pathIdxStart + 1;
             int foundIdx = -1;
-
             strLoop:
             for ( int i = 0; i <= strLength - patLength; i++ ) {
                 for ( int j = 0; j < patLength; j++ ) {
@@ -159,35 +111,19 @@ public class AntPathMatcher {
                 foundIdx = pathIdxStart + i;
                 break;
             }
-
             if ( foundIdx == -1 ) {
                 return false;
             }
-
             pattIdxStart = patIdxTmp;
             pathIdxStart = foundIdx + patLength;
         }
-
         for ( int i = pattIdxStart; i <= pattIdxEnd; i++ ) {
             if ( !pattDirs[ i ].equals( "**" ) ) {
                 return false;
             }
         }
-
         return true;
     }
-
-    /**
-     * Tests whether or not a string matches against a pattern. The pattern may
-     * contain two special characters:<br>
-     * '*' means zero or more characters<br>
-     * '?' means one and only one character
-     * @param pattern pattern to match against. Must not be <code>null</code>.
-     * @param str string which must be matched against the pattern. Must not be
-     * <code>null</code>.
-     * @return <code>true</code> if the string matches against the pattern, or
-     * <code>false</code> otherwise.
-     */
     private boolean matchStrings( String pattern,
                                   String str ) {
         char[] patArr = pattern.toCharArray();
@@ -197,7 +133,6 @@ public class AntPathMatcher {
         int strIdxStart = 0;
         int strIdxEnd = strArr.length - 1;
         char ch;
-
         boolean containsStar = false;
         for ( char c : patArr ) {
             if ( c == '*' ) {
@@ -205,42 +140,33 @@ public class AntPathMatcher {
                 break;
             }
         }
-
         if ( !containsStar ) {
-            // No '*'s, so we make a shortcut
             if ( patIdxEnd != strIdxEnd ) {
-                return false; // Pattern and string do not have the same size
+                return false; 
             }
             for ( int i = 0; i <= patIdxEnd; i++ ) {
                 ch = patArr[ i ];
                 if ( ch != '?' ) {
                     if ( ch != strArr[ i ] ) {
                         return false;
-                        // Character mismatch
                     }
                 }
             }
-            return true; // String matches against pattern
+            return true; 
         }
-
         if ( patIdxEnd == 0 ) {
-            return true; // Pattern contains only '*', which matches anything
+            return true; 
         }
-
-        // Process characters before first star
         while ( ( ch = patArr[ patIdxStart ] ) != '*' && strIdxStart <= strIdxEnd ) {
             if ( ch != '?' ) {
                 if ( ch != strArr[ strIdxStart ] ) {
                     return false;
-                    // Character mismatch
                 }
             }
             patIdxStart++;
             strIdxStart++;
         }
         if ( strIdxStart > strIdxEnd ) {
-            // All characters in the string are used. Check if only '*'s are
-            // left in the pattern. If so, we succeeded. Otherwise failure.
             for ( int i = patIdxStart; i <= patIdxEnd; i++ ) {
                 if ( patArr[ i ] != '*' ) {
                     return false;
@@ -248,21 +174,16 @@ public class AntPathMatcher {
             }
             return true;
         }
-
-        // Process characters after last star
         while ( ( ch = patArr[ patIdxEnd ] ) != '*' && strIdxStart <= strIdxEnd ) {
             if ( ch != '?' ) {
                 if ( ch != strArr[ strIdxEnd ] ) {
                     return false;
-                    // Character mismatch
                 }
             }
             patIdxEnd--;
             strIdxEnd--;
         }
         if ( strIdxStart > strIdxEnd ) {
-            // All characters in the string are used. Check if only '*'s are
-            // left in the pattern. If so, we succeeded. Otherwise failure.
             for ( int i = patIdxStart; i <= patIdxEnd; i++ ) {
                 if ( patArr[ i ] != '*' ) {
                     return false;
@@ -270,9 +191,6 @@ public class AntPathMatcher {
             }
             return true;
         }
-
-        // process pattern between stars. padIdxStart and patIdxEnd point
-        // always to a '*'.
         while ( patIdxStart != patIdxEnd && strIdxStart <= strIdxEnd ) {
             int patIdxTmp = -1;
             for ( int i = patIdxStart + 1; i <= patIdxEnd; i++ ) {
@@ -282,12 +200,9 @@ public class AntPathMatcher {
                 }
             }
             if ( patIdxTmp == patIdxStart + 1 ) {
-                // Two stars next to each other, skip the first one.
                 patIdxStart++;
                 continue;
             }
-            // Find the pattern between padIdxStart & padIdxTmp in str between
-            // strIdxStart & strIdxEnd
             int patLength = patIdxTmp - patIdxStart - 1;
             int strLength = strIdxEnd - strIdxStart + 1;
             int foundIdx = -1;
@@ -301,65 +216,27 @@ public class AntPathMatcher {
                         }
                     }
                 }
-
                 foundIdx = strIdxStart + i;
                 break;
             }
-
             if ( foundIdx == -1 ) {
                 return false;
             }
-
             patIdxStart = patIdxTmp;
             strIdxStart = foundIdx + patLength;
         }
-
-        // All characters in the string are used. Check if only '*'s are left
-        // in the pattern. If so, we succeeded. Otherwise failure.
         for ( int i = patIdxStart; i <= patIdxEnd; i++ ) {
             if ( patArr[ i ] != '*' ) {
                 return false;
             }
         }
-
         return true;
     }
-
-    /**
-     * Given a pattern and a full path, determine the pattern-mapped part.
-     * <p/>
-     * For example:
-     * <ul>
-     * <li>'<code>/docs/cvs/commit.html</code>' and '
-     * <code>/docs/cvs/commit.html</code> -> ''</li>
-     * <li>'<code>/docs/*</code>' and '<code>/docs/cvs/commit</code> -> '
-     * <code>cvs/commit</code>'</li>
-     * <li>'<code>/docs/cvs/*.html</code>' and '
-     * <code>/docs/cvs/commit.html</code> -> '<code>commit.html</code>'</li>
-     * <li>'<code>/docs/**</code>' and '<code>/docs/cvs/commit</code> -> '
-     * <code>cvs/commit</code>'</li>
-     * <li>'<code>/docs/**\/*.html</code>' and '
-     * <code>/docs/cvs/commit.html</code> -> '<code>cvs/commit.html</code>'</li>
-     * <li>'<code>/*.html</code>' and '<code>/docs/cvs/commit.html</code> -> '
-     * <code>docs/cvs/commit.html</code>'</li>
-     * <li>'<code>*.html</code>' and '<code>/docs/cvs/commit.html</code> -> '
-     * <code>/docs/cvs/commit.html</code>'</li>
-     * <li>'<code>*</code>' and '<code>/docs/cvs/commit.html</code> -> '
-     * <code>/docs/cvs/commit.html</code>'</li>
-     * </ul>
-     * <p/>
-     * Assumes that {@link #match} returns <code>true</code> for '
-     * <code>pattern</code>' and '<code>path</code>', but does
-     * <strong>not</strong> enforce this.
-     */
     public String extractPathWithinPattern( String pattern,
                                             String path ) {
         final String[] patternParts = tokenizeToStringArray( pattern, this.pathSeparator );
         final String[] pathParts = tokenizeToStringArray( path, this.pathSeparator );
-
         final StringBuilder buffer = new StringBuilder();
-
-        // Add any path parts that have a wildcarded pattern part.
         int puts = 0;
         for ( int i = 0; i < patternParts.length; i++ ) {
             final String patternPart = patternParts[ i ];
@@ -371,33 +248,14 @@ public class AntPathMatcher {
                 puts++;
             }
         }
-
-        // Append any trailing path parts.
         for ( int i = patternParts.length; i < pathParts.length; i++ ) {
             if ( puts > 0 || i > 0 ) {
                 buffer.append( this.pathSeparator );
             }
             buffer.append( pathParts[ i ] );
         }
-
         return buffer.toString();
     }
-
-    /**
-     * Tokenize the given String into a String array via a StringTokenizer.
-     * Trims tokens and omits empty tokens.
-     * <p/>
-     * The given delimiters string is supposed to consist of any number of
-     * delimiter characters. Each of those characters can be used to separate
-     * tokens. A delimiter is always a single character; for multi-character
-     * delimiters, consider using <code>delimitedListToStringArray</code>
-     * @param str the String to tokenize
-     * @param delimiters the delimiter characters, assembled as String (each of
-     * those characters is individually considered as delimiter).
-     * @return an array of the tokens
-     * @see java.util.StringTokenizer
-     * @see java.lang.String#trim()
-     */
     public static String[] tokenizeToStringArray( String str,
                                                   String delimiters ) {
         if ( str == null ) {
@@ -413,5 +271,4 @@ public class AntPathMatcher {
         }
         return tokens.toArray( new String[ tokens.size() ] );
     }
-
 }

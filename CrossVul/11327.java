@@ -1,5 +1,4 @@
 package eu.hinsch.spring.boot.actuator.logview;
-
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.IOUtils;
@@ -12,7 +11,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -25,20 +23,13 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-
-/**
- * Created by lh on 23/02/15.
- */
 public class LogViewEndpoint implements MvcEndpoint{
-
     private final List<FileProvider> fileProviders;
     private final Configuration freemarkerConfig;
     private final String loggingPath;
     private final List<String> stylesheets;
-
     public LogViewEndpoint(String loggingPath, List<String> stylesheets) {
         this.loggingPath = loggingPath;
         this.stylesheets = stylesheets;
@@ -48,25 +39,20 @@ public class LogViewEndpoint implements MvcEndpoint{
         freemarkerConfig = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
     }
-
     @RequestMapping
     public void redirect(HttpServletResponse response) throws IOException {
         response.sendRedirect("log/");
     }
-
     @RequestMapping("/")
     @ResponseBody
-    public String list(Model model, // TODO model should no longer be injected
+    public String list(Model model, 
                        @RequestParam(required = false, defaultValue = "FILENAME") SortBy sortBy,
                        @RequestParam(required = false, defaultValue = "false") boolean desc,
                        @RequestParam(required = false) String base) throws IOException, TemplateException {
         Path currentFolder = loggingPath(base);
         securityCheck(currentFolder, null);
-
-
         List<FileEntry> files = getFileProvider(currentFolder).getFileEntries(currentFolder);
         List<FileEntry> sortedFiles = sortFiles(files, sortBy, desc);
-
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("desc", desc);
         model.addAttribute("files", sortedFiles);
@@ -74,17 +60,14 @@ public class LogViewEndpoint implements MvcEndpoint{
         model.addAttribute("base", base != null ? URLEncoder.encode(base, "UTF-8") : "");
         model.addAttribute("parent", getParent(currentFolder));
         model.addAttribute("stylesheets", stylesheets);
-
         return FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerConfig.getTemplate("logview.ftl"), model);
     }
-
     private FileProvider getFileProvider(Path folder) {
         return fileProviders.stream()
                 .filter(provider -> provider.canHandle(folder))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("no file provider found for " + folder.toString()));
     }
-
     private String getParent(Path loggingPath) {
         Path basePath = loggingPath(null);
         String parent = "";
@@ -96,11 +79,9 @@ public class LogViewEndpoint implements MvcEndpoint{
         }
         return parent;
     }
-
     private Path loggingPath(String base) {
         return base != null ? Paths.get(loggingPath, base) : Paths.get(loggingPath);
     }
-
     private List<FileEntry> sortFiles(List<FileEntry> files, SortBy sortBy, boolean desc) {
         Comparator<FileEntry> comparator = null;
         switch (sortBy) {
@@ -115,19 +96,16 @@ public class LogViewEndpoint implements MvcEndpoint{
                 break;
         }
         List<FileEntry> sortedFiles = files.stream().sorted(comparator).collect(toList());
-
         if (desc) {
             Collections.reverse(sortedFiles);
         }
         return sortedFiles;
     }
-
     @RequestMapping("/view")
     public void view(@RequestParam String filename,
                      @RequestParam(required = false) String base,
                      @RequestParam(required = false) Integer tailLines,
                      HttpServletResponse response) throws IOException {
-
         Path path = loggingPath(base);
         securityCheck(path, filename);
         response.setContentType(MediaType.TEXT_PLAIN_VALUE);
@@ -139,21 +117,17 @@ public class LogViewEndpoint implements MvcEndpoint{
             fileProvider.streamContent(path, filename, response.getOutputStream());
         }
     }
-
     @RequestMapping("/search")
     public void search(@RequestParam String term, HttpServletResponse response) throws IOException {
         Path folder = loggingPath(null);
         List<FileEntry> files = getFileProvider(folder).getFileEntries(folder);
         List<FileEntry> sortedFiles = sortFiles(files, SortBy.MODIFIED, false);
-
         response.setContentType(MediaType.TEXT_PLAIN_VALUE);
         ServletOutputStream outputStream = response.getOutputStream();
-
         sortedFiles.stream()
                 .filter(file -> file.getFileType().equals(FileType.FILE))
                 .forEach(file -> searchAndStreamFile(file, term, outputStream));
     }
-
     private void searchAndStreamFile(FileEntry fileEntry, String term, OutputStream outputStream) {
         Path folder = loggingPath(null);
         try {
@@ -170,7 +144,6 @@ public class LogViewEndpoint implements MvcEndpoint{
             throw new RuntimeException("error reading file", e);
         }
     }
-
     private void securityCheck(Path base, String filename) {
         try {
             String canonicalLoggingPath = (filename != null ? new File(base.toFile().toString(), filename) : new File(base.toFile().toString())).getCanonicalPath();
@@ -181,21 +154,16 @@ public class LogViewEndpoint implements MvcEndpoint{
             throw new IllegalStateException(e);
         }
     }
-
     @Override
     public String getPath() {
         return "/log";
     }
-
     @Override
     public boolean isSensitive() {
         return true;
     }
-
-
     @Override
     public Class<? extends Endpoint> getEndpointType() {
         return null;
     }
-
 }

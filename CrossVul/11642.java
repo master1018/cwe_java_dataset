@@ -1,30 +1,16 @@
-/**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
- *
- * See the NOTICE file(s) distributed with this work for additional
- * information.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0
- *
- * SPDX-License-Identifier: EPL-2.0
- */
-package org.openhab.binding.tellstick.internal.live;
 
+package org.openhab.binding.tellstick.internal.live;
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.AsyncHttpClientConfig;
 import org.asynchttpclient.DefaultAsyncHttpClient;
@@ -54,20 +40,13 @@ import org.tellstick.device.iface.Device;
 import org.tellstick.device.iface.DeviceChangeListener;
 import org.tellstick.device.iface.SensorListener;
 import org.tellstick.device.iface.SwitchableDevice;
-
-/**
- * {@link TelldusLiveDeviceController} is the communication with Telldus Live service (Tellstick.NET and ZNET)
- * This controller uses XML based Rest API to communicate with Telldus Live.
- *
- * @author Jarle Hjortland - Initial contribution
- */
 public class TelldusLiveDeviceController implements DeviceChangeListener, SensorListener, TelldusDeviceController {
     private final Logger logger = LoggerFactory.getLogger(TelldusLiveDeviceController.class);
     private long lastSend = 0;
     public static final long DEFAULT_INTERVAL_BETWEEN_SEND = 250;
     static final int REQUEST_TIMEOUT_MS = 5000;
     private AsyncHttpClient client;
-    static final String HTTP_API_TELLDUS_COM_XML = "http://api.telldus.com/xml/";
+    static final String HTTP_API_TELLDUS_COM_XML = "http:
     static final String HTTP_TELLDUS_CLIENTS = HTTP_API_TELLDUS_COM_XML + "clients/list";
     static final String HTTP_TELLDUS_DEVICES = HTTP_API_TELLDUS_COM_XML + "devices/list?supportedMethods=19";
     static final String HTTP_TELLDUS_SENSORS = HTTP_API_TELLDUS_COM_XML
@@ -77,10 +56,8 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
     static final String HTTP_TELLDUS_DEVICE_TURNOFF = HTTP_API_TELLDUS_COM_XML + "device/turnOff?id=%d";
     static final String HTTP_TELLDUS_DEVICE_TURNON = HTTP_API_TELLDUS_COM_XML + "device/turnOn?id=%d";
     private static final int MAX_RETRIES = 3;
-
     public TelldusLiveDeviceController() {
     }
-
     @Override
     public void dispose() {
         try {
@@ -89,7 +66,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
             logger.error("Failed to close client", e);
         }
     }
-
     void connectHttpClient(String publicKey, String privateKey, String token, String tokenSecret) {
         ConsumerKey consumer = new ConsumerKey(publicKey, privateKey);
         RequestToken user = new RequestToken(token, tokenSecret);
@@ -103,13 +79,11 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
             logger.error("Failed to connect", e);
         }
     }
-
     private AsyncHttpClientConfig createAsyncHttpClientConfig() {
         Builder builder = new DefaultAsyncHttpClientConfig.Builder();
         builder.setConnectTimeout(REQUEST_TIMEOUT_MS);
         return builder.build();
     }
-
     @Override
     public void handleSendEvent(Device device, int resendCount, boolean isdimmer, Command command)
             throws TellstickException {
@@ -138,7 +112,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
             logger.warn("Cannot send to {}", device);
         }
     }
-
     private void increaseDecrease(Device dev, IncreaseDecreaseType increaseDecreaseType) throws TellstickException {
         String strValue = ((TellstickDevice) dev).getData();
         double value = 0;
@@ -153,11 +126,8 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
         }
         dim(dev, new PercentType(percent));
     }
-
     private void dim(Device dev, PercentType command) throws TellstickException {
         double value = command.doubleValue();
-
-        // 0 means OFF and 100 means ON
         if (value == 0 && dev instanceof TellstickNetDevice) {
             turnOff(dev);
         } else if (value == 100 && dev instanceof TellstickNetDevice) {
@@ -172,7 +142,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
             throw new TelldusBindingException("Cannot send DIM to " + dev);
         }
     }
-
     private void turnOff(Device dev) throws TellstickException {
         if (dev instanceof TellstickNetDevice) {
             TelldusLiveResponse response = callRestMethod(String.format(HTTP_TELLDUS_DEVICE_TURNOFF, dev.getId()),
@@ -182,7 +151,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
             throw new TelldusBindingException("Cannot send OFF to " + dev);
         }
     }
-
     private void handleResponse(TellstickNetDevice device, TelldusLiveResponse response) throws TellstickException {
         if (response == null || (response.status == null && response.error == null)) {
             throw new TelldusBindingException("No response " + response);
@@ -196,7 +164,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
             throw new TelldusBindingException("Response " + response.status);
         }
     }
-
     private void turnOn(Device dev) throws TellstickException {
         if (dev instanceof TellstickNetDevice) {
             TelldusLiveResponse response = callRestMethod(String.format(HTTP_TELLDUS_DEVICE_TURNON, dev.getId()),
@@ -206,7 +173,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
             throw new TelldusBindingException("Cannot send ON to " + dev);
         }
     }
-
     @Override
     public State calcState(Device dev) {
         TellstickNetDevice device = (TellstickNetDevice) dev;
@@ -235,7 +201,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
         }
         return st;
     }
-
     @Override
     public BigDecimal calcDimValue(Device device) {
         BigDecimal dimValue = new BigDecimal(0);
@@ -255,25 +220,20 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
         }
         return dimValue;
     }
-
     public long getLastSend() {
         return lastSend;
     }
-
     public void setLastSend(long currentTimeMillis) {
         lastSend = currentTimeMillis;
     }
-
     @Override
     public void onRequest(TellstickSensorEvent newDevices) {
         setLastSend(newDevices.getTimestamp());
     }
-
     @Override
     public void onRequest(TellstickDeviceEvent newDevices) {
         setLastSend(newDevices.getTimestamp());
     }
-
     <T> T callRestMethod(String uri, Class<T> response) throws TelldusLiveException {
         T resultObj = null;
         try {
@@ -301,19 +261,15 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
         }
         return resultObj;
     }
-
     private <T> T innerCallRest(String uri, Class<T> response) throws InterruptedException, ExecutionException,
             TimeoutException, JAXBException, FactoryConfigurationError, XMLStreamException {
         Future<Response> future = client.prepareGet(uri).execute();
         Response resp = future.get(REQUEST_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-        // TelldusLiveHandler.logger.info("Devices" + resp.getResponseBody());
         JAXBContext jc = JAXBContext.newInstance(response);
         XMLInputFactory xif = XMLInputFactory.newInstance();
         xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         xif.setProperty(XMLInputFactory.SUPPORT_DTD, false);
         XMLStreamReader xsr = xif.createXMLStreamReader(resp.getResponseBodyAsStream());
-        // xsr = new PropertyRenamerDelegate(xsr);
-
         @SuppressWarnings("unchecked")
         T obj = (T) jc.createUnmarshaller().unmarshal(xsr);
         if (logger.isTraceEnabled()) {
@@ -321,7 +277,6 @@ public class TelldusLiveDeviceController implements DeviceChangeListener, Sensor
         }
         return obj;
     }
-
     private void logResponse(String uri, Exception e) {
         if (e != null) {
             logger.warn("Request [{}] Failure:{}", uri, e.getMessage());

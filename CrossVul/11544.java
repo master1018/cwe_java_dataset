@@ -1,5 +1,4 @@
 package io.dropwizard.validation;
-
 import io.dropwizard.util.Maps;
 import io.dropwizard.validation.selfvalidating.SelfValidating;
 import io.dropwizard.validation.selfvalidating.SelfValidation;
@@ -10,26 +9,19 @@ import org.junit.jupiter.api.Test;
 import uk.org.lidalia.slf4jext.Level;
 import uk.org.lidalia.slf4jtest.LoggingEvent;
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
-
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.validation.Validator;
 import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
 @NotThreadSafe
 public class SelfValidationTest {
-
     private static final String FAILED = "failed";
     private static final String FAILED_RESULT = " " + FAILED;
-
     @AfterEach
     @BeforeEach
     public void clearAllLoggers() {
-        //this must be a clear all because the validation runs in other threads
         TestLoggerFactory.clearAll();
     }
-
     @SelfValidating
     public static class FailingExample {
         @SuppressWarnings("unused")
@@ -38,7 +30,6 @@ public class SelfValidationTest {
             col.addViolation(FAILED);
         }
     }
-
     public static class SubclassExample extends FailingExample {
         @SuppressWarnings("unused")
         @SelfValidation
@@ -46,7 +37,6 @@ public class SelfValidationTest {
             col.addViolation(FAILED + "subclass");
         }
     }
-
     @SelfValidating
     public static class AnnotatedSubclassExample extends FailingExample {
         @SuppressWarnings("unused")
@@ -55,13 +45,11 @@ public class SelfValidationTest {
             col.addViolation(FAILED + "subclass");
         }
     }
-
     public static class OverridingExample extends FailingExample {
         @Override
         public void validateFail(ViolationCollector col) {
         }
     }
-
     @SelfValidating
     public static class DirectContextExample {
         @SuppressWarnings("unused")
@@ -71,7 +59,6 @@ public class SelfValidationTest {
             col.setViolationOccurred(true);
         }
     }
-
     @SelfValidating
     public static class CorrectExample {
         @SuppressWarnings("unused")
@@ -79,33 +66,27 @@ public class SelfValidationTest {
         public void validateCorrect(ViolationCollector col) {
         }
     }
-
     @SelfValidating
     public static class InvalidExample {
         @SuppressWarnings("unused")
         @SelfValidation
         public void validateCorrect(ViolationCollector col) {
         }
-
         @SuppressWarnings("unused")
         @SelfValidation
         public void validateFailAdditionalParameters(ViolationCollector col, int a) {
             col.addViolation(FAILED);
         }
-
         @SelfValidation
         public boolean validateFailReturn(ViolationCollector col) {
             col.addViolation(FAILED);
             return true;
         }
-
         @SelfValidation
         private void validateFailPrivate(ViolationCollector col) {
             col.addViolation(FAILED);
         }
     }
-
-
     @SelfValidating
     public static class ComplexExample {
         @SuppressWarnings("unused")
@@ -113,35 +94,29 @@ public class SelfValidationTest {
         public void validateFail1(ViolationCollector col) {
             col.addViolation(FAILED + "1");
         }
-
         @SuppressWarnings("unused")
         @SelfValidation
         public void validateFail2(ViolationCollector col) {
             col.addViolation("p2", FAILED);
         }
-
         @SuppressWarnings("unused")
         @SelfValidation
         public void validateFail3(ViolationCollector col) {
             col.addViolation("p", 3, FAILED);
         }
-
         @SuppressWarnings("unused")
         @SelfValidation
         public void validateFail4(ViolationCollector col) {
             col.addViolation("p", "four", FAILED);
         }
-
         @SuppressWarnings("unused")
         @SelfValidation
         public void validateCorrect(ViolationCollector col) {
         }
     }
-
     @SelfValidating
     public static class NoValidations {
     }
-
     @SelfValidating
     public static class InjectionExample {
         @SuppressWarnings("unused")
@@ -155,7 +130,6 @@ public class SelfValidationTest {
             col.addViolation("${'property'}", "${'key'}", "${'value'}");
         }
     }
-
     @SelfValidating(escapeExpressions = false)
     public static class EscapingDisabledExample {
         @SuppressWarnings("unused")
@@ -169,7 +143,6 @@ public class SelfValidationTest {
             col.addViolation("${'property'}", "${'key'}", "${'value'}");
         }
     }
-
     @SelfValidating(escapeExpressions = false)
     public static class MessageParametersExample {
         @SuppressWarnings("unused")
@@ -189,9 +162,7 @@ public class SelfValidationTest {
             col.addViolation("{property}", "{key}", "{value}", Maps.of("property", "PROPERTY", "key", "KEY", "value", "VALUE"));
         }
     }
-
     private final Validator validator = BaseValidator.newValidator();
-
     @Test
     public void failingExample() {
         assertThat(ConstraintViolations.format(validator.validate(new FailingExample())))
@@ -199,7 +170,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void subClassExample() {
         assertThat(ConstraintViolations.format(validator.validate(new SubclassExample())))
@@ -210,7 +180,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void annotatedSubClassExample() {
         assertThat(ConstraintViolations.format(validator.validate(new AnnotatedSubclassExample())))
@@ -221,7 +190,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void overridingSubClassExample() {
         assertThat(ConstraintViolations.format(validator.validate(new OverridingExample())))
@@ -229,7 +197,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void correctExample() {
         assertThat(ConstraintViolations.format(validator.validate(new CorrectExample())))
@@ -237,7 +204,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void multipleTestingOfSameClass() {
         assertThat(ConstraintViolations.format(validator.validate(new CorrectExample())))
@@ -247,7 +213,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void testDirectContextUsage() {
         assertThat(ConstraintViolations.format(validator.validate(new DirectContextExample())))
@@ -255,7 +220,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void complexExample() {
         assertThat(ConstraintViolations.format(validator.validate(new ComplexExample())))
@@ -267,7 +231,6 @@ public class SelfValidationTest {
         assertThat(TestLoggerFactory.getAllLoggingEvents())
                 .isEmpty();
     }
-
     @Test
     public void invalidExample() throws Exception {
         assertThat(ConstraintViolations.format(validator.validate(new InvalidExample())))
@@ -292,7 +255,6 @@ public class SelfValidationTest {
                         )
                 );
     }
-
     @Test
     public void giveWarningIfNoValidationMethods() {
         assertThat(ConstraintViolations.format(validator.validate(new NoValidations())))
@@ -304,10 +266,8 @@ public class SelfValidationTest {
                                 "The class {} is annotated with @SelfValidating but contains no valid methods that are annotated with @SelfValidation",
                                 NoValidations.class
                         )
-
                 );
     }
-
     @Test
     public void violationMessagesAreEscapedByDefault() {
         assertThat(ConstraintViolations.format(validator.validate(new InjectionExample()))).containsExactly(
@@ -320,7 +280,6 @@ public class SelfValidationTest {
         );
         assertThat(TestLoggerFactory.getAllLoggingEvents()).isEmpty();
     }
-
     @Test
     public void violationMessagesAreInterpolatedIfEscapingDisabled() {
         assertThat(ConstraintViolations.format(validator.validate(new EscapingDisabledExample()))).containsExactly(
@@ -333,7 +292,6 @@ public class SelfValidationTest {
         );
         assertThat(TestLoggerFactory.getAllLoggingEvents()).isEmpty();
     }
-
     @Test
     public void messageParametersExample() {
         assertThat(ConstraintViolations.format(validator.validate(new MessageParametersExample()))).containsExactly(

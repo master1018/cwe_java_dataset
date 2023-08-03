@@ -1,26 +1,5 @@
-/*
- * JBoss, Home of Professional Open Source.
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
- * as indicated by the @author tags. See the copyright.txt file in the
- * distribution for a full listing of individual contributors.
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
-package org.jboss.security.negotiation;
 
+package org.jboss.security.negotiation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
@@ -33,7 +12,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
-
 import javax.management.ObjectName;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -50,50 +28,20 @@ import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-
 import org.jboss.security.SimpleGroup;
 import org.jboss.security.negotiation.common.CommonLoginModule;
 import org.jboss.security.negotiation.prototype.DecodeAction;
 import org.jboss.security.vault.SecurityVaultUtil;
 import org.jboss.security.vault.SecurityVaultException;
-
-/**
- * Another LDAP LoginModule to take into account requirements
- * for different authentication mechanisms and full support
- * for password-stacking set to useFirstPass.
- *
- * This is essentially a complete refactoring of the LdapExtLoginModule
- * but with enough restructuring to separate out the three login steps: -
- *  -1 Find the user
- *  -2 Authenticate as the user
- *  -3 Find the users roles
- * Configuration should allow for any of the three actions to be
- * skipped based on the requirements for the environment making
- * use of this login module.
- *
- *
- * @author darran.lofthouse@jboss.com
- * @since 3rd July 2008
- */
 public class AdvancedLdapLoginModule extends CommonLoginModule
 {
-
-   /*
-    * Configuration Option Constants
-    */
-
-   // Search Context Settings
    private static final String BIND_AUTHENTICATION = "bindAuthentication";
    private static final String BIND_DN = "bindDN";
    private static final String BIND_CREDENTIAL = "bindCredential";
    private static final String SECURITY_DOMAIN = "jaasSecurityDomain";
-
-   // User Search Settings
    private static final String BASE_CTX_DN = "baseCtxDN";
    private static final String BASE_FILTER = "baseFilter";
    private static final String SEARCH_TIME_LIMIT = "searchTimeLimit";
-
-   // Role Search Settings
    private static final String ROLES_CTS_DN = "rolesCtxDN";
    private static final String ROLE_FILTER = "roleFilter";
    private static final String RECURSE_ROLES = "recurseRoles";
@@ -102,31 +50,22 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
    private static final String ROLE_NAME_ATTRIBUTE_ID = "roleNameAttributeID";
    private static final String ROLE_SEARCH_SCOPE = "searchScope";
    private static final String REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK = "referralUserAttributeIDToCheck";
-
-   // Authentication Settings
    private static final String ALLOW_EMPTY_PASSWORD = "allowEmptyPassword";
-
-   /*
-    * Other Constants
-    */
    private static final String AUTH_TYPE_GSSAPI = "GSSAPI";
    private static final String AUTH_TYPE_SIMPLE = "simple";
    private static final String DEFAULT_LDAP_CTX_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
-   private static final String DEFAULT_URL = "ldap://localhost:389";
-   private static final String DEFAULT_SSL_URL = "ldap://localhost:686";
+   private static final String DEFAULT_URL = "ldap:
+   private static final String DEFAULT_SSL_URL = "ldap:
    private static final String PROTOCOL_SSL = "SSL";
    private static final String OBJECT_SCOPE = "OBJECT_SCOPE";
    private static final String ONELEVEL_SCOPE = "ONELEVEL_SCOPE";
    private static final String SUBTREE_SCOPE = "SUBTREE_SCOPE";
-
-
    private static final String[] ALL_VALID_OPTIONS =
    {
       BIND_AUTHENTICATION,BIND_DN,BIND_CREDENTIAL,SECURITY_DOMAIN,
       BASE_CTX_DN,BASE_FILTER,SEARCH_TIME_LIMIT,
       ROLES_CTS_DN,ROLE_FILTER,RECURSE_ROLES,ROLE_ATTRIBUTE_ID,ROLE_ATTRIBUTE_IS_DN,ROLE_NAME_ATTRIBUTE_ID,ROLE_SEARCH_SCOPE,
       ALLOW_EMPTY_PASSWORD,REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK,
-
       Context.INITIAL_CONTEXT_FACTORY,
       Context.OBJECT_FACTORIES,
       Context.STATE_FACTORIES,
@@ -143,75 +82,38 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       Context.LANGUAGE,
       Context.APPLET
    };
-
-   /*
-    * Configuration Options
-    */
-   // Search Context Settings
    protected String bindAuthentication;
-
    protected String bindDn;
-
    protected String bindCredential;
-
    protected String jaasSecurityDomain;
-
-   // User Search Settings
    protected String baseCtxDN;
-
    protected String baseFilter;
-
    protected int searchTimeLimit = 10000;
-
    protected SearchControls userSearchControls;
-
-   // Role Search Settings
    protected String rolesCtxDN;
-
    protected String roleFilter;
-
    protected boolean recurseRoles;
-
    protected SearchControls roleSearchControls;
-
    protected String roleAttributeID;
-
    protected boolean roleAttributeIsDN;
-
    protected String roleNameAttributeID;
-
    protected String referralUserAttributeIDToCheck = null;
-
-   // Authentication Settings
    protected boolean allowEmptyPassword;
-
-   // inner state fields
    private String referralUserDNToCheck;
-
-   /*
-    * Module State
-    */
    private SimpleGroup userRoles = new SimpleGroup("Roles");
-
    private Set<String> processedRoleDNs = new HashSet<String>();
-
    private boolean trace;
-
    @Override
    public void initialize(Subject subject, CallbackHandler handler, Map sharedState, Map options)
    {
       addValidOptions(ALL_VALID_OPTIONS);
       super.initialize(subject, handler, sharedState, options);
       trace = log.isTraceEnabled();
-
-      // Search Context Settings
       bindAuthentication = (String) options.get(BIND_AUTHENTICATION);
       bindDn = (String) options.get(BIND_DN);
       bindCredential = (String) options.get(BIND_CREDENTIAL);
-
       try
       {
-        //Check if the credential is vaultified
         if(bindCredential != null && SecurityVaultUtil.isVaultFormat(bindCredential))
         {
           bindCredential = SecurityVaultUtil.getValueAsString(bindCredential);
@@ -221,13 +123,9 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       {
         log.warn("Unable to obtain bindCredentials from Vault: ", e);
       }
-
       jaasSecurityDomain = (String) options.get(SECURITY_DOMAIN);
-
-      // User Search Settings
       baseCtxDN = (String) options.get(BASE_CTX_DN);
       baseFilter = (String) options.get(BASE_FILTER);
-
       String temp = (String) options.get(SEARCH_TIME_LIMIT);
       if (temp != null)
       {
@@ -240,19 +138,15 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             log.warn("Failed to parse: " + temp + ", using searchTimeLimit=" + searchTimeLimit);
          }
       }
-
       userSearchControls = new SearchControls();
       userSearchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
       userSearchControls.setReturningAttributes(new String[0]);
       userSearchControls.setTimeLimit(searchTimeLimit);
-
       rolesCtxDN = (String) options.get(ROLES_CTS_DN);
       roleFilter = (String) options.get(ROLE_FILTER);
       referralUserAttributeIDToCheck = (String) options.get(REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK);
-
       temp = (String) options.get(RECURSE_ROLES);
       recurseRoles = Boolean.parseBoolean(temp);
-
       int searchScope = SearchControls.SUBTREE_SCOPE;
       temp = (String) options.get(ROLE_SEARCH_SCOPE);
       if (OBJECT_SCOPE.equalsIgnoreCase(temp))
@@ -267,18 +161,13 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       {
          searchScope = SearchControls.SUBTREE_SCOPE;
       }
-
       roleSearchControls = new SearchControls();
       roleSearchControls.setSearchScope(searchScope);
       roleSearchControls.setTimeLimit(searchTimeLimit);
-
       roleAttributeID = (String) options.get(ROLE_ATTRIBUTE_ID);
-
       temp = (String) options.get(ROLE_ATTRIBUTE_IS_DN);
       roleAttributeIsDN = Boolean.parseBoolean(temp);
-
       roleNameAttributeID = (String) options.get(ROLE_NAME_ATTRIBUTE_ID);
-      
       ArrayList<String> roleSearchAttributeList = new ArrayList<String>(3); 
       if (roleAttributeID != null) 
       {
@@ -293,17 +182,13 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
           roleSearchAttributeList.add(referralUserAttributeIDToCheck);
       } 
       roleSearchControls.setReturningAttributes(roleSearchAttributeList.toArray(new String[0]));
-      
       temp = (String) options.get(ALLOW_EMPTY_PASSWORD);
       allowEmptyPassword = Boolean.parseBoolean(temp);
-
    }
-
    @Override
    public boolean login() throws LoginException
    {
       Object result = null;
-
       AuthorizeAction action = new AuthorizeAction();
       if (AUTH_TYPE_GSSAPI.equals(bindAuthentication))
       {
@@ -311,13 +196,11 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          LoginContext lc = new LoginContext(jaasSecurityDomain);
          lc.login();
          Subject serverSubject = lc.getSubject();
-
          if (log.isDebugEnabled())
          {
             log.debug("Subject = " + serverSubject);
             log.debug("Logged in '" + lc + "' LoginContext");
          }
-
          result = Subject.doAs(serverSubject, action);
          lc.logout();
       }
@@ -325,15 +208,12 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       {
          result = action.run();
       }
-
       if (result instanceof LoginException)
       {
          throw (LoginException) result;
       }
-
       return ((Boolean) result).booleanValue();
    }
-
    @Override
    protected Group[] getRoleSets() throws LoginException
    {
@@ -341,15 +221,12 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       {userRoles};
       return roleSets;
    }
-
    protected Boolean innerLogin() throws LoginException
    {
-      // Obtain the username and password
       processIdentityAndCredential();
       if (trace) {
          log.trace("Identity - " + getIdentity().getName());
       }
-      // Initialise search ctx
       String bindCredential = this.bindCredential;
       if (AUTH_TYPE_GSSAPI.equals(bindAuthentication) == false)
       {
@@ -369,15 +246,11 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             }
          }
       }
-
       LdapContext searchContext = null;
-
       try
       {
          searchContext = constructLdapContext(null, bindDn, bindCredential, bindAuthentication);
          log.debug("Obtained LdapContext");
-
-         // Search for user in LDAP
          String userDN = findUserDN(searchContext);
          if (referralUserAttributeIDToCheck != null)
          {
@@ -390,16 +263,12 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
                referralUserDNToCheck = userDN;
             }
          }
-         
-         // If authentication required authenticate as user
          if (super.loginOk == false)
          {
             authenticate(userDN);
          }
-
          if (super.loginOk)
          {
-            // Search for roles in LDAP
             rolesSearch(searchContext, userDN);
          }
       }
@@ -417,23 +286,17 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             }
          }
       }
-
       return Boolean.valueOf(super.loginOk);
    }
-
    private Properties constructLdapContextEnvironment(String namingProviderURL, String principalDN, Object credential, String authentication) 
    {
        Properties env = createBaseProperties();
-
-       // Set defaults for key values if they are missing
        String factoryName = env.getProperty(Context.INITIAL_CONTEXT_FACTORY);
        if (factoryName == null)
        {
           factoryName = DEFAULT_LDAP_CTX_FACTORY;
           env.setProperty(Context.INITIAL_CONTEXT_FACTORY, factoryName);
        }
-
-       // If this method is called with an authentication type then use that.
        if (authentication != null && authentication.length() > 0)
        {
           env.setProperty(Context.SECURITY_AUTHENTICATION, authentication);
@@ -466,9 +329,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
           }
        }
        env.setProperty(Context.PROVIDER_URL, providerURL);
-
-       // Assume the caller of this method has checked the requirements for the principal and
-       // credentials.
        if (principalDN != null)
           env.setProperty(Context.SECURITY_PRINCIPAL, principalDN);
        if (credential != null)
@@ -476,7 +336,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
        traceLdapEnv(env);
        return env;
    }
-
    protected LdapContext constructLdapContext(String namingProviderURL, String dn, Object credential, String authentication)
          throws LoginException
    {
@@ -492,7 +351,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          throw le;
       }
    }
-
    protected Properties createBaseProperties()
    {
       Properties env = new Properties();
@@ -502,27 +360,20 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          Entry entry = (Entry) iter.next();
          env.put(entry.getKey(), entry.getValue());
       }
-
       return env;
    }
-
    protected String findUserDN(LdapContext ctx) throws LoginException
    {
-
       if (baseCtxDN == null)
       {
          return getIdentity().getName();
       }
-
       try
       {
          NamingEnumeration results = null;
-
          Object[] filterArgs =
          {getIdentity().getName()};
-         
          LdapContext ldapCtx = ctx;
-
          boolean referralsLeft = true;
          SearchResult sr = null;
          while (referralsLeft) 
@@ -546,13 +397,11 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
                }
             }
          }
-         
          if (sr == null)
          {
             results.close();
             throw new LoginException("Search of baseDN(" + baseCtxDN + ") found no matches");
          }
-         
          String name = sr.getName();
          String userDN = null;
          if (sr.isRelative() == true) 
@@ -563,10 +412,8 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          {
             userDN = sr.getName();
          }
-
          results.close();
          results = null;
-
          if (trace) {
             log.trace("findUserDN - " + userDN);
          }
@@ -579,7 +426,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          throw le;
       }
    }
-   
    private void referralAuthenticate(String absoluteName, Object credential)
            throws LoginException
    {
@@ -595,16 +441,13 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
            throw le;
        }
        String name = localUserDN(absoluteName);
-       String namingProviderURL = uri.getScheme() + "://" + uri.getAuthority();
-       
+       String namingProviderURL = uri.getScheme() + ":
        InitialLdapContext refCtx = null;
-       
        try 
        {
           Properties refEnv = constructLdapContextEnvironment(namingProviderURL, name, credential, null);
           refCtx = new InitialLdapContext(refEnv, null);
           refCtx.close();
-
        }
        catch (NamingException e)
        {
@@ -612,9 +455,7 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
           le.initCause(e);
           throw le;   
        }
-       
    }
-
    private String localUserDN(String absoluteDN) {
       try 
       {
@@ -626,12 +467,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          return null;
       }  
    }
-   
-   /**
-    * Checks whether userDN is absolute URI, like the one pointing to an LDAP referral.
-    * @param userDN
-    * @return
-    */
    private Boolean isUserDnAbsolute(String userDN) {
       try 
       {
@@ -643,7 +478,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          return false;
       }  
    }
-   
    protected void authenticate(String userDN) throws LoginException
    {
       char[] credential = getCredential();
@@ -655,15 +489,12 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             return;
          }
       }
-
       if (isUserDnAbsolute(userDN))
       {
-         // user object resides in referral 
          referralAuthenticate(userDN, credential);
       }
       else 
       {
-         // non referral user authentication 
          try
          {
             LdapContext authContext = constructLdapContext(null, userDN, credential, null);
@@ -680,18 +511,13 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       }
       super.loginOk = true;
       if (getUseFirstPass() == true)
-      { // Add the username and password to the shared state map
+      { 
          sharedState.put("javax.security.auth.login.name", getIdentity().getName());
          sharedState.put("javax.security.auth.login.password", credential);
       }
-
    }
-
    protected void rolesSearch(LdapContext searchContext, String dn) throws LoginException
    {
-      /*
-       * The distinguished name passed into this method is expected to be unquoted.
-       */
       Object[] filterArgs = null;
       if (isUserDnAbsolute(dn))
       {
@@ -701,7 +527,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       {
          filterArgs = new Object[] {getIdentity().getName(), dn};
       }
-
       NamingEnumeration results = null;
       try
       {
@@ -709,7 +534,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             log.trace("rolesCtxDN=" + rolesCtxDN + " roleFilter=" + roleFilter + " filterArgs[0]=" + filterArgs[0]
                + " filterArgs[1]=" + filterArgs[1]);
          }
-
          if (roleFilter != null && roleFilter.length() > 0)
          {
             boolean referralsExist = true;
@@ -730,10 +554,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
                      {
                         resultDN = sr.getNameInNamespace();
                      }
-                     /*
-                      * By this point if the distinguished name needs to be quoted for attribute
-                      * searches it will have been already.
-                      */
                      obtainRole(searchContext, resultDN, sr);
                   }
                   referralsExist = false;
@@ -746,10 +566,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          }
          else
          {
-            /*
-             * As there was no search based on the distinguished name it would not have been
-             * auto-quoted - do that here to be safe.
-             */
             obtainRole(searchContext, quoted(dn), null);
          }
       }
@@ -773,28 +589,21 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             }
          }
       }
-
    }
-
    private String quoted(final String dn) {
        String temp = dn.trim();
-
        if (temp.startsWith("\"") && temp.endsWith("\"")) {
            return temp;
        }
-
        return "\"" + temp + "\"";
    }
-
    protected void obtainRole(LdapContext searchContext, String dn, SearchResult sr) throws NamingException, LoginException
    {
       if (trace) {
          log.trace("rolesSearch resultDN = " + dn);
       }
-
       String[] attrNames =
       {roleAttributeID};
-
       Attributes result = null;
       if (sr == null || sr.isRelative())
       {
@@ -812,21 +621,17 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             String roleName = (String) roles.get(n);
             if (roleAttributeIsDN)
             {
-               // Query the roleDN location for the value of roleNameAttributeID
                String roleDN = "\"" + roleName + "\"";
-
                loadRoleByRoleNameAttributeID(searchContext, roleDN);
                recurseRolesSearch(searchContext, roleName);
             }
             else
             {
-               // The role attribute value is the role name
                addRole(roleName);
             }
          }
       }
    }
-
    private Attributes getAttributesFromReferralEntity(SearchResult sr) throws NamingException
    {
       Attributes result = sr.getAttributes();
@@ -851,7 +656,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       }
       return (chkSuccessful ? result : null);
    }
-
    protected void loadRoleByRoleNameAttributeID(LdapContext searchContext, String roleDN)
    {
       String[] returnAttribute = {roleNameAttributeID};
@@ -878,7 +682,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          }
       }
    }
-
    protected void recurseRolesSearch(LdapContext searchContext, String roleDN) throws LoginException
    {
       if (recurseRoles)
@@ -899,7 +702,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          }
       }
    }
-
    protected void traceLdapEnv(Properties env)
    {
       if (trace)
@@ -910,19 +712,15 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          String bindCredential = tmp.getProperty(BIND_CREDENTIAL);
          if (credentials != null && credentials.length() > 0)
             tmp.setProperty(Context.SECURITY_CREDENTIALS, "***");
-         
          if (bindCredential != null && bindCredential.length() > 0)
              tmp.setProperty(BIND_CREDENTIAL, "***");
-         
          log.trace("Logging into LDAP server, env=" + tmp.toString());
       }
    }
-
    protected String canonicalize(String searchResult)
    {
       String result = searchResult;
       int len = searchResult.length();
-
       if (searchResult.endsWith("\""))
       {
          result = searchResult.substring(0, len - 1) + "," + rolesCtxDN + "\"";
@@ -933,7 +731,6 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
       }
       return result;
    }
-
    private void addRole(String roleName)
    {
       if (roleName != null)
@@ -953,10 +750,8 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
          }
       }
    }
-
    private class AuthorizeAction implements PrivilegedAction<Object>
    {
-
       public Object run()
       {
          try
@@ -968,7 +763,5 @@ public class AdvancedLdapLoginModule extends CommonLoginModule
             return e;
          }
       }
-
    }
-
 }

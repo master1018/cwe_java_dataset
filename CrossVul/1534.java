@@ -1,5 +1,4 @@
 package io.dropwizard.validation.selfvalidating;
-
 import com.fasterxml.classmate.AnnotationConfiguration;
 import com.fasterxml.classmate.AnnotationInclusion;
 import com.fasterxml.classmate.MemberResolver;
@@ -8,7 +7,6 @@ import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.classmate.members.ResolvedMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.Method;
@@ -17,25 +15,16 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
-
-/**
- * This class is the base validator for the <code>@SelfValidating</code> annotation. It
- * initiates the self validation process on an object, generating wrapping methods to call
- * the validation methods efficiently and then calls them.
- */
 public class SelfValidatingValidator implements ConstraintValidator<SelfValidating, Object> {
     private static final Logger log = LoggerFactory.getLogger(SelfValidatingValidator.class);
-
     @SuppressWarnings("rawtypes")
     private final ConcurrentMap<Class<?>, List<ValidationCaller>> methodMap = new ConcurrentHashMap<>();
     private final AnnotationConfiguration annotationConfiguration = new AnnotationConfiguration.StdConfiguration(AnnotationInclusion.INCLUDE_AND_INHERIT_IF_INHERITED);
     private final TypeResolver typeResolver = new TypeResolver();
     private final MemberResolver memberResolver = new MemberResolver(typeResolver);
-
     @Override
     public void initialize(SelfValidating constraintAnnotation) {
     }
-
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
@@ -47,11 +36,6 @@ public class SelfValidatingValidator implements ConstraintValidator<SelfValidati
         }
         return !collector.hasViolationOccurred();
     }
-
-    /**
-     * This method generates <code>ValidationCaller</code>s for each method annotated
-     * with <code>@SelfValidation</code> that adheres to required signature.
-     */
     @SuppressWarnings({ "rawtypes" })
     private <T> List<ValidationCaller> findMethods(Class<T> annotated) {
         ResolvedTypeWithMembers annotatedType = memberResolver.resolve(typeResolver.resolve(annotated), annotationConfiguration, null);
@@ -66,11 +50,9 @@ public class SelfValidatingValidator implements ConstraintValidator<SelfValidati
         }
         return callers;
     }
-
     private boolean isValidationMethod(ResolvedMethod m) {
         return m.get(SelfValidation.class) != null;
     }
-
     boolean isMethodCorrect(ResolvedMethod m) {
         if (m.getReturnType()!=null) {
             log.error("The method {} is annotated with @SelfValidation but does not return void. It is ignored", m.getRawMember());
@@ -85,16 +67,13 @@ public class SelfValidatingValidator implements ConstraintValidator<SelfValidati
         }
         return true;
     }
-
     final static class ProxyValidationCaller<T> extends ValidationCaller<T> {
         private final Class<T> cls;
         private final ResolvedMethod resolvedMethod;
-
         ProxyValidationCaller(Class<T> cls, ResolvedMethod resolvedMethod) {
             this.cls = cls;
             this.resolvedMethod = resolvedMethod;
         }
-
         @Override
         public void call(ViolationCollector vc) {
             final Method method = resolvedMethod.getRawMember();

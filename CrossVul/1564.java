@@ -1,16 +1,5 @@
-/*
- * Copyright (c) 2011-2017 Contributors to the Eclipse Foundation
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0, or the Apache License, Version 2.0
- * which is available at https://www.apache.org/licenses/LICENSE-2.0.
- *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
- */
 
 package io.vertx.core.http.impl;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -35,21 +24,13 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.impl.ConnectionBase;
 import io.vertx.core.spi.metrics.HttpServerMetrics;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
 import static io.vertx.core.spi.metrics.Metrics.METRICS_ENABLED;
-
-/**
- * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
- */
 public class Http2ServerResponseImpl implements HttpServerResponse {
-
   private static final Logger log = LoggerFactory.getLogger(Http2ServerResponseImpl.class);
-
   private final VertxHttp2Stream stream;
   private final ChannelHandlerContext ctx;
   private final Http2ServerConnection conn;
@@ -64,7 +45,7 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
   private boolean headWritten;
   private boolean ended;
   private int statusCode = 200;
-  private String statusMessage; // Not really used but we keep the message for the getStatusMessage()
+  private String statusMessage; 
   private Handler<Void> drainHandler;
   private Handler<Throwable> exceptionHandler;
   private Handler<Void> headersEndHandler;
@@ -74,21 +55,17 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
   private long bytesWritten;
   private int numPush;
   private boolean inHandler;
-
   public Http2ServerResponseImpl(Http2ServerConnection conn, VertxHttp2Stream stream, Object metric, boolean push, String contentEncoding, String host) {
-
     this.metric = metric;
     this.stream = stream;
     this.ctx = conn.handlerContext;
     this.conn = conn;
     this.push = push;
     this.host = host;
-
     if (contentEncoding != null) {
       putHeader(HttpHeaderNames.CONTENT_ENCODING, contentEncoding);
     }
   }
-
   public Http2ServerResponseImpl(
       Http2ServerConnection conn,
       VertxHttp2Stream stream,
@@ -101,45 +78,36 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
     this.conn = conn;
     this.push = push;
     this.host = null;
-
     if (contentEncoding != null) {
       putHeader(HttpHeaderNames.CONTENT_ENCODING, contentEncoding);
     }
-
     HttpServerMetrics metrics = conn.metrics();
     this.metric = (METRICS_ENABLED && metrics != null) ? metrics.responsePushed(conn.metric(), method, path, this) : null;
   }
-
   synchronized void beginRequest() {
     inHandler = true;
   }
-
   synchronized boolean endRequest() {
     inHandler = false;
     return numPush > 0;
   }
-
   void callReset(long code) {
     handleEnded(true);
     handleError(new StreamResetException(code));
   }
-
   void handleError(Throwable cause) {
     if (exceptionHandler != null) {
       exceptionHandler.handle(cause);
     }
   }
-
   void handleClose() {
     handleEnded(true);
   }
-
   private void checkHeadWritten() {
     if (headWritten) {
       throw new IllegalStateException("Header already sent");
     }
   }
-
   @Override
   public HttpServerResponse exceptionHandler(Handler<Throwable> handler) {
     synchronized (conn) {
@@ -150,14 +118,12 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public int getStatusCode() {
     synchronized (conn) {
       return statusCode;
     }
   }
-
   @Override
   public HttpServerResponse setStatusCode(int statusCode) {
     if (statusCode < 0) {
@@ -169,7 +135,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public String getStatusMessage() {
     synchronized (conn) {
@@ -179,7 +144,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return statusMessage;
     }
   }
-
   @Override
   public HttpServerResponse setStatusMessage(String statusMessage) {
     synchronized (conn) {
@@ -188,7 +152,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse setChunked(boolean chunked) {
     synchronized (conn) {
@@ -197,14 +160,12 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public boolean isChunked() {
     synchronized (conn) {
       return chunked;
     }
   }
-
   @Override
   public MultiMap headers() {
     synchronized (conn) {
@@ -214,7 +175,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return headersMap;
     }
   }
-
   @Override
   public HttpServerResponse putHeader(String name, String value) {
     synchronized (conn) {
@@ -223,7 +183,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse putHeader(CharSequence name, CharSequence value) {
     synchronized (conn) {
@@ -232,7 +191,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse putHeader(String name, Iterable<String> values) {
     synchronized (conn) {
@@ -241,7 +199,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse putHeader(CharSequence name, Iterable<CharSequence> values) {
     synchronized (conn) {
@@ -250,7 +207,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public MultiMap trailers() {
     synchronized (conn) {
@@ -260,7 +216,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return trailedMap;
     }
   }
-
   @Override
   public HttpServerResponse putTrailer(String name, String value) {
     synchronized (conn) {
@@ -269,7 +224,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse putTrailer(CharSequence name, CharSequence value) {
     synchronized (conn) {
@@ -278,7 +232,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse putTrailer(String name, Iterable<String> values) {
     synchronized (conn) {
@@ -287,7 +240,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse putTrailer(CharSequence name, Iterable<CharSequence> value) {
     synchronized (conn) {
@@ -296,7 +248,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse closeHandler(Handler<Void> handler) {
     synchronized (conn) {
@@ -307,7 +258,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse endHandler(@Nullable Handler<Void> handler) {
     synchronized (conn) {
@@ -318,7 +268,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse writeContinue() {
     synchronized (conn) {
@@ -328,60 +277,49 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse write(Buffer chunk) {
     ByteBuf buf = chunk.getByteBuf();
     return write(buf);
   }
-
   @Override
   public HttpServerResponse write(String chunk, String enc) {
     return write(Buffer.buffer(chunk, enc).getByteBuf());
   }
-
   @Override
   public HttpServerResponse write(String chunk) {
     return write(Buffer.buffer(chunk).getByteBuf());
   }
-
   private Http2ServerResponseImpl write(ByteBuf chunk) {
     write(chunk, false);
     return this;
   }
-
   @Override
   public void end(String chunk) {
     end(Buffer.buffer(chunk));
   }
-
   @Override
   public void end(String chunk, String enc) {
     end(Buffer.buffer(chunk, enc));
   }
-
   @Override
   public void end(Buffer chunk) {
     end(chunk.getByteBuf());
   }
-
   @Override
   public void end() {
     end((ByteBuf) null);
   }
-
   void toNetSocket() {
     checkEnded();
     checkSendHeaders(false);
     handleEnded(false);
   }
-
   private void end(ByteBuf chunk) {
     synchronized (conn) {
       write(chunk, true);
     }
   }
-
   private boolean checkSendHeaders(boolean end) {
     if (!headWritten) {
       if (headersEndHandler != null) {
@@ -398,7 +336,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return false;
     }
   }
-
   void write(ByteBuf chunk, boolean end) {
     synchronized (conn) {
       checkEnded();
@@ -427,7 +364,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       }
     }
   }
-
   @Override
   public HttpServerResponse writeCustomFrame(int type, int flags, Buffer payload) {
     synchronized (conn) {
@@ -438,18 +374,15 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   private void checkEnded() {
     if (ended) {
       throw new IllegalStateException("Response has already been written");
     }
   }
-
   private void handleEnded(boolean failed) {
     if (!ended) {
       ended = true;
       if (METRICS_ENABLED && metric != null) {
-        // Null in case of push response : handle this case
         if (failed) {
           conn.metrics().requestReset(metric);
         } else {
@@ -468,13 +401,11 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       }
     }
   }
-
   void writabilityChanged() {
     if (!ended && !writeQueueFull() && drainHandler != null) {
       drainHandler.handle(null);
     }
   }
-
   @Override
   public boolean writeQueueFull() {
     synchronized (conn) {
@@ -482,16 +413,13 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return stream.isNotWritable();
     }
   }
-
   @Override
   public HttpServerResponse setWriteQueueMaxSize(int maxSize) {
     synchronized (conn) {
       checkEnded();
-      // It does not seem to be possible to configure this at the moment
     }
     return this;
   }
-
   @Override
   public HttpServerResponse drainHandler(Handler<Void> handler) {
     synchronized (conn) {
@@ -502,19 +430,15 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse sendFile(String filename, long offset, long length) {
     return sendFile(filename, offset, length, null);
   }
-
   @Override
   public HttpServerResponse sendFile(String filename, long offset, long length, Handler<AsyncResult<Void>> resultHandler) {
     synchronized (conn) {
       checkEnded();
-
       Context resultCtx = resultHandler != null ? stream.vertx.getOrCreateContext() : null;
-
       File file = stream.vertx.resolveFile(filename);
       if (!file.exists()) {
         if (resultHandler != null) {
@@ -524,7 +448,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
         }
         return this;
       }
-
       RandomAccessFile raf;
       try {
         raf = new RandomAccessFile(file, "r");
@@ -536,7 +459,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
         }
         return this;
       }
-
       long contentLength = Math.min(length, file.length() - offset);
       if (headers.get(HttpHeaderNames.CONTENT_LENGTH) == null) {
         putHeader(HttpHeaderNames.CONTENT_LENGTH, String.valueOf(contentLength));
@@ -548,7 +470,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
         }
       }
       checkSendHeaders(false);
-
       Future<Long> result = Future.future();
       result.setHandler(ar -> {
         if (ar.succeeded()) {
@@ -561,7 +482,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
           });
         }
       });
-
       FileStreamChannel fileChannel = new FileStreamChannel(result, stream, offset, contentLength);
       drainHandler(fileChannel.drainHandler);
       ctx.channel()
@@ -577,31 +497,26 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
     }
     return this;
   }
-
   @Override
   public void close() {
     conn.close();
   }
-
   @Override
   public boolean ended() {
     synchronized (conn) {
       return ended;
     }
   }
-
   @Override
   public boolean closed() {
     return conn.isClosed();
   }
-
   @Override
   public boolean headWritten() {
     synchronized (conn) {
       return headWritten;
     }
   }
-
   @Override
   public HttpServerResponse headersEndHandler(@Nullable Handler<Void> handler) {
     synchronized (conn) {
@@ -609,7 +524,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse bodyEndHandler(@Nullable Handler<Void> handler) {
     synchronized (conn) {
@@ -617,19 +531,16 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public long bytesWritten() {
     synchronized (conn) {
       return bytesWritten;
     }
   }
-
   @Override
   public int streamId() {
     return stream.id();
   }
-
   @Override
   public void reset(long code) {
     synchronized (conn) {
@@ -639,17 +550,14 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       ctx.flush();
     }
   }
-
   @Override
   public HttpServerResponse push(HttpMethod method, String host, String path, Handler<AsyncResult<HttpServerResponse>> handler) {
     return push(method, host, path, null, handler);
   }
-
   @Override
   public HttpServerResponse push(HttpMethod method, String path, MultiMap headers, Handler<AsyncResult<HttpServerResponse>> handler) {
     return push(method, null, path, headers, handler);
   }
-
   @Override
   public HttpServerResponse push(HttpMethod method, String host, String path, MultiMap headers, Handler<AsyncResult<HttpServerResponse>> handler) {
     synchronized (conn) {
@@ -665,7 +573,6 @@ public class Http2ServerResponseImpl implements HttpServerResponse {
       return this;
     }
   }
-
   @Override
   public HttpServerResponse push(HttpMethod method, String path, Handler<AsyncResult<HttpServerResponse>> handler) {
     return push(method, host, path, handler);

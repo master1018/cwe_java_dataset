@@ -1,21 +1,5 @@
-/*
- * Copyright 2013-present Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
 
 package com.facebook.buck.cli;
-
 import com.facebook.buck.parser.ParserConfig;
 import com.facebook.buck.parser.thrift.RemoteDaemonicParserState;
 import com.facebook.buck.util.ExitCode;
@@ -37,20 +21,14 @@ import java.util.zip.ZipOutputStream;
 import javax.annotation.Nullable;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
-
-/** A command for inspecting the artifact cache. */
 public class ParserCacheCommand extends AbstractCommand {
-
   @Argument private List<String> arguments = new ArrayList<>();
-
   @Option(name = "--save", usage = "Save the parser cache state to the given file.")
   @Nullable
   private String saveFilename = null;
-
   @Option(name = "--load", usage = "Load the given parser cache from the given file.")
   @Nullable
   private String loadFilename = null;
-
   @Option(
     name = "--changes",
     usage =
@@ -63,16 +41,13 @@ public class ParserCacheCommand extends AbstractCommand {
   )
   @Nullable
   private String changesPath = null;
-
   @Override
   public ExitCode runWithoutHelp(CommandRunnerParams params)
       throws IOException, InterruptedException {
-
     if (saveFilename != null && loadFilename != null) {
       params.getConsole().printErrorText("Can't use both --load and --save");
       return ExitCode.COMMANDLINE_ERROR;
     }
-
     if (saveFilename != null) {
       invalidateChanges(params);
       RemoteDaemonicParserState state = params.getParser().storeParserState(params.getCell());
@@ -100,7 +75,6 @@ public class ParserCacheCommand extends AbstractCommand {
         }
       }
       invalidateChanges(params);
-
       ParserConfig configView = params.getBuckConfig().getView(ParserConfig.class);
       if (configView.isParserCacheMutationWarningEnabled()) {
         params
@@ -113,10 +87,8 @@ public class ParserCacheCommand extends AbstractCommand {
                         "WARNING: Buck injected a parser state that may not match the local state."));
       }
     }
-
     return ExitCode.SUCCESS;
   }
-
   private void invalidateChanges(CommandRunnerParams params) throws IOException {
     if (changesPath == null) {
       return;
@@ -128,7 +100,6 @@ public class ParserCacheCommand extends AbstractCommand {
         JsonNode item = iterator.next();
         String path = item.get("path").asText();
         String status = item.get("status").asText();
-
         boolean isAdded = false;
         boolean isRemoved = false;
         if (status.equals("A") || status.equals("?")) {
@@ -141,12 +112,10 @@ public class ParserCacheCommand extends AbstractCommand {
       }
     }
   }
-
   @Override
   public String getShortDescription() {
     return "Load and save state of the parser cache";
   }
-
   @Override
   public boolean isReadOnly() {
     return false;

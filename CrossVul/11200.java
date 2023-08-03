@@ -1,5 +1,4 @@
 package org.airsonic.player.controller;
-
 import de.triology.recaptchav2java.ReCaptcha;
 import org.airsonic.player.domain.User;
 import org.airsonic.player.service.SecurityService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -20,43 +18,29 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-/**
- * Spring MVC Controller that serves the login page.
- */
 @Controller
 @RequestMapping("/recover")
 public class RecoverController {
-
-
     private static final Logger LOG = LoggerFactory.getLogger(RecoverController.class);
-
     private static final String SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     private final SecureRandom random = new SecureRandom();
     private static final int PASSWORD_LENGTH = 32;
-
     @Autowired
     private SettingsService settingsService;
     @Autowired
     private SecurityService securityService;
-
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView recover(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         Map<String, Object> map = new HashMap<String, Object>();
         String usernameOrEmail = StringUtils.trimToNull(request.getParameter("usernameOrEmail"));
-
         if (usernameOrEmail != null) {
-
             map.put("usernameOrEmail", usernameOrEmail);
             User user = getUserByUsernameOrEmail(usernameOrEmail);
-
             boolean captchaOk;
             if (settingsService.isCaptchaEnabled()) {
                 String recaptchaResponse = request.getParameter("g-recaptcha-response");
@@ -65,7 +49,6 @@ public class RecoverController {
             } else {
                 captchaOk = true;
             }
-            
             if (!captchaOk) {
                 map.put("error", "recover.error.invalidcaptcha");
             } else if (user == null) {
@@ -79,7 +62,6 @@ public class RecoverController {
                   sb.append(SYMBOLS.charAt(index));
                 }
                 String password = sb.toString();
-
                 if (emailPassword(password, user.getUsername(), user.getEmail())) {
                     map.put("sentTo", user.getEmail());
                     user.setLdapAuthenticated(false);
@@ -90,14 +72,11 @@ public class RecoverController {
                 }
             }
         }
-
         if (settingsService.isCaptchaEnabled()) {
             map.put("recaptchaSiteKey", settingsService.getRecaptchaSiteKey());
         }
-
         return new ModelAndView("recover", "model", map);
     }
-
     private User getUserByUsernameOrEmail(String usernameOrEmail) {
         if (usernameOrEmail != null) {
             User user = securityService.getUserByName(usernameOrEmail);
@@ -108,19 +87,12 @@ public class RecoverController {
         }
         return null;
     }
-
-    /*
-    * e-mail user new password via configured Smtp server
-    */
     private boolean emailPassword(String password, String username, String email) {
-        /* Default to protocol smtp when SmtpEncryption is set to "None" */
         String prot = "smtp";
-
         if (settingsService.getSmtpServer() == null || settingsService.getSmtpServer().isEmpty()) {
             LOG.warn("Can not send email; no Smtp server configured.");
             return false;
         }
-
         Properties props = new Properties();
         if (settingsService.getSmtpEncryption().equals("SSL/TLS")) {
             prot = "smtps";
@@ -131,13 +103,10 @@ public class RecoverController {
         }
         props.put("mail." + prot + ".host", settingsService.getSmtpServer());
         props.put("mail." + prot + ".port", settingsService.getSmtpPort());
-        /* use authentication when SmtpUser is configured */
         if (settingsService.getSmtpUser() != null && !settingsService.getSmtpUser().isEmpty()) {
             props.put("mail." + prot + ".auth", "true");
         }
-
         Session session = Session.getInstance(props, null);
-
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(settingsService.getSmtpFrom()));
@@ -151,7 +120,6 @@ public class RecoverController {
                     "Your Airsonic server\n" +
                     "airsonic.github.io/");
             message.setSentDate(new Date());
-
             Transport trans = session.getTransport(prot);
             try {
                 if (props.get("mail." + prot + ".auth") != null && props.get("mail." + prot + ".auth").equals("true")) {
@@ -164,11 +132,9 @@ public class RecoverController {
                 trans.close();
             }
             return true;
-
         } catch (Exception x) {
             LOG.warn("Failed to send email.", x);
             return false;
         }
     }
-
 }

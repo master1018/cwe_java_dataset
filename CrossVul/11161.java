@@ -1,15 +1,5 @@
-/*
- * Copyright (c) 2020 Gobierno de España
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * SPDX-License-Identifier: MPL-2.0
- */
 
 package org.dpppt.backend.sdk.ws.radarcovid.config;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -24,36 +14,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-
-/**
- * Aspecto encargado de realizar el log de rendimiento de los Controllers.
- */
 @Configuration
 @ConditionalOnProperty(name = "application.log.enabled", havingValue = "true", matchIfMissing = true)
 public class ControllerLoggerAspectConfiguration {
-
     private static final Logger log = LoggerFactory.getLogger("org.dpppt.backend.sdk.ws.radarcovid.annotation.Loggable");
-
     @Aspect
     @Order(1)
     @Component
     public class ControllerLoggerAspect {
         @Before("execution(@org.dpppt.backend.sdk.ws.radarcovid.annotation.Loggable * *..controller..*(..))")
         public void logBefore(JoinPoint joinPoint) {
-
             if (log.isDebugEnabled()) {
                 log.debug("************************* INIT CONTROLLER *********************************");
                 log.debug("Controller : Entering in Method : {}", joinPoint.getSignature().getDeclaringTypeName());
                 log.debug("Controller : Method :             {}", joinPoint.getSignature().getName());
                 log.debug("Controller : Arguments :          {}", Arrays.toString(joinPoint.getArgs()));
                 log.debug("Controller : Target class :       {}", joinPoint.getTarget().getClass().getName());
-
                 HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                         .currentRequestAttributes()).getRequest();
                 if (null != request) {
@@ -72,7 +53,6 @@ public class ControllerLoggerAspectConfiguration {
                 }
             }
         }
-
         @AfterThrowing(pointcut = "execution(@org.dpppt.backend.sdk.ws.radarcovid.annotation.Loggable * *..controller..*(..))", throwing = "exception")
         public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
             log.error("Controller : An exception has been thrown in {} ()", joinPoint.getSignature().getName());
@@ -80,10 +60,8 @@ public class ControllerLoggerAspectConfiguration {
             log.error("Controller : Message : {}", exception.getMessage());
             log.debug("************************* END CONTROLLER **********************************");
         }
-
         @Around("execution(@org.dpppt.backend.sdk.ws.radarcovid.annotation.Loggable * *..controller..*(..))")
         public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-
             long start = System.currentTimeMillis();
             try {
                 String className = joinPoint.getSignature().getDeclaringTypeName();
@@ -91,9 +69,7 @@ public class ControllerLoggerAspectConfiguration {
                 Object result = joinPoint.proceed();
                 long elapsedTime = System.currentTimeMillis() - start;
                 log.debug("Controller : Controller {}.{} () execution time: {} ms", className, methodName, elapsedTime);
-
                 if ((null != result) && (result instanceof ResponseEntity) && log.isDebugEnabled()) {
-
                     Object dataReturned = ((ResponseEntity<?>) result).getBody();
                     HttpStatus returnedStatus = ((ResponseEntity<?>) result).getStatusCode();
                     HttpHeaders headers = ((ResponseEntity<?>) result).getHeaders();
@@ -109,7 +85,6 @@ public class ControllerLoggerAspectConfiguration {
                 }
                 log.debug("************************* END CONTROLLER **********************************");
                 return result;
-
             } catch (IllegalArgumentException e) {
                 log.error("Controller : Illegal argument {} in {}()", Arrays.toString(joinPoint.getArgs()),
                           joinPoint.getSignature().getName(), e);
@@ -117,5 +92,4 @@ public class ControllerLoggerAspectConfiguration {
             }
         }
     }
-
 }

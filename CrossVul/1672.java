@@ -1,19 +1,6 @@
-/**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
- *
- * See the NOTICE file(s) distributed with this work for additional
- * information.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0
- *
- * SPDX-License-Identifier: EPL-2.0
- */
+
 package org.openhab.binding.denonmarantz.internal.handler;
-
 import static org.openhab.binding.denonmarantz.internal.DenonMarantzBindingConstants.*;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
@@ -26,7 +13,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,7 +20,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.smarthome.config.core.Configuration;
@@ -62,15 +47,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-/**
- * The {@link DenonMarantzHandler} is responsible for handling commands, which are
- * sent to one of the channels.
- *
- * @author Jan-Willem Veldhuis - Initial contribution
- */
 public class DenonMarantzHandler extends BaseThingHandler implements DenonMarantzStateChangedListener {
-
     private final Logger logger = LoggerFactory.getLogger(DenonMarantzHandler.class);
     private static final int RETRY_TIME_SECONDS = 30;
     private HttpClient httpClient;
@@ -79,24 +56,18 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
     private DenonMarantzConnectorFactory connectorFactory = new DenonMarantzConnectorFactory();
     private DenonMarantzState denonMarantzState;
     private ScheduledFuture<?> retryJob;
-
     public DenonMarantzHandler(Thing thing, HttpClient httpClient) {
         super(thing);
         this.httpClient = httpClient;
     }
-
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
         if (connector == null) {
             return;
         }
-
         if (connector instanceof DenonMarantzHttpConnector && command instanceof RefreshType) {
-            // Refreshing individual channels isn't supported by the Http connector.
-            // The connector refreshes all channels together at the configured polling interval.
             return;
         }
-
         try {
             switch (channelUID.getId()) {
                 case CHANNEL_POWER:
@@ -123,7 +94,6 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
                 case CHANNEL_COMMAND:
                     connector.sendCustomCommand(command);
                     break;
-
                 case CHANNEL_ZONE2_POWER:
                     connector.sendPowerCommand(command, 2);
                     break;
@@ -139,7 +109,6 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
                 case CHANNEL_ZONE2_INPUT:
                     connector.sendInputCommand(command, 2);
                     break;
-
                 case CHANNEL_ZONE3_POWER:
                     connector.sendPowerCommand(command, 3);
                     break;
@@ -155,7 +124,6 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
                 case CHANNEL_ZONE3_INPUT:
                     connector.sendInputCommand(command, 3);
                     break;
-
                 case CHANNEL_ZONE4_POWER:
                     connector.sendPowerCommand(command, 4);
                     break;
@@ -171,7 +139,6 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
                 case CHANNEL_ZONE4_INPUT:
                     connector.sendInputCommand(command, 4);
                     break;
-
                 default:
                     throw new UnsupportedCommandTypeException();
             }
@@ -179,15 +146,12 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
             logger.debug("Unsupported command {} for channel {}", command, channelUID.getId());
         }
     }
-
     public boolean checkConfiguration() {
-        // prevent too low values for polling interval
         if (config.httpPollingInterval < 5) {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
                     "The polling interval should be at least 5 seconds!");
             return false;
         }
-        // Check zone count is within supported range
         if (config.getZoneCount() < 1 || config.getZoneCount() > 4) {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
                     "This binding supports 1 to 4 zones. Please update the zone count.");
@@ -195,28 +159,16 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
         }
         return true;
     }
-
-    /**
-     * Try to auto configure the connection type (Telnet or HTTP)
-     * for Things not added through Paper UI.
-     */
     private void autoConfigure() {
-        /*
-         * The isTelnet parameter has no default.
-         * When not set we will try to auto-detect the correct values
-         * for isTelnet and zoneCount and update the Thing accordingly.
-         */
         if (config.isTelnet() == null) {
             logger.debug("Trying to auto-detect the connection.");
             ContentResponse response;
             boolean telnetEnable = true;
             int httpPort = 80;
             boolean httpApiUsable = false;
-
-            // try to reach the HTTP API at port 80 (most models, except Denon ...H should respond.
             String host = config.getHost();
             try {
-                response = httpClient.newRequest("http://" + host + "/goform/Deviceinfo.xml")
+                response = httpClient.newRequest("http:
                         .timeout(3, TimeUnit.SECONDS).send();
                 if (response.getStatus() == HttpURLConnection.HTTP_OK) {
                     logger.debug("We can access the HTTP API, disabling the Telnet mode by default.");
@@ -226,12 +178,9 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
             } catch (InterruptedException | TimeoutException | ExecutionException e) {
                 logger.debug("Error when trying to access AVR using HTTP on port 80, reverting to Telnet mode.", e);
             }
-
             if (telnetEnable) {
-                // the above attempt failed. Let's try on port 8080, as for some models a subset of the HTTP API is
-                // available
                 try {
-                    response = httpClient.newRequest("http://" + host + ":8080/goform/Deviceinfo.xml")
+                    response = httpClient.newRequest("http:
                             .timeout(3, TimeUnit.SECONDS).send();
                     if (response.getStatus() == HttpURLConnection.HTTP_OK) {
                         logger.debug(
@@ -243,22 +192,17 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
                     logger.debug("Additionally tried to connect to port 8080, this also failed", e);
                 }
             }
-
-            // default zone count
             int zoneCount = 2;
-
-            // try to determine the zone count by checking the Deviceinfo.xml file
             if (httpApiUsable) {
                 int status = 0;
                 response = null;
                 try {
-                    response = httpClient.newRequest("http://" + host + ":" + httpPort + "/goform/Deviceinfo.xml")
+                    response = httpClient.newRequest("http:
                             .timeout(3, TimeUnit.SECONDS).send();
                     status = response.getStatus();
                 } catch (InterruptedException | TimeoutException | ExecutionException e) {
                     logger.debug("Failed in fetching the Deviceinfo.xml to determine zone count", e);
                 }
-
                 if (status == HttpURLConnection.HTTP_OK && response != null) {
                     DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder builder;
@@ -288,28 +232,19 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
             updateConfiguration(configuration);
         }
     }
-
     @Override
     public void initialize() {
         cancelRetry();
         config = getConfigAs(DenonMarantzConfiguration.class);
-
-        // Configure Connection type (Telnet/HTTP) and number of zones
-        // Note: this only happens for discovered Things
         autoConfigure();
-
         if (!checkConfiguration()) {
             return;
         }
-
         denonMarantzState = new DenonMarantzState(this);
         configureZoneChannels();
         updateStatus(ThingStatus.UNKNOWN);
-        // create connection (either Telnet or HTTP)
-        // ThingStatus ONLINE/OFFLINE is set when AVR status is known.
         createConnection();
     }
-
     private void createConnection() {
         if (connector != null) {
             connector.dispose();
@@ -317,34 +252,25 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
         connector = connectorFactory.getConnector(config, denonMarantzState, scheduler, httpClient);
         connector.connect();
     }
-
     private void cancelRetry() {
         ScheduledFuture<?> localRetryJob = retryJob;
         if (localRetryJob != null && !localRetryJob.isDone()) {
             localRetryJob.cancel(false);
         }
     }
-
     private void configureZoneChannels() {
         logger.debug("Configuring zone channels");
         Integer zoneCount = config.getZoneCount();
         List<Channel> channels = new ArrayList<>(this.getThing().getChannels());
         boolean channelsUpdated = false;
-
-        // construct a set with the existing channel type UIDs, to quickly check
         Set<String> currentChannels = new HashSet<>();
         channels.forEach(channel -> currentChannels.add(channel.getUID().getId()));
-
         Set<Entry<String, ChannelTypeUID>> channelsToRemove = new HashSet<>();
-
         if (zoneCount > 1) {
             List<Entry<String, ChannelTypeUID>> channelsToAdd = new ArrayList<>(ZONE2_CHANNEL_TYPES.entrySet());
-
             if (zoneCount > 2) {
-                // add channels for zone 3
                 channelsToAdd.addAll(ZONE3_CHANNEL_TYPES.entrySet());
                 if (zoneCount > 3) {
-                    // add channels for zone 4 (more zones currently not supported)
                     channelsToAdd.addAll(ZONE4_CHANNEL_TYPES.entrySet());
                 } else {
                     channelsToRemove.addAll(ZONE4_CHANNEL_TYPES.entrySet());
@@ -353,11 +279,7 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
                 channelsToRemove.addAll(ZONE3_CHANNEL_TYPES.entrySet());
                 channelsToRemove.addAll(ZONE4_CHANNEL_TYPES.entrySet());
             }
-
-            // filter out the already existing channels
             channelsToAdd.removeIf(c -> currentChannels.contains(c.getKey()));
-
-            // add the channels that were not yet added
             if (!channelsToAdd.isEmpty()) {
                 for (Entry<String, ChannelTypeUID> entry : channelsToAdd) {
                     String itemType = CHANNEL_ITEM_TYPES.get(entry.getKey());
@@ -375,11 +297,7 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
             channelsToRemove.addAll(ZONE3_CHANNEL_TYPES.entrySet());
             channelsToRemove.addAll(ZONE4_CHANNEL_TYPES.entrySet());
         }
-
-        // filter out the non-existing channels
         channelsToRemove.removeIf(c -> !currentChannels.contains(c.getKey()));
-
-        // remove the channels that were not yet added
         if (!channelsToRemove.isEmpty()) {
             for (Entry<String, ChannelTypeUID> entry : channelsToRemove) {
                 if (channels.removeIf(c -> (entry.getKey()).equals(c.getUID().getId()))) {
@@ -392,13 +310,10 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
         } else {
             logger.debug("No zone channels have been removed");
         }
-
-        // update Thing if channels changed
         if (channelsUpdated) {
             updateThing(editThing().withChannels(channels).build());
         }
     }
-
     @Override
     public void dispose() {
         if (connector != null) {
@@ -408,7 +323,6 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
         cancelRetry();
         super.dispose();
     }
-
     @Override
     public void channelLinked(ChannelUID channelUID) {
         super.channelLinked(channelUID);
@@ -420,22 +334,17 @@ public class DenonMarantzHandler extends BaseThingHandler implements DenonMarant
             }
         }
     }
-
     @Override
     public void stateChanged(String channelID, State state) {
         logger.debug("Received state {} for channelID {}", state, channelID);
-
-        // Don't flood the log with thing 'updated: ONLINE' each time a single channel changed
         if (this.getThing().getStatus() != ThingStatus.ONLINE) {
             updateStatus(ThingStatus.ONLINE);
         }
         updateState(channelID, state);
     }
-
     @Override
     public void connectionError(String errorMessage) {
         if (this.getThing().getStatus() != ThingStatus.OFFLINE) {
-            // Don't flood the log with thing 'updated: OFFLINE' when already offline
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, errorMessage);
         }
         connector.dispose();

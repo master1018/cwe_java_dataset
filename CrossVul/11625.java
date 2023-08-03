@@ -1,17 +1,5 @@
-/**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
- *
- * See the NOTICE file(s) distributed with this work for additional
- * information.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0
- *
- * SPDX-License-Identifier: EPL-2.0
- */
-package org.openhab.binding.gce.internal.model;
 
+package org.openhab.binding.gce.internal.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,11 +7,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.io.net.http.HttpUtil;
@@ -35,37 +21,27 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-/**
- * This class takes care of interpreting the status.xml file
- *
- * @author Gaël L'hopital - Initial contribution
- */
 @NonNullByDefault
 public class StatusFileInterpreter {
-    private static final String URL_TEMPLATE = "http://%s/globalstatus.xml";
+    private static final String URL_TEMPLATE = "http:
     private final Logger logger = LoggerFactory.getLogger(StatusFileInterpreter.class);
     private final String hostname;
     private @Nullable Document doc;
     private final Ipx800EventListener listener;
-
     public static enum StatusEntry {
         VERSION,
         CONFIG_MAC;
     }
-
     public StatusFileInterpreter(String hostname, Ipx800EventListener listener) {
         this.hostname = hostname;
         this.listener = listener;
     }
-
     public void read() {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            // see https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
-            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            factory.setFeature("http:
+            factory.setFeature("http:
+            factory.setFeature("http:
             factory.setXIncludeAware(false);
             factory.setExpandEntityReferences(false);
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -81,7 +57,6 @@ public class StatusFileInterpreter {
             doc = null;
         }
     }
-
     private void pushDatas() {
         Element root = getRoot();
         if (root != null) {
@@ -96,7 +71,6 @@ public class StatusFileInterpreter {
             });
         }
     }
-
     public String getElement(StatusEntry entry) {
         Element root = getRoot();
         if (root != null) {
@@ -105,13 +79,11 @@ public class StatusFileInterpreter {
             return "";
         }
     }
-
     private List<Node> getMatchingNodes(NodeList nodeList, String criteria) {
         return IntStream.range(0, nodeList.getLength()).boxed().map(nodeList::item)
                 .filter(node -> node.getNodeName().startsWith(criteria))
                 .sorted(Comparator.comparing(o -> o.getNodeName())).collect(Collectors.toList());
     }
-
     public int getMaxNumberofNodeType(PortDefinition portDefinition) {
         Element root = getRoot();
         if (root != null) {
@@ -120,7 +92,6 @@ public class StatusFileInterpreter {
         }
         return 0;
     }
-
     private @Nullable Element getRoot() {
         if (doc == null) {
             read();

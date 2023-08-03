@@ -1,67 +1,38 @@
-// © 2017 and later: Unicode, Inc. and others.
-// License & terms of use: http://www.unicode.org/copyright.html#License
-package com.ibm.icu.impl.number;
 
+package com.ibm.icu.impl.number;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-/**
- * A DecimalQuantity with internal storage as a 64-bit BCD, with fallback to a byte array for numbers
- * that don't fit into the standard BCD.
- */
 public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_AbstractBCD {
-
-    /**
-     * The BCD of the 16 digits of the number represented by this object. Every 4 bits of the long map to
-     * one digit. For example, the number "12345" in BCD is "0x12345".
-     *
-     * <p>
-     * Whenever bcd changes internally, {@link #compact()} must be called, except in special cases like
-     * setting the digit to zero.
-     */
     private byte[] bcdBytes;
-
     private long bcdLong = 0L;
-
     private boolean usingBytes = false;
-
     @Override
     public int maxRepresentableDigits() {
         return Integer.MAX_VALUE;
     }
-
     public DecimalQuantity_DualStorageBCD() {
         setBcdToZero();
         flags = 0;
     }
-
     public DecimalQuantity_DualStorageBCD(long input) {
         setToLong(input);
     }
-
     public DecimalQuantity_DualStorageBCD(int input) {
         setToInt(input);
     }
-
     public DecimalQuantity_DualStorageBCD(double input) {
         setToDouble(input);
     }
-
     public DecimalQuantity_DualStorageBCD(BigInteger input) {
         setToBigInteger(input);
     }
-
     public DecimalQuantity_DualStorageBCD(BigDecimal input) {
         setToBigDecimal(input);
     }
-
     public DecimalQuantity_DualStorageBCD(DecimalQuantity_DualStorageBCD other) {
         copyFrom(other);
     }
-
     public DecimalQuantity_DualStorageBCD(Number number) {
-        // NOTE: Number type expansion happens both here
-        // and in NumberFormat.java
         if (number instanceof Long) {
             setToLong(number.longValue());
         } else if (number instanceof Integer) {
@@ -81,12 +52,10 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
                     "Number is of an unsupported type: " + number.getClass().getName());
         }
     }
-
     @Override
     public DecimalQuantity createCopy() {
         return new DecimalQuantity_DualStorageBCD(this);
     }
-
     @Override
     protected byte getDigitPos(int position) {
         if (usingBytes) {
@@ -99,7 +68,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             return (byte) ((bcdLong >>> (position * 4)) & 0xf);
         }
     }
-
     @Override
     protected void setDigitPos(int position, byte value) {
         assert position >= 0;
@@ -115,7 +83,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             bcdLong = bcdLong & ~(0xfL << shift) | ((long) value << shift);
         }
     }
-
     @Override
     protected void shiftLeft(int numDigits) {
         if (!usingBytes && precision + numDigits > 16) {
@@ -136,7 +103,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
         scale -= numDigits;
         precision += numDigits;
     }
-
     @Override
     protected void shiftRight(int numDigits) {
         if (usingBytes) {
@@ -153,7 +119,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
         scale += numDigits;
         precision -= numDigits;
     }
-
     @Override
     protected void setBcdToZero() {
         if (usingBytes) {
@@ -167,11 +132,9 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
         origDouble = 0;
         origDelta = 0;
     }
-
     @Override
     protected void readIntToBcd(int n) {
         assert n != 0;
-        // ints always fit inside the long implementation.
         long result = 0L;
         int i = 16;
         for (; n != 0; n /= 10, i--) {
@@ -182,7 +145,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
         scale = 0;
         precision = 16 - i;
     }
-
     @Override
     protected void readLongToBcd(long n) {
         assert n != 0;
@@ -208,11 +170,10 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             precision = 16 - i;
         }
     }
-
     @Override
     protected void readBigIntegerToBcd(BigInteger n) {
         assert n.signum() != 0;
-        ensureCapacity(); // allocate initial byte array
+        ensureCapacity(); 
         int i = 0;
         for (; n.signum() != 0; i++) {
             BigInteger[] temp = n.divideAndRemainder(BigInteger.TEN);
@@ -223,11 +184,9 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
         scale = 0;
         precision = i;
     }
-
     @Override
     protected BigDecimal bcdToBigDecimal() {
         if (usingBytes) {
-            // Converting to a string here is faster than doing BigInteger/BigDecimal arithmetic.
             BigDecimal result = new BigDecimal(toNumberString());
             if (isNegative()) {
                 result = result.negate();
@@ -245,7 +204,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             return result;
         }
     }
-
     @Override
     protected void compact() {
         if (usingBytes) {
@@ -253,47 +211,32 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             for (; delta < precision && bcdBytes[delta] == 0; delta++)
                 ;
             if (delta == precision) {
-                // Number is zero
                 setBcdToZero();
                 return;
             } else {
-                // Remove trailing zeros
                 shiftRight(delta);
             }
-
-            // Compute precision
             int leading = precision - 1;
             for (; leading >= 0 && bcdBytes[leading] == 0; leading--)
                 ;
             precision = leading + 1;
-
-            // Switch storage mechanism if possible
             if (precision <= 16) {
                 switchStorage();
             }
-
         } else {
             if (bcdLong == 0L) {
-                // Number is zero
                 setBcdToZero();
                 return;
             }
-
-            // Compact the number (remove trailing zeros)
             int delta = Long.numberOfTrailingZeros(bcdLong) / 4;
             bcdLong >>>= delta * 4;
             scale += delta;
-
-            // Compute precision
             precision = 16 - (Long.numberOfLeadingZeros(bcdLong) / 4);
         }
     }
-
-    /** Ensure that a byte array of at least 40 digits is allocated. */
     private void ensureCapacity() {
         ensureCapacity(40);
     }
-
     private void ensureCapacity(int capacity) {
         if (capacity == 0)
             return;
@@ -307,11 +250,8 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
         }
         usingBytes = true;
     }
-
-    /** Switches the internal storage mechanism between the 64-bit long and the byte array. */
     private void switchStorage() {
         if (usingBytes) {
-            // Change from bytes to long
             bcdLong = 0L;
             for (int i = precision - 1; i >= 0; i--) {
                 bcdLong <<= 4;
@@ -320,7 +260,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             bcdBytes = null;
             usingBytes = false;
         } else {
-            // Change from long to bytes
             ensureCapacity();
             for (int i = 0; i < precision; i++) {
                 bcdBytes[i] = (byte) (bcdLong & 0xf);
@@ -329,7 +268,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             assert usingBytes;
         }
     }
-
     @Override
     protected void copyBcdFrom(DecimalQuantity _other) {
         DecimalQuantity_DualStorageBCD other = (DecimalQuantity_DualStorageBCD) _other;
@@ -341,14 +279,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
             bcdLong = other.bcdLong;
         }
     }
-
-    /**
-     * Checks whether the bytes stored in this instance are all valid. For internal unit testing only.
-     *
-     * @return An error message if this instance is invalid, or null if this instance is healthy.
-     * @internal
-     * @deprecated This API is for ICU internal use only.
-     */
     @Deprecated
     public String checkHealth() {
         if (usingBytes) {
@@ -398,23 +328,12 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
                     return "Nonzero digits outside of range in long";
             }
         }
-
         return null;
     }
-
-    /**
-     * Checks whether this {@link DecimalQuantity_DualStorageBCD} is using its internal byte array
-     * storage mechanism.
-     *
-     * @return true if an internal byte array is being used; false if a long is being used.
-     * @internal
-     * @deprecated This API is ICU internal only.
-     */
     @Deprecated
     public boolean isUsingBytes() {
         return usingBytes;
     }
-
     @Override
     public String toString() {
         return String.format("<DecimalQuantity %s:%d:%d:%s %s %s%s>",
@@ -426,7 +345,6 @@ public final class DecimalQuantity_DualStorageBCD extends DecimalQuantity_Abstra
                 (isNegative() ? "-" : ""),
                 toNumberString());
     }
-
     private String toNumberString() {
         StringBuilder sb = new StringBuilder();
         if (usingBytes) {

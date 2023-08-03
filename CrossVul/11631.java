@@ -1,36 +1,14 @@
-// Copyright (C) 2012 Google Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 package com.google.json;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Random;
-
 import javax.annotation.Nullable;
-
 import junit.framework.TestCase;
 import org.junit.Test;
-
-
-/**
- * Tries a series of pseudo-random variants of a string of JSON to suss out
- * boundary conditions in the JSON parser.
- */
 @SuppressWarnings("javadoc")
 public final class FuzzyTest extends TestCase {
   @Test
@@ -39,29 +17,20 @@ public final class FuzzyTest extends TestCase {
     int nRuns = 10000;
     long seed;
     {
-      // Try to fetch a seed from a system property so that we can replay failed
-      // tests.
       String seedString = System.getProperty("fuzz.seed", null);
       if (seedString != null) {
         seed = Long.parseLong(seedString, 16);
       } else {
-        // Use java.util.Random's default constructor to generate a seed since
-        // it does a pretty good job of making a good non-crypto-strong seed.
         seed = new Random().nextLong();
       }
     }
-
-    // Dump the seed so that failures can be reproduced with only this line
-    // from the test log.
     System.err.println("Fuzzing with -Dfuzz.seed=" + Long.toHexString(seed));
     System.err.flush();
-
     Random rnd = new Random(seed);
     for (String fuzzyWuzzyString : new FuzzyStringGenerator(rnd)) {
       try {
         String sanitized0 = JsonSanitizer.sanitize(fuzzyWuzzyString);
         String sanitized1 = JsonSanitizer.sanitize(sanitized0);
-        // Test idempotence.
         if (!sanitized0.equals(sanitized1)) {
           int commonPrefixLen = 0;
           int minLength = Math.min(sanitized0.length(), sanitized1.length());
@@ -71,7 +40,6 @@ public final class FuzzyTest extends TestCase {
             }
             ++commonPrefixLen;
           }
-
           int right0 = sanitized0.length();
           int right1 = sanitized1.length();
           while (right0 > commonPrefixLen && right1 > commonPrefixLen) {
@@ -81,9 +49,7 @@ public final class FuzzyTest extends TestCase {
             --right0;
             --right1;
           }
-
           int commonSuffixLen = sanitized0.length() - right0;
-
           System.err.println("Difference at " + commonPrefixLen + " to -" + commonSuffixLen);
           System.err.println("Before: " + excerpt(sanitized0, commonPrefixLen, right0));
           System.err.println("After:  " + excerpt(sanitized0, commonPrefixLen, right1));
@@ -99,8 +65,6 @@ public final class FuzzyTest extends TestCase {
       if (--nRuns <= 0) { break; }
     }
   }
-
-
   private static void hexDump(byte[] bytes, Appendable app)
     throws IOException {
     for (int i = 0; i < bytes.length; ++i) {
@@ -116,32 +80,26 @@ public final class FuzzyTest extends TestCase {
       app.append("0123456789ABCDEF".charAt((b >>> 0) & 0xf));
     }
   }
-
   private static String excerpt(String s, int left, int right) {
     int leftIncl = left - 10;
     boolean ellipseLeft = leftIncl > 0;
     if (!ellipseLeft) { leftIncl = 0; }
-
     int rightIncl = right + 10;
     boolean ellipseRight = s.length() > rightIncl;
     if (!ellipseRight) {
       rightIncl = s.length();
     }
-
     return s.substring(leftIncl, rightIncl)
             .replace("\r", "\\r")
             .replace("\n", "\\n")
             .replace("\\", "\\\\");
   }
 }
-
 final class FuzzyStringGenerator implements Iterable<String> {
   final Random rnd;
-
   FuzzyStringGenerator(Random rnd) {
     this.rnd = rnd;
   }
-
   @Override
   public Iterator<String> iterator() {
     return new Iterator<String>() {
@@ -175,7 +133,6 @@ final class FuzzyStringGenerator implements Iterable<String> {
       }
     };
   }
-
   private String makeRandomJson() {
     int maxDepth = 1 + rnd.nextInt(8);
     int maxBreadth = 4 + rnd.nextInt(16);
@@ -185,20 +142,15 @@ final class FuzzyStringGenerator implements Iterable<String> {
     appendWhitespace(sb);
     return sb.toString();
   }
-
   private static final String[] FLOAT_FORMAT_STRING = {
     "%g", "%G", "%e", "%E", "%f"
   };
-
   private static final String[] INT_FORMAT_STRING = {
     "%x", "%X", "%d"
   };
-
-
   private void appendRandomJson(
       int maxDepth, int maxBreadth, StringBuilder sb) {
     int r = rnd.nextInt(maxDepth > 0 ? 8 : 6);
-
     switch (r) {
       case 0: sb.append("null"); break;
       case 1: sb.append("true"); break;
@@ -258,19 +210,16 @@ final class FuzzyStringGenerator implements Iterable<String> {
         break;
     }
   }
-
   private void appendRandomString(int maxBreadth, StringBuilder sb) {
     sb.append('"');
     appendRandomChars(rnd.nextInt(maxBreadth * 4), sb);
     sb.append('"');
   }
-
   private void appendRandomChars(int nChars, StringBuilder sb) {
     for (int i = nChars; --i >= 0;) {
       appendRandomChar(sb);
     }
   }
-
   private void appendRandomChar(StringBuilder sb) {
     char delim = rnd.nextInt(8) == 0 ? '\'' : '"';
     int cpMax;
@@ -304,7 +253,6 @@ final class FuzzyStringGenerator implements Iterable<String> {
       sb.appendCodePoint(cp);
     }
   }
-
   private void appendWhitespace(StringBuilder sb) {
     if (rnd.nextInt(4) == 0) {
       for (int i = rnd.nextInt(4); --i >= 0;) {
@@ -312,7 +260,6 @@ final class FuzzyStringGenerator implements Iterable<String> {
       }
     }
   }
-
   private String randomDecimalDigits(int maxDigits) {
     int nDigits = Math.max(1, rnd.nextInt(maxDigits));
     StringBuilder sb = new StringBuilder(nDigits);
@@ -321,19 +268,14 @@ final class FuzzyStringGenerator implements Iterable<String> {
     }
     return sb.toString();
   }
-
   private String mutate(String s) {
-    int n = rnd.nextInt(16) + 1;  // Number of changes.
+    int n = rnd.nextInt(16) + 1;  
     int len = s.length();
-    // Pick the places where we mutate, so we can sort, de-dupe, and then
-    // derive s' in a left-to-right pass.
     int[] locations = new int[n];
     for (int i = n; --i >= 0;) {
       locations[i] = rnd.nextInt(len);
     }
     Arrays.sort(locations);
-
-    // Dedupe.
     {
       int k = 1;
       for (int i = 1; i < n; ++i) {
@@ -341,10 +283,8 @@ final class FuzzyStringGenerator implements Iterable<String> {
           locations[k++] = locations[i];
         }
       }
-      n = k;  // Skip any duped ones.
+      n = k;  
     }
-
-    // Walk left-to-right and perform modifications.
     int left = 0;
     StringBuilder delta = new StringBuilder(len);
     for (int i = 0; i < n; ++i) {
@@ -355,19 +295,17 @@ final class FuzzyStringGenerator implements Iterable<String> {
       if (size > 1) {
         rndSliceLen = rnd.nextInt(size);
       }
-
       delta.append(s, left, loc);
       left = loc;
-
       switch (rnd.nextInt(3)) {
-        case 0:  // insert
+        case 0:  
           appendRandomChars(rndSliceLen, delta);
           break;
-        case 1:  // replace
+        case 1:  
           appendRandomChars(rndSliceLen, delta);
           left += rndSliceLen;
           break;
-        case 2:  // remove
+        case 2:  
           left += rndSliceLen;
           break;
       }

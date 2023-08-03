@@ -1,16 +1,12 @@
 package com.zrlog.web.util;
-
 import com.zrlog.common.vo.AdminTokenVO;
 import com.zrlog.util.BlogBuildInfoUtil;
 import com.zrlog.util.I18nUtil;
 import com.zrlog.util.ZrLogUtil;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-
 public class PluginHelper {
-
     public static Map<String, String> genHeaderMapByRequest(HttpServletRequest request, AdminTokenVO adminTokenVO) {
         Map<String, String> map = new HashMap<>();
         if (adminTokenVO != null) {
@@ -28,7 +24,7 @@ public class PluginHelper {
                 fullUrl = adminTokenVO.getProtocol() + ":" + fullUrl;
             }
             map.put("Cookie", request.getHeader("Cookie"));
-            map.put("AccessUrl", "http://127.0.0.1:" + request.getServerPort() + request.getContextPath());
+            map.put("AccessUrl", "http:
             if (request.getHeader("Content-Type") != null) {
                 map.put("Content-Type", request.getHeader("Content-Type"));
             }

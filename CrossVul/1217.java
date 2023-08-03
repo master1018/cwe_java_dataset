@@ -1,39 +1,13 @@
 package org.bouncycastle.crypto.engines;
-
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.util.Pack;
-
-/**
- * an implementation of the AES (Rijndael), from FIPS-197.
- * <p>
- * For further details see: <a href="http://csrc.nist.gov/encryption/aes/">http://csrc.nist.gov/encryption/aes/</a>.
- *
- * This implementation is based on optimizations from Dr. Brian Gladman's paper and C code at
- * <a href="http://fp.gladman.plus.com/cryptography_technology/rijndael/">http://fp.gladman.plus.com/cryptography_technology/rijndael/</a>
- *
- * There are three levels of tradeoff of speed vs memory
- * Because java has no preprocessor, they are written as three separate classes from which to choose
- *
- * The fastest uses 8Kbytes of static tables to precompute round calculations, 4 256 word tables for encryption
- * and 4 for decryption.
- *
- * The middle performance version uses only one 256 word table for each, for a total of 2Kbytes,
- * adding 12 rotate operations per round to compute the values contained in the other tables from
- * the contents of the first
- *
- * The slowest version uses no static tables at all and computes the values in each round
- * <p>
- * This file contains the fast version with 8Kbytes of static tables for round precomputation
- *
- */
 public class AESFastEngine
     implements BlockCipher
 {
-    // The S box
     private static final byte[] S = {
         (byte)99, (byte)124, (byte)119, (byte)123, (byte)242, (byte)107, (byte)111, (byte)197,
         (byte)48,   (byte)1, (byte)103,  (byte)43, (byte)254, (byte)215, (byte)171, (byte)118,
@@ -68,8 +42,6 @@ public class AESFastEngine
         (byte)140, (byte)161, (byte)137,  (byte)13, (byte)191, (byte)230,  (byte)66, (byte)104,
         (byte)65, (byte)153,  (byte)45,  (byte)15, (byte)176,  (byte)84, (byte)187,  (byte)22,
     };
-
-    // The inverse S-box
     private static final byte[] Si = {
         (byte)82,   (byte)9, (byte)106, (byte)213,  (byte)48,  (byte)54, (byte)165,  (byte)56,
         (byte)191,  (byte)64, (byte)163, (byte)158, (byte)129, (byte)243, (byte)215, (byte)251,
@@ -104,16 +76,11 @@ public class AESFastEngine
         (byte)23,  (byte)43,   (byte)4, (byte)126, (byte)186, (byte)119, (byte)214,  (byte)38,
         (byte)225, (byte)105,  (byte)20,  (byte)99,  (byte)85,  (byte)33,  (byte)12, (byte)125,
         };
-
-    // vector used in calculating key schedule (powers of x in GF(256))
     private static final int[] rcon = {
          0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
          0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91 };
-
-    // precomputation tables of calculations for rounds
     private static final int[] T =
     {
-     // T0
      0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6, 0x0df2f2ff, 
      0xbd6b6bd6, 0xb16f6fde, 0x54c5c591, 0x50303060, 0x03010102, 
      0xa96767ce, 0x7d2b2b56, 0x19fefee7, 0x62d7d7b5, 0xe6abab4d, 
@@ -166,8 +133,6 @@ public class AESFastEngine
      0x31e6e6d7, 0xc6424284, 0xb86868d0, 0xc3414182, 0xb0999929, 
      0x772d2d5a, 0x110f0f1e, 0xcbb0b07b, 0xfc5454a8, 0xd6bbbb6d, 
      0x3a16162c, 
-
-     // T1
      0x6363c6a5, 0x7c7cf884, 0x7777ee99, 0x7b7bf68d, 0xf2f2ff0d, 
      0x6b6bd6bd, 0x6f6fdeb1, 0xc5c59154, 0x30306050, 0x01010203, 
      0x6767cea9, 0x2b2b567d, 0xfefee719, 0xd7d7b562, 0xabab4de6, 
@@ -220,8 +185,6 @@ public class AESFastEngine
      0xe6e6d731, 0x424284c6, 0x6868d0b8, 0x414182c3, 0x999929b0, 
      0x2d2d5a77, 0x0f0f1e11, 0xb0b07bcb, 0x5454a8fc, 0xbbbb6dd6, 
      0x16162c3a, 
-
-     // T2
      0x63c6a563, 0x7cf8847c, 0x77ee9977, 0x7bf68d7b, 0xf2ff0df2, 
      0x6bd6bd6b, 0x6fdeb16f, 0xc59154c5, 0x30605030, 0x01020301, 
      0x67cea967, 0x2b567d2b, 0xfee719fe, 0xd7b562d7, 0xab4de6ab, 
@@ -274,8 +237,6 @@ public class AESFastEngine
      0xe6d731e6, 0x4284c642, 0x68d0b868, 0x4182c341, 0x9929b099, 
      0x2d5a772d, 0x0f1e110f, 0xb07bcbb0, 0x54a8fc54, 0xbb6dd6bb, 
      0x162c3a16, 
-
-     // T3
      0xc6a56363, 0xf8847c7c, 0xee997777, 0xf68d7b7b, 0xff0df2f2, 
      0xd6bd6b6b, 0xdeb16f6f, 0x9154c5c5, 0x60503030, 0x02030101, 
      0xcea96767, 0x567d2b2b, 0xe719fefe, 0xb562d7d7, 0x4de6abab, 
@@ -328,10 +289,8 @@ public class AESFastEngine
      0xd731e6e6, 0x84c64242, 0xd0b86868, 0x82c34141, 0x29b09999, 
      0x5a772d2d, 0x1e110f0f, 0x7bcbb0b0, 0xa8fc5454, 0x6dd6bbbb, 
      0x2c3a1616};
-
     private static final int[] Tinv =
     {
-     // Tinv0
      0x50a7f451, 0x5365417e, 0xc3a4171a, 0x965e273a, 0xcb6bab3b, 
      0xf1459d1f, 0xab58faac, 0x9303e34b, 0x55fa3020, 0xf66d76ad, 
      0x9176cc88, 0x254c02f5, 0xfcd7e54f, 0xd7cb2ac5, 0x80443526, 
@@ -384,8 +343,6 @@ public class AESFastEngine
      0x0c25e2bc, 0x8b493c28, 0x41950dff, 0x7101a839, 0xdeb30c08, 
      0x9ce4b4d8, 0x90c15664, 0x6184cb7b, 0x70b632d5, 0x745c6c48, 
      0x4257b8d0, 
-
-     // Tinv1
      0xa7f45150, 0x65417e53, 0xa4171ac3, 0x5e273a96, 0x6bab3bcb, 
      0x459d1ff1, 0x58faacab, 0x03e34b93, 0xfa302055, 0x6d76adf6, 
      0x76cc8891, 0x4c02f525, 0xd7e54ffc, 0xcb2ac5d7, 0x44352680, 
@@ -438,8 +395,6 @@ public class AESFastEngine
      0x25e2bc0c, 0x493c288b, 0x950dff41, 0x01a83971, 0xb30c08de, 
      0xe4b4d89c, 0xc1566490, 0x84cb7b61, 0xb632d570, 0x5c6c4874, 
      0x57b8d042, 
-
-     // Tinv2
      0xf45150a7, 0x417e5365, 0x171ac3a4, 0x273a965e, 0xab3bcb6b, 
      0x9d1ff145, 0xfaacab58, 0xe34b9303, 0x302055fa, 0x76adf66d, 
      0xcc889176, 0x02f5254c, 0xe54ffcd7, 0x2ac5d7cb, 0x35268044, 
@@ -492,8 +447,6 @@ public class AESFastEngine
      0xe2bc0c25, 0x3c288b49, 0x0dff4195, 0xa8397101, 0x0c08deb3, 
      0xb4d89ce4, 0x566490c1, 0xcb7b6184, 0x32d570b6, 0x6c48745c, 
      0xb8d04257, 
-
-     // Tinv3
      0x5150a7f4, 0x7e536541, 0x1ac3a417, 0x3a965e27, 0x3bcb6bab, 
      0x1ff1459d, 0xacab58fa, 0x4b9303e3, 0x2055fa30, 0xadf66d76, 
      0x889176cc, 0xf5254c02, 0x4ffcd7e5, 0xc5d7cb2a, 0x26804435, 
@@ -546,25 +499,19 @@ public class AESFastEngine
      0xbc0c25e2, 0x288b493c, 0xff41950d, 0x397101a8, 0x08deb30c, 
      0xd89ce4b4, 0x6490c156, 0x7b6184cb, 0xd570b632, 0x48745c6c, 
      0xd04257b8};
-
     private static int shift(int r, int shift)
     {
         return (r >>> shift) | (r << -shift);
     }
-
-    /* multiply four bytes in GF(2^8) by 'x' {02} in parallel */
-
     private static final int m1 = 0x80808080;
     private static final int m2 = 0x7f7f7f7f;
     private static final int m3 = 0x0000001b;
     private static final int m4 = 0xC0C0C0C0;
     private static final int m5 = 0x3f3f3f3f;
-
     private static int FFmulX(int x)
     {
         return (((x & m2) << 1) ^ (((x & m1) >>> 7) * m3));
     }
-
     private static int FFmulX2(int x)
     {
         int t0  = (x & m5) << 2;
@@ -572,17 +519,6 @@ public class AESFastEngine
             t1 ^= (t1 >>> 1);
         return t0 ^ (t1 >>> 2) ^ (t1 >>> 5);
     }
-
-    /* 
-       The following defines provide alternative definitions of FFmulX that might
-       give improved performance if a fast 32-bit multiply is not available.
-       
-       private int FFmulX(int x) { int u = x & m1; u |= (u >> 1); return ((x & m2) << 1) ^ ((u >>> 3) | (u >>> 6)); } 
-       private static final int  m4 = 0x1b1b1b1b;
-       private int FFmulX(int x) { int u = x & m1; return ((x & m2) << 1) ^ ((u - (u >>> 7)) & m4); } 
-
-    */
-
     private static int inv_mcol(int x)
     {
         int t0, t1;
@@ -593,20 +529,12 @@ public class AESFastEngine
         t0 ^= t1 ^ shift(t1, 16);
         return t0;
     }
-
     private static int subWord(int x)
     {
         int i0 = x, i1 = x >>> 8, i2 = x >>> 16, i3 = x >>> 24;
         i0 = S[i0 & 255] & 255; i1 = S[i1 & 255] & 255; i2 = S[i2 & 255] & 255; i3 = S[i3 & 255] & 255;
         return i0 | i1 << 8 | i2 << 16 | i3 << 24;
     }
-
-    /**
-     * Calculate the necessary round keys
-     * The number of calculations depends on key size and block size
-     * AES specified a fixed block size of 128 bits and key sizes 128/192/256 bits
-     * This code is written assuming those are the only possible values
-     */
     private int[][] generateWorkingKey(byte[] key, boolean forEncryption)
     {
         int keyLen = key.length;
@@ -614,11 +542,9 @@ public class AESFastEngine
         {
             throw new IllegalArgumentException("Key length not 128/192/256 bits.");
         }
-
         int KC = keyLen >>> 2;
-        ROUNDS = KC + 6;  // This is not always true for the generalized Rijndael that allows larger block sizes
-        int[][] W = new int[ROUNDS+1][4];   // 4 words in a block
-
+        ROUNDS = KC + 6;  
+        int[][] W = new int[ROUNDS+1][4];   
         switch (KC)
         {
         case 4:
@@ -627,7 +553,6 @@ public class AESFastEngine
             int t1 = Pack.littleEndianToInt(key,  4); W[0][1] = t1;
             int t2 = Pack.littleEndianToInt(key,  8); W[0][2] = t2;
             int t3 = Pack.littleEndianToInt(key, 12); W[0][3] = t3;
-
             for (int i = 1; i <= 10; ++i)
             {
                 int u = subWord(shift(t3, 8)) ^ rcon[i - 1];
@@ -636,7 +561,6 @@ public class AESFastEngine
                 t2 ^= t1; W[i][2] = t2;
                 t3 ^= t2; W[i][3] = t3;
             }
-
             break;
         }
         case 6:
@@ -647,7 +571,6 @@ public class AESFastEngine
             int t3 = Pack.littleEndianToInt(key, 12); W[0][3] = t3;
             int t4 = Pack.littleEndianToInt(key, 16); W[1][0] = t4;
             int t5 = Pack.littleEndianToInt(key, 20); W[1][1] = t5;
-
             int rcon = 1;
             int u = subWord(shift(t5, 8)) ^ rcon; rcon <<= 1;
             t0 ^= u;  W[1][2] = t0;
@@ -656,7 +579,6 @@ public class AESFastEngine
             t3 ^= t2; W[2][1] = t3;
             t4 ^= t3; W[2][2] = t4;
             t5 ^= t4; W[2][3] = t5;
-
             for (int i = 3; i < 12; i += 3)
             {
                 u = subWord(shift(t5, 8)) ^ rcon; rcon <<= 1;
@@ -674,13 +596,11 @@ public class AESFastEngine
                 t4 ^= t3; W[i + 2][2] = t4;
                 t5 ^= t4; W[i + 2][3] = t5;
             }
-
             u = subWord(shift(t5, 8)) ^ rcon;
             t0 ^= u;  W[12][0] = t0;
             t1 ^= t0; W[12][1] = t1;
             t2 ^= t1; W[12][2] = t2;
             t3 ^= t2; W[12][3] = t3;
-
             break;
         }
         case 8:
@@ -693,9 +613,7 @@ public class AESFastEngine
             int t5 = Pack.littleEndianToInt(key, 20); W[1][1] = t5;
             int t6 = Pack.littleEndianToInt(key, 24); W[1][2] = t6;
             int t7 = Pack.littleEndianToInt(key, 28); W[1][3] = t7;
-
             int u, rcon = 1;
-
             for (int i = 2; i < 14; i += 2)
             {
                 u = subWord(shift(t7, 8)) ^ rcon; rcon <<= 1;
@@ -709,13 +627,11 @@ public class AESFastEngine
                 t6 ^= t5; W[i + 1][2] = t6;
                 t7 ^= t6; W[i + 1][3] = t7;
             }
-
             u = subWord(shift(t7, 8)) ^ rcon;
             t0 ^= u;  W[14][0] = t0;
             t1 ^= t0; W[14][1] = t1;
             t2 ^= t1; W[14][2] = t2;
             t3 ^= t2; W[14][3] = t3;
-
             break;
         }
         default:
@@ -723,7 +639,6 @@ public class AESFastEngine
             throw new IllegalStateException("Should never get here");
         }
         }
-
         if (!forEncryption)
         {
             for (int j = 1; j < ROUNDS; j++)
@@ -734,32 +649,16 @@ public class AESFastEngine
                 }
             }
         }
-
         return W;
     }
-
     private int         ROUNDS;
     private int[][]     WorkingKey = null;
     private int         C0, C1, C2, C3;
     private boolean     forEncryption;
-
     private static final int BLOCK_SIZE = 16;
-
-    /**
-     * default constructor - 128 bit block size.
-     */
     public AESFastEngine()
     {
     }
-
-    /**
-     * initialise an AES cipher.
-     *
-     * @param forEncryption whether or not we are for encryption.
-     * @param params the parameters required to set up the cipher.
-     * @exception IllegalArgumentException if the params argument is
-     * inappropriate.
-     */
     public void init(
         boolean           forEncryption,
         CipherParameters  params)
@@ -770,20 +669,16 @@ public class AESFastEngine
             this.forEncryption = forEncryption;
             return;
         }
-
         throw new IllegalArgumentException("invalid parameter passed to AES init - " + params.getClass().getName());
     }
-
     public String getAlgorithmName()
     {
         return "AES";
     }
-
     public int getBlockSize()
     {
         return BLOCK_SIZE;
     }
-
     public int processBlock(
         byte[] in,
         int inOff,
@@ -794,19 +689,15 @@ public class AESFastEngine
         {
             throw new IllegalStateException("AES engine not initialised");
         }
-
         if ((inOff + (32 / 2)) > in.length)
         {
             throw new DataLengthException("input buffer too short");
         }
-
         if ((outOff + (32 / 2)) > out.length)
         {
             throw new OutputLengthException("output buffer too short");
         }
-
         unpackBlock(in, inOff);
-
         if (forEncryption)
         {
             encryptBlock(WorkingKey);
@@ -815,16 +706,12 @@ public class AESFastEngine
         {
             decryptBlock(WorkingKey);
         }
-
         packBlock(out, outOff);
-
         return BLOCK_SIZE;
     }
-
     public void reset()
     {
     }
-
     private void unpackBlock(byte[] bytes, int off)
     {
         this.C0 = Pack.littleEndianToInt(bytes, off);
@@ -832,7 +719,6 @@ public class AESFastEngine
         this.C2 = Pack.littleEndianToInt(bytes, off + 8);
         this.C3 = Pack.littleEndianToInt(bytes, off + 12);
     }
-
     private void packBlock(byte[] bytes, int off)
     {
         Pack.intToLittleEndian(this.C0, bytes, off);
@@ -840,167 +726,120 @@ public class AESFastEngine
         Pack.intToLittleEndian(this.C2, bytes, off + 8);
         Pack.intToLittleEndian(this.C3, bytes, off + 12);
     }
-
     private void encryptBlock(int[][] KW)
     {
         int t0 = this.C0 ^ KW[0][0];
         int t1 = this.C1 ^ KW[0][1];
         int t2 = this.C2 ^ KW[0][2];
-
-        /*
-         * Fast engine has precomputed rotr(T0, 8/16/24) tables T1/T2/T3.
-         *
-         * Placing all precomputes in one array requires offsets additions for 8/16/24 rotations but
-         * avoids additional array range checks on 3 more arrays (which on HotSpot are more
-         * expensive than the offset additions).
-         */
         int r = 1, r0, r1, r2, r3 = this.C3 ^ KW[0][3];
         int i0, i1, i2, i3;
-
         while (r < ROUNDS - 1)
         {
             i0 = t0; i1 = t1 >>> 8; i2 = t2 >>> 16; i3 = r3 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r0 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][0];
-
             i0 = t1; i1 = t2 >>> 8; i2 = r3 >>> 16; i3 = t0 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r1 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][1];
-
             i0 = t2; i1 = r3 >>> 8; i2 = t0 >>> 16; i3 = t1 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r2 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][2];
-
             i0 = r3; i1 = t0 >>> 8; i2 = t1 >>> 16; i3 = t2 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r3 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r++][3];
-
             i0 = r0; i1 = r1 >>> 8; i2 = r2 >>> 16; i3 = r3 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             t0 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][0];
-
             i0 = r1; i1 = r2 >>> 8; i2 = r3 >>> 16; i3 = r0 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             t1 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][1];
-
             i0 = r2; i1 = r3 >>> 8; i2 = r0 >>> 16; i3 = r1 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             t2 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][2];
-
             i0 = r3; i1 = r0 >>> 8; i2 = r1 >>> 16; i3 = r2 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r3 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r++][3];
         }
-
         i0 = t0; i1 = t1 >>> 8; i2 = t2 >>> 16; i3 = r3 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r0 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][0];
-
         i0 = t1; i1 = t2 >>> 8; i2 = r3 >>> 16; i3 = t0 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r1 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][1];
-
         i0 = t2; i1 = r3 >>> 8; i2 = t0 >>> 16; i3 = t1 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r2 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r][2];
-
         i0 = r3; i1 = t0 >>> 8; i2 = t1 >>> 16; i3 = t2 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r3 = T[i0] ^ T[256 + i1] ^ T[512 + i2] ^ T[768 + i3] ^ KW[r++][3];
-
-        // the final round's table is a simple function of S so we don't use a whole other four tables for it
-
         i0 = r0; i1 = r1 >>> 8; i2 = r2 >>> 16; i3 = r3 >>> 24;
         i0 = S[i0 & 255] & 255; i1 = S[i1 & 255] & 255; i2 = S[i2 & 255] & 255; i3 = S[i3 & 255] & 255;
         this.C0 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[r][0];
-
         i0 = r1; i1 = r2 >>> 8; i2 = r3 >>> 16; i3 = r0 >>> 24;
         i0 = S[i0 & 255] & 255; i1 = S[i1 & 255] & 255; i2 = S[i2 & 255] & 255; i3 = S[i3 & 255] & 255;
         this.C1 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[r][1];
-
         i0 = r2; i1 = r3 >>> 8; i2 = r0 >>> 16; i3 = r1 >>> 24;
         i0 = S[i0 & 255] & 255; i1 = S[i1 & 255] & 255; i2 = S[i2 & 255] & 255; i3 = S[i3 & 255] & 255;
         this.C2 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[r][2];
-
         i0 = r3; i1 = r0 >>> 8; i2 = r1 >>> 16; i3 = r2 >>> 24;
         i0 = S[i0 & 255] & 255; i1 = S[i1 & 255] & 255; i2 = S[i2 & 255] & 255; i3 = S[i3 & 255] & 255;
         this.C3 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[r][3];
     }
-
     private void decryptBlock(int[][] KW)
     {
         int t0 = this.C0 ^ KW[ROUNDS][0];
         int t1 = this.C1 ^ KW[ROUNDS][1];
         int t2 = this.C2 ^ KW[ROUNDS][2];
-
         int r = ROUNDS - 1, r0, r1, r2, r3 = this.C3 ^ KW[ROUNDS][3];
         int i0, i1, i2, i3;
-
         while (r > 1)
         {
             i0 = t0; i1 = r3 >>> 8; i2 = t2 >>> 16; i3 = t1 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r0 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r][0];
-
             i0 = t1; i1 = t0 >>> 8; i2 = r3 >>> 16; i3 = t2 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r1 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r][1];
-
             i0 = t2; i1 = t1 >>> 8; i2 = t0 >>> 16; i3 = r3 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r2 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r][2];
-
             i0 = r3; i1 = t2 >>> 8; i2 = t1 >>> 16; i3 = t0 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r3 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r--][3];
-
             i0 = r0; i1 = r3 >>> 8; i2 = r2 >>> 16; i3 = r1 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             t0 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r][0];
-
             i0 = r1; i1 = r0 >>> 8; i2 = r3 >>> 16; i3 = r2 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             t1 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r][1];
-
             i0 = r2; i1 = r1 >>> 8; i2 = r0 >>> 16; i3 = r3 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             t2 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r][2];
-
             i0 = r3; i1 = r2 >>> 8; i2 = r1 >>> 16; i3 = r0 >>> 24;
             i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
             r3 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[r--][3];
         }
-
         i0 = t0; i1 = r3 >>> 8; i2 = t2 >>> 16; i3 = t1 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r0 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[1][0];
-
         i0 = t1; i1 = t0 >>> 8; i2 = r3 >>> 16; i3 = t2 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r1 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[1][1];
-
         i0 = t2; i1 = t1 >>> 8; i2 = t0 >>> 16; i3 = r3 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r2 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[1][2];
-
         i0 = r3; i1 = t2 >>> 8; i2 = t1 >>> 16; i3 = t0 >>> 24;
         i0 &= 255; i1 &= 255; i2 &= 255; i3 &= 255;
         r3 = Tinv[i0] ^ Tinv[256 + i1] ^ Tinv[512 + i2] ^ Tinv[768 + i3] ^ KW[1][3];
-
-        // the final round's table is a simple function of Si so we don't use a whole other four tables for it
-
         i0 = r0; i1 = r3 >>> 8; i2 = r2 >>> 16; i3 = r1 >>> 24;
         i0 = Si[i0 & 255] & 255; i1 = Si[i1 & 255] & 255; i2 = Si[i2 & 255] & 255; i3 = Si[i3 & 255] & 255;
         this.C0 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[0][0];
-
         i0 = r1; i1 = r0 >>> 8; i2 = r3 >>> 16; i3 = r2 >>> 24;
         i0 = Si[i0 & 255] & 255; i1 = Si[i1 & 255] & 255; i2 = Si[i2 & 255] & 255; i3 = Si[i3 & 255] & 255;
         this.C1 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[0][1];
-
         i0 = r2; i1 = r1 >>> 8; i2 = r0 >>> 16; i3 = r3 >>> 24;
         i0 = Si[i0 & 255] & 255; i1 = Si[i1 & 255] & 255; i2 = Si[i2 & 255] & 255; i3 = Si[i3 & 255] & 255;
         this.C2 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[0][2];
-
         i0 = r3; i1 = r2 >>> 8; i2 = r1 >>> 16; i3 = r0 >>> 24;
         i0 = Si[i0 & 255] & 255; i1 = Si[i1 & 255] & 255; i2 = Si[i2 & 255] & 255; i3 = Si[i3 & 255] & 255;
         this.C3 = i0 ^ i1 << 8 ^ i2 << 16 ^ i3 << 24 ^ KW[0][3];

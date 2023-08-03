@@ -1,20 +1,15 @@
 package cc.mrbird.common.controller;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 @Controller
 public class CommonController {
-
     private Logger log = LoggerFactory.getLogger(this.getClass());
-
     @RequestMapping("common/download")
     public void fileDownload(String fileName, Boolean delete, HttpServletResponse response) throws IOException {
         String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf('_') + 1);

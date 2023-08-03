@@ -1,5 +1,4 @@
 package org.jooby.handlers;
-
 import org.jooby.Route;
 import org.jooby.test.MockUnit;
 import org.jooby.test.MockUnit.Block;
@@ -7,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -15,14 +13,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertNotNull;
-
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AssetHandler.class, File.class, Paths.class, Files.class})
 public class AssetHandlerTest {
-
   @Test
   public void customClassloader() throws Exception {
     URI uri = Paths.get("src", "test", "resources", "org", "jooby").toUri();
@@ -34,13 +29,11 @@ public class AssetHandlerTest {
           assertNotNull(value);
         });
   }
-
   private AssetHandler newHandler(MockUnit unit, String location) {
     AssetHandler handler = new AssetHandler(location, unit.get(ClassLoader.class));
     new Route.AssetDefinition("GET", "/assets/**", handler, false);
     return handler;
   }
-
   @Test
   public void shouldCallParentOnMissing() throws Exception {
     URI uri = Paths.get("src", "test", "resources", "org", "jooby").toUri();
@@ -56,7 +49,6 @@ public class AssetHandlerTest {
           assertNotNull(value);
         });
   }
-
   @Test
   public void ignoreMalformedURL() throws Exception {
     Path path = Paths.get("src", "test", "resources", "org", "jooby");
@@ -76,31 +68,23 @@ public class AssetHandlerTest {
           assertNotNull(value);
         });
   }
-
   private Block publicDir(final URI uri, final String name) {
     return publicDir(uri, name, true);
   }
-
   private Block publicDir(final URI uri, final String name, final boolean exists) {
     return unit -> {
       unit.mockStatic(Paths.class);
-
       Path basedir = unit.mock(Path.class);
-
       expect(Paths.get("public")).andReturn(basedir);
-
       Path path = unit.mock(Path.class);
       expect(basedir.resolve(name)).andReturn(path);
       expect(path.normalize()).andReturn(path);
-
       if (exists) {
         expect(path.startsWith(basedir)).andReturn(true);
       }
-
       unit.mockStatic(Files.class);
       expect(Files.exists(basedir)).andReturn(true);
       expect(Files.exists(path)).andReturn(exists);
-
       if (exists) {
         if (uri != null) {
           expect(path.toUri()).andReturn(uri);
@@ -110,5 +94,4 @@ public class AssetHandlerTest {
       }
     };
   }
-
 }

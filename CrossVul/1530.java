@@ -1,5 +1,4 @@
 package io.onedev.server.migration;
-
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.DumperOptions.FlowStyle;
@@ -34,7 +32,6 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.yaml.snakeyaml.serializer.Serializer;
-
 import edu.emory.mathcs.backport.java.util.Collections;
 import io.onedev.commons.launcher.loader.ImplementationRegistry;
 import io.onedev.commons.utils.ClassUtils;
@@ -42,21 +39,16 @@ import io.onedev.server.OneDev;
 import io.onedev.server.GeneralException;
 import io.onedev.server.util.BeanUtils;
 import io.onedev.server.web.editable.annotation.Editable;
-
 public class VersionedYamlDoc extends MappingNode {
-
 	public VersionedYamlDoc(MappingNode wrapped) {
 		super(wrapped.getTag(), wrapped.getValue(), wrapped.getFlowStyle());
 	}
-	
 	public static VersionedYamlDoc fromYaml(String yaml) {
 		return new VersionedYamlDoc((MappingNode) new OneYaml().compose(new StringReader(yaml)));
 	}
-	
 	@SuppressWarnings("unchecked")
 	public <T> T toBean(Class<T> beanClass) {
         setTag(new Tag(beanClass));
-        
 		if (getVersion() != null) {
 			try {
 				MigrationHelper.migrate(getVersion(), beanClass.newInstance(), this);
@@ -65,16 +57,13 @@ public class VersionedYamlDoc extends MappingNode {
 				throw new RuntimeException(e);
 			}
 		}
-		
         return (T) new OneYaml().construct(this);
 	}
-	
 	public static VersionedYamlDoc fromBean(Object bean) {
 		VersionedYamlDoc doc = new VersionedYamlDoc((MappingNode) new OneYaml().represent(bean));
 		doc.setVersion(MigrationHelper.getVersion(HibernateProxyHelper.getClassWithoutInitializingProxy(bean)));
 		return doc;
 	}
-	
 	private String getVersion() {
 		for (NodeTuple tuple: getValue()) {
 			ScalarNode keyNode = (ScalarNode) tuple.getKeyNode();
@@ -83,7 +72,6 @@ public class VersionedYamlDoc extends MappingNode {
 		}
 		throw new GeneralException("Unable to find version");
 	}
-	
 	private void removeVersion() {
 		for (Iterator<NodeTuple> it = getValue().iterator(); it.hasNext();) {
 			ScalarNode keyNode = (ScalarNode) it.next().getKeyNode();
@@ -91,7 +79,6 @@ public class VersionedYamlDoc extends MappingNode {
 				it.remove();
 		}
 	}
-	
 	private void setVersion(String version) {
 		ScalarNode versionNode = null;
 		for (NodeTuple tuple:  getValue()) {
@@ -107,7 +94,6 @@ public class VersionedYamlDoc extends MappingNode {
 			getValue().add(0, new NodeTuple(keyNode, versionNode));
 		}
 	}
-	
 	public String toYaml() {
 		StringWriter writer = new StringWriter();
 		DumperOptions dumperOptions = new DumperOptions();
@@ -122,13 +108,10 @@ public class VersionedYamlDoc extends MappingNode {
 			throw new RuntimeException(e);
 		}
 	}
-	
 	private static class OneConstructor extends Constructor {
-		
 		public Object construct(Node node) {
 			return constructDocument(node);
 		}
-
 		@Override
 		protected Class<?> getClassForNode(Node node) {
 			Class<?> type = node.getType();
@@ -140,27 +123,16 @@ public class VersionedYamlDoc extends MappingNode {
 						return implementationClass;
 				}
 			}
-			
 			return super.getClassForNode(node);
 		}
-		
 	}
-	
 	private static class OneYaml extends Yaml {
-
 		OneYaml() {
 			super(newConstructor(), newRepresenter());
-			
-			/*
-			 * Use property here as yaml will be read by human and we want to make 
-			 * it consistent with presented in UI 
-			 */
 			setBeanAccess(BeanAccess.PROPERTY);
 		}
-		
 		private static Representer newRepresenter() {
 			Representer representer = new Representer() {
-				
 			    @SuppressWarnings("rawtypes")
 				@Override
 			    protected NodeTuple representJavaBeanProperty(Object javaBean, Property property, 
@@ -173,11 +145,9 @@ public class VersionedYamlDoc extends MappingNode {
 			        	return super.representJavaBeanProperty(javaBean, property, propertyValue, customTag);
 			        }
 			    }
-
 			};
 			representer.setDefaultFlowStyle(FlowStyle.BLOCK);
 			representer.setPropertyUtils(new PropertyUtils() {
-
 				@Override
 				protected Set<Property> createPropertySet(Class<? extends Object> type, BeanAccess bAccess) {
 					List<Property> properties = new ArrayList<>();
@@ -198,28 +168,21 @@ public class VersionedYamlDoc extends MappingNode {
 						}
 					}
 					Collections.sort(properties, new Comparator<Property>() {
-
 						@Override
 						public int compare(Property o1, Property o2) {
 							return orders.get(o1.getName()) - orders.get(o2.getName());
 						}
-						
 					});
 					return new LinkedHashSet<>(properties);
 				}
-				
 			});
 			return representer;
 		}
-		
 		private static OneConstructor newConstructor() {
 			return new OneConstructor();
 		}
-		
 		public Object construct(Node node) {
 	        return ((OneConstructor)constructor).construct(node);
 		}
-	    
 	}
-
 }

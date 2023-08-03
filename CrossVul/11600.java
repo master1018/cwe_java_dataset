@@ -1,5 +1,4 @@
 package io.onedev.server.plugin.executor.kubernetes;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,7 +8,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +20,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
-
 import org.apache.commons.lang.SerializationUtils;
-
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-
 import io.onedev.commons.utils.TarUtils;
 import io.onedev.k8shelper.CacheAllocationRequest;
 import io.onedev.k8shelper.CacheInstance;
@@ -35,24 +30,18 @@ import io.onedev.server.GeneralException;
 import io.onedev.server.buildspec.job.Job;
 import io.onedev.server.buildspec.job.JobContext;
 import io.onedev.server.buildspec.job.JobManager;
-
 @Path("/k8s")
 @Consumes(MediaType.WILDCARD)
 @Singleton
 public class KubernetesResource {
-
 	public static final String TEST_JOB_TOKEN = UUID.randomUUID().toString();
-	
 	private final JobManager jobManager;
-	
     @Context
     private HttpServletRequest request;
-    
     @Inject
     public KubernetesResource(JobManager jobManager) {
     	this.jobManager = jobManager;
 	}
-    
 	@Path("/job-context")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
     @GET
@@ -69,7 +58,6 @@ public class KubernetesResource {
 		contextMap.put("collectFiles.excludes", context.getCollectFiles().getExcludes());
 		return SerializationUtils.serialize((Serializable) contextMap);
     }
-	
 	@Path("/allocate-job-caches")
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
@@ -79,7 +67,6 @@ public class KubernetesResource {
 		return SerializationUtils.serialize((Serializable) jobManager.allocateJobCaches(
 				getJobToken(), cacheAllocationRequest.getCurrentTime(), cacheAllocationRequest.getInstances()));
     }
-	
 	@Path("/report-job-caches")
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
 	@POST
@@ -89,13 +76,11 @@ public class KubernetesResource {
 			cacheInstances.add(CacheInstance.fromString(field));
 		jobManager.reportJobCaches(getJobToken(), cacheInstances);
 	}
-	
 	@Path("/download-dependencies")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@GET
 	public Response downloadDependencies() {
 		StreamingOutput os = new StreamingOutput() {
-
 			@Override
 		   public void write(OutputStream output) throws IOException {
 				JobContext context = jobManager.getJobContext(getJobToken(), true);
@@ -103,11 +88,9 @@ public class KubernetesResource {
 						new ArrayList<>(), output);
 				output.flush();
 		   }				   
-		   
 		};
 		return Response.ok(os).build();
 	}
-	
 	@POST
 	@Path("/upload-outcomes")
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)	
@@ -116,7 +99,6 @@ public class KubernetesResource {
 		TarUtils.untar(is, context.getServerWorkspace());
 		return Response.ok().build();
 	}
-	
 	@GET
 	@Path("/test")
 	public Response test() {
@@ -126,7 +108,6 @@ public class KubernetesResource {
 		else 
 			return Response.status(400).entity("Invalid or missing job token").build();
 	}
-	
 	private String getJobToken() {
 		String jobToken = Job.getToken(request);
 		if (jobToken != null)
@@ -134,5 +115,4 @@ public class KubernetesResource {
 		else
 			throw new GeneralException("Job token is expected");
 	}
-	
 }

@@ -1,5 +1,4 @@
 package org.bouncycastle.jcajce.provider.asymmetric.dsa;
-
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidParameterException;
 import java.security.KeyPair;
@@ -7,7 +6,6 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.DSAParameterSpec;
 import java.util.Hashtable;
-
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.generators.DSAKeyPairGenerator;
@@ -19,25 +17,21 @@ import org.bouncycastle.crypto.params.DSAPrivateKeyParameters;
 import org.bouncycastle.crypto.params.DSAPublicKeyParameters;
 import org.bouncycastle.util.Integers;
 import org.bouncycastle.util.Properties;
-
 public class KeyPairGeneratorSpi
     extends java.security.KeyPairGenerator
 {
     private static Hashtable params = new Hashtable();
     private static Object    lock = new Object();
-
     DSAKeyGenerationParameters param;
     DSAKeyPairGenerator engine = new DSAKeyPairGenerator();
     int strength = 1024;
     int certainty = 20;
     SecureRandom random = new SecureRandom();
     boolean initialised = false;
-
     public KeyPairGeneratorSpi()
     {
         super("DSA");
     }
-
     public void initialize(
         int strength,
         SecureRandom random)
@@ -46,12 +40,10 @@ public class KeyPairGeneratorSpi
         {
             throw new InvalidParameterException("strength must be from 512 - 4096 and a multiple of 1024 above 1024");
         }
-
         this.strength = strength;
         this.random = random;
         this.initialised = false;
     }
-
     public void initialize(
         AlgorithmParameterSpec params,
         SecureRandom random)
@@ -62,19 +54,15 @@ public class KeyPairGeneratorSpi
             throw new InvalidAlgorithmParameterException("parameter object not a DSAParameterSpec");
         }
         DSAParameterSpec dsaParams = (DSAParameterSpec)params;
-
         param = new DSAKeyGenerationParameters(random, new DSAParameters(dsaParams.getP(), dsaParams.getQ(), dsaParams.getG()));
-
         engine.init(param);
         initialised = true;
     }
-
     public KeyPair generateKeyPair()
     {
         if (!initialised)
         {
             Integer paramStrength = Integers.valueOf(strength);
-
             if (params.containsKey(paramStrength))
             {
                 param = (DSAKeyGenerationParameters)params.get(paramStrength);
@@ -83,8 +71,6 @@ public class KeyPairGeneratorSpi
             {
                 synchronized (lock)
                 {
-                    // we do the check again in case we were blocked by a generator for
-                    // our key size.
                     if (params.containsKey(paramStrength))
                     {
                         param = (DSAKeyGenerationParameters)params.get(paramStrength);
@@ -93,14 +79,6 @@ public class KeyPairGeneratorSpi
                     {
                         DSAParametersGenerator pGen;
                         DSAParameterGenerationParameters dsaParams;
-
-                        // Typical combination of keysize and size of q.
-                        //     keysize = 1024, q's size = 160
-                        //     keysize = 2048, q's size = 224
-                        //     keysize = 2048, q's size = 256
-                        //     keysize = 3072, q's size = 256
-                        // For simplicity if keysize is greater than 1024 then we choose q's size to be 256.
-                        // For legacy keysize that is less than 1024-bit, we just use the 186-2 style parameters
                         if (strength == 1024)
                         {
                             pGen = new DSAParametersGenerator();
@@ -126,20 +104,16 @@ public class KeyPairGeneratorSpi
                             pGen.init(strength, certainty, random);
                         }
                         param = new DSAKeyGenerationParameters(random, pGen.generateParameters());
-
                         params.put(paramStrength, param);
                     }
                 }
             }
-
             engine.init(param);
             initialised = true;
         }
-
         AsymmetricCipherKeyPair pair = engine.generateKeyPair();
         DSAPublicKeyParameters pub = (DSAPublicKeyParameters)pair.getPublic();
         DSAPrivateKeyParameters priv = (DSAPrivateKeyParameters)pair.getPrivate();
-
         return new KeyPair(new BCDSAPublicKey(pub), new BCDSAPrivateKey(priv));
     }
 }

@@ -1,18 +1,15 @@
 package org.jboss.seam.util;
-
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.UnknownHostException;
-
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 public class XML
 {
     public static Element getRootElement(InputStream stream) throws DocumentException
@@ -37,11 +34,6 @@ public class XML
             throw e;
         }
     }
-
-    
-   /**
-    * Parses an XML document safely, as to not resolve any external DTDs
-    */
    public static Element getRootElementSafely(InputStream stream) 
        throws DocumentException
    {
@@ -50,32 +42,21 @@ public class XML
        saxReader.setMergeAdjacentText(true);
        return saxReader.read(stream).getRootElement();       
    }
-   
-   
    public static class NullEntityResolver 
        implements EntityResolver 
    {
        private static final byte[] empty = new byte[0];
-
        public InputSource resolveEntity(String systemId, String publicId) 
            throws SAXException, 
                   IOException 
        {
            return new InputSource(new ByteArrayInputStream(empty));
        }
-
    }
-   
-   /**
-    * Get safe SaxReader with doctype feature disabled 
-    * @see http://xerces.apache.org/xerces2-j/features.html#disallow-doctype-decl 
-    * @return
-    * @throws Exception
-    */
    public static SAXReader getSafeSaxReader() throws Exception
    {
       SAXReader xmlReader = new SAXReader();
-      xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+      xmlReader.setFeature("http:
       return xmlReader;
    }
 }

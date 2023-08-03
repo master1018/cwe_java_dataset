@@ -1,7 +1,5 @@
 package io.onedev.server.web.component.markdown;
-
 import static org.apache.wicket.ajax.attributes.CallbackParameter.explicit;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -12,12 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Nullable;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.wicket.AttributeModifier;
@@ -47,11 +43,9 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.unbescape.javascript.JavaScriptEscape;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
-
 import io.onedev.commons.launcher.loader.AppLoader;
 import io.onedev.server.OneDev;
 import io.onedev.server.entitymanager.ProjectManager;
@@ -70,97 +64,63 @@ import io.onedev.server.web.component.markdown.emoji.EmojiOnes;
 import io.onedev.server.web.component.modal.ModalPanel;
 import io.onedev.server.web.page.project.ProjectPage;
 import io.onedev.server.web.page.project.blob.render.BlobRenderContext;
-
 @SuppressWarnings("serial")
 public class MarkdownEditor extends FormComponentPanel<String> {
-
 	protected static final int ATWHO_LIMIT = 10;
-	
 	private static final Logger logger = LoggerFactory.getLogger(MarkdownEditor.class);
-	
 	private final boolean compactMode;
-	
 	private final boolean initialSplit;
-	
 	private final BlobRenderContext blobRenderContext;
-	
 	private WebMarkupContainer container;
-	
 	private TextArea<String> input;
-
 	private AbstractPostAjaxBehavior actionBehavior;
-	
 	private AbstractPostAjaxBehavior attachmentUploadBehavior;
-	
-	/**
-	 * @param id 
-	 * 			component id of the editor
-	 * @param model
-	 * 			markdown model of the editor
-	 * @param compactMode
-	 * 			editor in compact mode occupies horizontal space and is suitable 
-	 * 			to be used in places such as comment aside the code
-	 */
 	public MarkdownEditor(String id, IModel<String> model, boolean compactMode, 
 			@Nullable BlobRenderContext blobRenderContext) {
 		super(id, model);
 		this.compactMode = compactMode;
-		
 		String cookieKey;
 		if (compactMode)
 			cookieKey = "markdownEditor.compactMode.split";
 		else
 			cookieKey = "markdownEditor.normalMode.split";
-		
 		WebRequest request = (WebRequest) RequestCycle.get().getRequest();
 		Cookie cookie = request.getCookie(cookieKey);
 		initialSplit = cookie!=null && "true".equals(cookie.getValue());
-		
 		this.blobRenderContext = blobRenderContext;
 	}
-	
 	@Override
 	protected void onModelChanged() {
 		super.onModelChanged();
 		input.setModelObject(getModelObject());
 	}
-	
 	public void clearMarkdown() {
 		setModelObject("");
 		input.setConvertedInput(null);
 	}
-
 	private String renderInput(String input) {
 		if (StringUtils.isNotBlank(input)) {
-			// Normalize line breaks to make source position tracking information comparable 
-			// to textarea caret position when sync edit/preview scroll bar
 			input = StringUtils.replace(input, "\r\n", "\n");
 			return renderMarkdown(input);
 		} else {
 			return "<div class='message'>Nothing to preview</div>";
 		}
 	}
-	
 	protected String renderMarkdown(String markdown) {
 		Project project ;
 		if (getPage() instanceof ProjectPage)
 			project = ((ProjectPage) getPage()).getProject();
 		else
 			project = null;
-		
 		MarkdownManager manager = OneDev.getInstance(MarkdownManager.class);
 		return manager.process(manager.render(markdown), project, blobRenderContext);
 	}
-	
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-
 		container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
-		
 		add(container);
-		
 		WebMarkupContainer editLink = new WebMarkupContainer("editLink");
 		WebMarkupContainer splitLink = new WebMarkupContainer("splitLink");
 		WebMarkupContainer preview = new WebMarkupContainer("preview");
@@ -169,16 +129,11 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 		container.add(splitLink);
 		container.add(preview);
 		container.add(edit);
-		
 		container.add(AttributeAppender.append("class", compactMode?"compact-mode":"normal-mode"));
-		
 		container.add(new DropdownLink("doReference") {
-
-
 			@Override
 			protected Component newContent(String id, FloatingPanel dropdown) {
 				return new Fragment(id, "referenceMenuFrag", MarkdownEditor.this) {
-
 					@Override
 					public void renderHead(IHeaderResponse response) {
 						super.renderHead(response);
@@ -186,30 +141,22 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 								container.getMarkupId(), getMarkupId());
 						response.render(OnDomReadyHeaderItem.forScript(script));
 					}
-					
 				}.setOutputMarkupId(true);
 			}
-			
 		}.setVisible(getReferenceSupport() != null));
-		
 		container.add(new DropdownLink("actionMenuTrigger") {
-
-
 			@Override
 			protected Component newContent(String id, FloatingPanel dropdown) {
 				return new Fragment(id, "actionMenuFrag", MarkdownEditor.this) {
-
 					@Override
 					protected void onInitialize() {
 						super.onInitialize();
 						add(new WebMarkupContainer("doMention").setVisible(getUserMentionSupport() != null));
-						
 						if (getReferenceSupport() != null) 
 							add(new Fragment("doReference", "referenceMenuFrag", MarkdownEditor.this));
 						else 
 							add(new WebMarkupContainer("doReference").setVisible(false));
 					}
-
 					@Override
 					public void renderHead(IHeaderResponse response) {
 						super.renderHead(response);
@@ -217,29 +164,21 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 								container.getMarkupId(), getMarkupId());
 						response.render(OnDomReadyHeaderItem.forScript(script));
 					}
-					
 				}.setOutputMarkupId(true);
 			}
-			
 		});
-		
 		container.add(new WebMarkupContainer("doMention").setVisible(getUserMentionSupport() != null));
-			
 		edit.add(input = new TextArea<String>("input", Model.of(getModelObject())));
 		for (AttributeModifier modifier: getInputModifiers()) 
 			input.add(modifier);
-
 		if (initialSplit) {
 			container.add(AttributeAppender.append("class", "split-mode"));
 			preview.add(new Label("rendered", new LoadableDetachableModel<String>() {
-
 				@Override
 				protected String load() {
 					return renderInput(input.getConvertedInput());
 				}
-				
 			}) {
-
 				@Override
 				public void renderHead(IHeaderResponse response) {
 					super.renderHead(response);
@@ -248,7 +187,6 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 							container.getMarkupId());
 					response.render(OnDomReadyHeaderItem.forScript(script));
 				}
-				
 			}.setEscapeModelStrings(false));
 			splitLink.add(AttributeAppender.append("class", "active"));
 		} else {
@@ -256,17 +194,13 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 			preview.add(new WebMarkupContainer("rendered"));
 			editLink.add(AttributeAppender.append("class", "active"));
 		}
-		
 		container.add(new WebMarkupContainer("canAttachFile").setVisible(getAttachmentSupport()!=null));
-		
 		container.add(actionBehavior = new AbstractPostAjaxBehavior() {
-
 			@Override
 			protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
 				super.updateAjaxAttributes(attributes);
 				attributes.setChannel(new AjaxChannel("markdown-preview", AjaxChannel.Type.DROP));
 			}
-
 			@Override
 			protected void respond(AjaxRequestTarget target) {
 				IRequestParameters params = RequestCycle.get().getRequest().getPostParameters();
@@ -296,7 +230,6 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 						emojiNames.add("+1");
 						emojiNames.add("-1");
 					}
-
 					List<Map<String, String>> emojis = new ArrayList<>();
 					for (String emojiName: emojiNames) {
 						if (emojis.size() < ATWHO_LIMIT) {
@@ -322,26 +255,22 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 					emojis = new ArrayList<>();
 					String urlPattern =  RequestCycle.get().urlFor(new PackageResourceReference(EmojiOnes.class,
 					        "icon/FILENAME.png"), new PageParameters()).toString();
-					
 					for (Map.Entry<String, String> entry: EmojiOnes.getInstance().all().entrySet()) {
 						Map<String, String> emoji = new HashMap<>();
 						emoji.put("name", entry.getKey());
 						emoji.put("url", urlPattern.replace("FILENAME", entry.getValue()));
 						emojis.add(emoji);
 					}
-
 					try {
 						json = AppLoader.getInstance(ObjectMapper.class).writeValueAsString(emojis);
 					} catch (JsonProcessingException e) {
 						throw new RuntimeException(e);
 					}
-
 					script = String.format("onedev.server.markdown.onEmojisLoaded('%s', %s);", container.getMarkupId(), json);
 					target.appendJavaScript(script);
 					break;
 				case "userQuery":
 					String userQuery = params.getParameterValue("param1").toOptionalString();
-
 					AvatarManager avatarManager = OneDev.getInstance(AvatarManager.class);
 					List<Map<String, String>> userList = new ArrayList<>();
 					for (User user: getUserMentionSupport().findUsers(userQuery, ATWHO_LIMIT)) {
@@ -360,7 +289,6 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 						userMap.put("avatarUrl", avatarUrl);
 						userList.add(userMap);
 					}
-					
 					try {
 						json = OneDev.getInstance(ObjectMapper.class).writeValueAsString(userList);
 					} catch (JsonProcessingException e) {
@@ -403,7 +331,6 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 								Map<String, String> referenceMap = new HashMap<>();
 								referenceMap.put("referenceType", "build");
 								referenceMap.put("referenceNumber", String.valueOf(build.getNumber()));
-								
 								String title;
 								if (build.getVersion() != null) 
 									title = "(" + build.getVersion() + ") " + build.getJobName();
@@ -415,7 +342,6 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 							}
 						}
 					}
-					
 					try {
 						json = OneDev.getInstance(ObjectMapper.class).writeValueAsString(referenceList);
 					} catch (JsonProcessingException e) {
@@ -427,19 +353,15 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 				case "selectImage":
 				case "selectLink":
 					new ModalPanel(target) {
-						
 						@Override
 						protected Component newContent(String id) {
 							return new InsertUrlPanel(id, MarkdownEditor.this, action.equals("selectImage")) {
-
 								@Override
 								protected void onClose(AjaxRequestTarget target) {
 									close();
 								}
-								
 							};
 						}
-
 						@Override
 						protected void onClosed() {
 							super.onClosed();
@@ -447,7 +369,6 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 									Preconditions.checkNotNull(RequestCycle.get().find(AjaxRequestTarget.class));
 							target.appendJavaScript(String.format("$('#%s textarea').focus();", container.getMarkupId()));
 						}
-						
 					};
 					break;
 				case "insertUrl":
@@ -460,17 +381,13 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 					String replaceMessage = params.getParameterValue("param2").toString();
 					String url = getAttachmentSupport().getAttachmentUrl(name);
 					insertUrl(target, isWebSafeImage(name), url, name, replaceMessage);
-					
 					break;
 				default:
 					throw new IllegalStateException("Unknown action: " + action);
 				}		
 			}
-			
 		});
-		
 		container.add(attachmentUploadBehavior = new AbstractPostAjaxBehavior() {
-			
 			@Override
 			protected void respond(AjaxRequestTarget target) {
 				Preconditions.checkNotNull(getAttachmentSupport(), "Unexpected attachment upload request");
@@ -494,35 +411,28 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				}
 			}
-			
 		});
 	}
-	
 	@Override
 	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
 	}
-
 	@Override
 	public void convertInput() {
 		setConvertedInput(input.getConvertedInput());
 	}
-
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.render(JavaScriptHeaderItem.forReference(new MarkdownResourceReference()));
-		
 		String actionCallback = actionBehavior.getCallbackFunction(explicit("action"), explicit("param1"), explicit("param2"), 
 				explicit("param3")).toString();
 		String attachmentUploadUrl = attachmentUploadBehavior.getCallbackUrl().toString();
-		
 		String autosaveKey = getAutosaveKey();
 		if (autosaveKey != null)
 			autosaveKey = "'" + JavaScriptEscape.escapeJavaScript(autosaveKey) + "'";
 		else
 			autosaveKey = "undefined";
-		
 		String script = String.format("onedev.server.markdown.onDomReady('%s', %s, %d, %s, %d, %b, %b, '%s', %s);", 
 				container.getMarkupId(), 
 				actionCallback, 
@@ -534,11 +444,9 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 				JavaScriptEscape.escapeJavaScript(ProjectNameValidator.PATTERN.pattern()),
 				autosaveKey);
 		response.render(OnDomReadyHeaderItem.forScript(script));
-		
 		script = String.format("onedev.server.markdown.onLoad('%s');", container.getMarkupId());
 		response.render(OnLoadHeaderItem.forScript(script));
 	}
-
 	public void insertUrl(AjaxRequestTarget target, boolean isImage, String url, 
 			String name, @Nullable String replaceMessage) {
 		String script = String.format("onedev.server.markdown.insertUrl('%s', %s, '%s', '%s', %s);",
@@ -547,50 +455,38 @@ public class MarkdownEditor extends FormComponentPanel<String> {
 				replaceMessage!=null?"'"+replaceMessage+"'":"undefined");
 		target.appendJavaScript(script);
 	}
-	
 	public boolean isWebSafeImage(String fileName) {
 		fileName = fileName.toLowerCase();
 		return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") 
 				|| fileName.endsWith(".gif") || fileName.endsWith(".png");
 	}
-	
 	@Nullable
 	protected AttachmentSupport getAttachmentSupport() {
 		return null;
 	}
-	
 	@Nullable
 	protected UserMentionSupport getUserMentionSupport() {
 		return null;
 	}
-	
 	@Nullable
 	protected AtWhoReferenceSupport getReferenceSupport() {
 		return null;
 	}
-	
 	protected List<AttributeModifier> getInputModifiers() {
 		return new ArrayList<>();
 	}
-	
 	@Nullable
 	protected String getAutosaveKey() {
 		return null;
 	}
-
 	@Nullable
 	public BlobRenderContext getBlobRenderContext() {
 		return blobRenderContext;
 	}
-
 	static class ReferencedEntity implements Serializable {
 		String entityType;
-		
 		String entityTitle;
-		
 		String entityNumber;
-		
 		String searchKey;
 	}
-	
 }

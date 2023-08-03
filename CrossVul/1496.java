@@ -1,13 +1,9 @@
 package org.bouncycastle.math.raw;
-
 import java.math.BigInteger;
-
 import org.bouncycastle.util.Pack;
-
 public abstract class Nat224
 {
     private static final long M = 0xFFFFFFFFL;
-
     public static int add(int[] x, int[] y, int[] z)
     {
         long c = 0;
@@ -34,7 +30,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int add(int[] x, int xOff, int[] y, int yOff, int[] z, int zOff)
     {
         long c = 0;
@@ -61,7 +56,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int addBothTo(int[] x, int[] y, int[] z)
     {
         long c = 0;
@@ -88,7 +82,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int addBothTo(int[] x, int xOff, int[] y, int yOff, int[] z, int zOff)
     {
         long c = 0;
@@ -115,7 +108,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int addTo(int[] x, int[] z)
     {
         long c = 0;
@@ -142,7 +134,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int addTo(int[] x, int xOff, int[] z, int zOff, int cIn)
     {
         long c = cIn & M;
@@ -169,7 +160,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int addToEachOther(int[] u, int uOff, int[] v, int vOff)
     {
         long c = 0;
@@ -203,7 +193,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static void copy(int[] x, int[] z)
     {
         z[0] = x[0];
@@ -214,17 +203,14 @@ public abstract class Nat224
         z[5] = x[5];
         z[6] = x[6];
     }
-
     public static int[] create()
     {
         return new int[7];
     }
-
     public static int[] createExt()
     {
         return new int[14];
     }
-
     public static boolean diff(int[] x, int xOff, int[] y, int yOff, int[] z, int zOff)
     {
         boolean pos = gte(x, xOff, y, yOff);
@@ -238,7 +224,6 @@ public abstract class Nat224
         }
         return pos;
     }
-
     public static boolean eq(int[] x, int[] y)
     {
         for (int i = 6; i >= 0; --i)
@@ -250,14 +235,12 @@ public abstract class Nat224
         }
         return true;
     }
-
     public static int[] fromBigInteger(BigInteger x)
     {
         if (x.signum() < 0 || x.bitLength() > 224)
         {
             throw new IllegalArgumentException();
         }
-
         int[] z = create();
         int i = 0;
         while (x.signum() != 0)
@@ -267,7 +250,6 @@ public abstract class Nat224
         }
         return z;
     }
-
     public static int getBit(int[] x, int bit)
     {
         if (bit == 0)
@@ -282,7 +264,6 @@ public abstract class Nat224
         int b = bit & 31;
         return (x[w] >>> b) & 1;
     }
-
     public static boolean gte(int[] x, int[] y)
     {
         for (int i = 6; i >= 0; --i)
@@ -296,7 +277,6 @@ public abstract class Nat224
         }
         return true;
     }
-
     public static boolean gte(int[] x, int xOff, int[] y, int yOff)
     {
         for (int i = 6; i >= 0; --i)
@@ -310,7 +290,6 @@ public abstract class Nat224
         }
         return true;
     }
-
     public static boolean isOne(int[] x)
     {
         if (x[0] != 1)
@@ -326,7 +305,6 @@ public abstract class Nat224
         }
         return true;
     }
-
     public static boolean isZero(int[] x)
     {
         for (int i = 0; i < 7; ++i)
@@ -338,7 +316,6 @@ public abstract class Nat224
         }
         return true;
     }
-
     public static void mul(int[] x, int[] y, int[] zz)
     {
         long y_0 = y[0] & M;
@@ -348,7 +325,6 @@ public abstract class Nat224
         long y_4 = y[4] & M;
         long y_5 = y[5] & M;
         long y_6 = y[6] & M;
-
         {
             long c = 0, x_0 = x[0] & M;
             c += x_0 * y_0;
@@ -374,7 +350,6 @@ public abstract class Nat224
             c >>>= 32;
             zz[7] = (int)c;
         }
-
         for (int i = 1; i < 7; ++i)
         {
             long c = 0, x_i = x[i] & M;
@@ -402,7 +377,6 @@ public abstract class Nat224
             zz[i + 7] = (int)c;
         }
     }
-
     public static void mul(int[] x, int xOff, int[] y, int yOff, int[] zz, int zzOff)
     {
         long y_0 = y[yOff + 0] & M;
@@ -412,7 +386,6 @@ public abstract class Nat224
         long y_4 = y[yOff + 4] & M;
         long y_5 = y[yOff + 5] & M;
         long y_6 = y[yOff + 6] & M;
-
         {
             long c = 0, x_0 = x[xOff + 0] & M;
             c += x_0 * y_0;
@@ -438,7 +411,6 @@ public abstract class Nat224
             c >>>= 32;
             zz[zzOff + 7] = (int)c;
         }
-
         for (int i = 1; i < 7; ++i)
         {
             ++zzOff;
@@ -467,7 +439,6 @@ public abstract class Nat224
             zz[zzOff + 7] = (int)c;
         }
     }
-
     public static int mulAddTo(int[] x, int[] y, int[] zz)
     {
         long y_0 = y[0] & M;
@@ -477,7 +448,6 @@ public abstract class Nat224
         long y_4 = y[4] & M;
         long y_5 = y[5] & M;
         long y_6 = y[6] & M;
-
         long zc = 0;
         for (int i = 0; i < 7; ++i)
         {
@@ -509,7 +479,6 @@ public abstract class Nat224
         }
         return (int)zc;
     }
-
     public static int mulAddTo(int[] x, int xOff, int[] y, int yOff, int[] zz, int zzOff)
     {
         long y_0 = y[yOff + 0] & M;
@@ -519,7 +488,6 @@ public abstract class Nat224
         long y_4 = y[yOff + 4] & M;
         long y_5 = y[yOff + 5] & M;
         long y_6 = y[yOff + 6] & M;
-
         long zc = 0;
         for (int i = 0; i < 7; ++i)
         {
@@ -552,11 +520,8 @@ public abstract class Nat224
         }
         return (int)zc;
     }
-
     public static long mul33Add(int w, int[] x, int xOff, int[] y, int yOff, int[] z, int zOff)
     {
-        // assert w >>> 31 == 0;
-
         long c = 0, wVal = w & M;
         long x0 = x[xOff + 0] & M;
         c += wVal * x0 + (y[yOff + 0] & M);
@@ -589,7 +554,6 @@ public abstract class Nat224
         c += x6;
         return c;
     }
-
     public static int mulByWord(int x, int[] z)
     {
         long c = 0, xVal = x & M;
@@ -616,7 +580,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int mulByWordAddTo(int x, int[] y, int[] z)
     {
         long c = 0, xVal = x & M;
@@ -643,7 +606,6 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int mulWordAddTo(int x, int[] y, int yOff, int[] z, int zOff)
     {
         long c = 0, xVal = x & M;
@@ -670,12 +632,8 @@ public abstract class Nat224
         c >>>= 32;
         return (int)c;
     }
-
     public static int mul33DWordAdd(int x, long y, int[] z, int zOff)
     {
-        // assert x >>> 31 == 0;
-        // assert zOff <= 3;
-
         long c = 0, xVal = x & M;
         long y00 = y & M;
         c += xVal * y00 + (z[zOff + 0] & M);
@@ -693,12 +651,8 @@ public abstract class Nat224
         c >>>= 32;
         return c == 0 ? 0 : Nat.incAt(7, z, zOff, 4);
     }
-
     public static int mul33WordAdd(int x, int y, int[] z, int zOff)
     {
-        // assert x >>> 31 == 0;
-        // assert zOff <= 4;
-
         long c = 0, xVal = x & M, yVal = y & M;
         c += yVal * xVal + (z[zOff + 0] & M);
         z[zOff + 0] = (int)c;
@@ -711,10 +665,8 @@ public abstract class Nat224
         c >>>= 32;
         return c == 0 ? 0 : Nat.incAt(7, z, zOff, 3);
     }
-
     public static int mulWordDwordAdd(int x, long y, int[] z, int zOff)
     {
-        // assert zOff <= 4;
         long c = 0, xVal = x & M;
         c += xVal * (y & M) + (z[zOff + 0] & M);
         z[zOff + 0] = (int)c;
@@ -727,7 +679,6 @@ public abstract class Nat224
         c >>>= 32;
         return c == 0 ? 0 : Nat.incAt(7, z, zOff, 3);
     }
-
     public static int mulWord(int x, int[] y, int[] z, int zOff)
     {
         long c = 0, xVal = x & M;
@@ -741,12 +692,10 @@ public abstract class Nat224
         while (++i < 7);
         return (int)c;
     }
-
     public static void square(int[] x, int[] zz)
     {
         long x_0 = x[0] & M;
         long zz_1;
-
         int c = 0, w;
         {
             int i = 6, j = 14;
@@ -759,7 +708,6 @@ public abstract class Nat224
                 c = (int)p;
             }
             while (i > 0);
-
             {
                 long p = x_0 * x_0;
                 zz_1 = ((c << 31) & M) | (p >>> 33);
@@ -767,10 +715,8 @@ public abstract class Nat224
                 c = (int)(p >>> 32) & 1;
             }
         }
-
         long x_1 = x[1] & M;
         long zz_2 = zz[2] & M;
-
         {
             zz_1 += x_1 * x_0;
             w = (int)zz_1;
@@ -778,7 +724,6 @@ public abstract class Nat224
             c = w >>> 31;
             zz_2 += zz_1 >>> 32;
         }
-
         long x_2 = x[2] & M;
         long zz_3 = zz[3] & M;
         long zz_4 = zz[4] & M;
@@ -791,7 +736,6 @@ public abstract class Nat224
             zz_4 += zz_3 >>> 32;
             zz_3 &= M;
         }
-
         long x_3 = x[3] & M;
         long zz_5 = zz[5] & M;
         long zz_6 = zz[6] & M;
@@ -806,7 +750,6 @@ public abstract class Nat224
             zz_6 += zz_5 >>> 32;
             zz_5 &= M;
         }
-
         long x_4 = x[4] & M;
         long zz_7 = zz[7] & M;
         long zz_8 = zz[8] & M;
@@ -823,7 +766,6 @@ public abstract class Nat224
             zz_8 += zz_7 >>> 32;
             zz_7 &= M;
         }
-
         long x_5 = x[5] & M;
         long zz_9 = zz[9] & M;
         long zz_10 = zz[10] & M;
@@ -842,7 +784,6 @@ public abstract class Nat224
             zz_10 += zz_9 >>> 32;
             zz_9 &= M;
         }
-
         long x_6 = x[6] & M;
         long zz_11 = zz[11] & M;
         long zz_12 = zz[12] & M;
@@ -858,7 +799,6 @@ public abstract class Nat224
             zz_11 += (zz_10 >>> 32) + x_6 * x_5;
             zz_12 += zz_11 >>> 32;
         }
-
         w = (int)zz_7;
         zz[7] = (w << 1) | c;
         c = w >>> 31;
@@ -880,12 +820,10 @@ public abstract class Nat224
         w = zz[13] + (int)(zz_12 >> 32);
         zz[13] = (w << 1) | c;
     }
-
     public static void square(int[] x, int xOff, int[] zz, int zzOff)
     {
         long x_0 = x[xOff + 0] & M;
         long zz_1;
-
         int c = 0, w;
         {
             int i = 6, j = 14;
@@ -898,7 +836,6 @@ public abstract class Nat224
                 c = (int)p;
             }
             while (i > 0);
-
             {
                 long p = x_0 * x_0;
                 zz_1 = ((c << 31) & M) | (p >>> 33);
@@ -906,10 +843,8 @@ public abstract class Nat224
                 c = (int)(p >>> 32) & 1;
             }
         }
-
         long x_1 = x[xOff + 1] & M;
         long zz_2 = zz[zzOff + 2] & M;
-
         {
             zz_1 += x_1 * x_0;
             w = (int)zz_1;
@@ -917,7 +852,6 @@ public abstract class Nat224
             c = w >>> 31;
             zz_2 += zz_1 >>> 32;
         }
-
         long x_2 = x[xOff + 2] & M;
         long zz_3 = zz[zzOff + 3] & M;
         long zz_4 = zz[zzOff + 4] & M;
@@ -930,7 +864,6 @@ public abstract class Nat224
             zz_4 += zz_3 >>> 32;
             zz_3 &= M;
         }
-
         long x_3 = x[xOff + 3] & M;
         long zz_5 = zz[zzOff + 5] & M;
         long zz_6 = zz[zzOff + 6] & M;
@@ -945,7 +878,6 @@ public abstract class Nat224
             zz_6 += zz_5 >>> 32;
             zz_5 &= M;
         }
-
         long x_4 = x[xOff + 4] & M;
         long zz_7 = zz[zzOff + 7] & M;
         long zz_8 = zz[zzOff + 8] & M;
@@ -962,7 +894,6 @@ public abstract class Nat224
             zz_8 += zz_7 >>> 32;
             zz_7 &= M;
         }
-
         long x_5 = x[xOff + 5] & M;
         long zz_9 = zz[zzOff + 9] & M;
         long zz_10 = zz[zzOff + 10] & M;
@@ -981,7 +912,6 @@ public abstract class Nat224
             zz_10 += zz_9 >>> 32;
             zz_9 &= M;
         }
-
         long x_6 = x[xOff + 6] & M;
         long zz_11 = zz[zzOff + 11] & M;
         long zz_12 = zz[zzOff + 12] & M;
@@ -997,7 +927,6 @@ public abstract class Nat224
             zz_11 += (zz_10 >>> 32) + x_6 * x_5;
             zz_12 += zz_11 >>> 32;
         }
-
         w = (int)zz_7;
         zz[zzOff + 7] = (w << 1) | c;
         c = w >>> 31;
@@ -1019,7 +948,6 @@ public abstract class Nat224
         w = zz[zzOff + 13] + (int)(zz_12 >> 32);
         zz[zzOff + 13] = (w << 1) | c;
     }
-
     public static int sub(int[] x, int[] y, int[] z)
     {
         long c = 0;
@@ -1046,7 +974,6 @@ public abstract class Nat224
         c >>= 32;
         return (int)c;
     }
-
     public static int sub(int[] x, int xOff, int[] y, int yOff, int[] z, int zOff)
     {
         long c = 0;
@@ -1073,7 +1000,6 @@ public abstract class Nat224
         c >>= 32;
         return (int)c;
     }
-
     public static int subBothFrom(int[] x, int[] y, int[] z)
     {
         long c = 0;
@@ -1100,7 +1026,6 @@ public abstract class Nat224
         c >>= 32;
         return (int)c;
     }
-
     public static int subFrom(int[] x, int[] z)
     {
         long c = 0;
@@ -1127,7 +1052,6 @@ public abstract class Nat224
         c >>= 32;
         return (int)c;
     }
-
     public static int subFrom(int[] x, int xOff, int[] z, int zOff)
     {
         long c = 0;
@@ -1154,7 +1078,6 @@ public abstract class Nat224
         c >>= 32;
         return (int)c;
     }
-
     public static BigInteger toBigInteger(int[] x)
     {
         byte[] bs = new byte[28];
@@ -1168,7 +1091,6 @@ public abstract class Nat224
         }
         return new BigInteger(1, bs);
     }
-
     public static void zero(int[] z)
     {
         z[0] = 0;

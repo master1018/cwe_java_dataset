@@ -1,20 +1,5 @@
-/*
- * Copyright 2020 The Netty Project
- *
- * The Netty Project licenses this file to you under the Apache License, version
- * 2.0 (the "License"); you may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-package io.netty.handler.traffic;
 
+package io.netty.handler.traffic;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -37,7 +22,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,22 +30,18 @@ import java.net.SocketAddress;
 import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-
 import static org.junit.Assert.assertTrue;
-
 public class FileRegionThrottleTest {
     private static final byte[] BYTES = new byte[64 * 1024 * 4];
     private static final long WRITE_LIMIT = 64 * 1024;
     private static File tmp;
     private EventLoopGroup group;
-
     @BeforeClass
     public static void beforeClass() throws IOException {
         final Random r = new Random();
         for (int i = 0; i < BYTES.length; i++) {
             BYTES[i] = (byte) r.nextInt(255);
         }
-
         tmp = PlatformDependent.createTempFile("netty-traffic", ".tmp", null);
         tmp.deleteOnExit();
         FileOutputStream out = null;
@@ -76,22 +56,18 @@ public class FileRegionThrottleTest {
                 try {
                     out.close();
                 } catch (IOException e) {
-                    // ignore
                 }
             }
         }
     }
-
     @Before
     public void setUp() {
         group = new NioEventLoopGroup();
     }
-
     @After
     public void tearDown() {
         group.shutdownGracefully();
     }
-
     @Test
     public void testGlobalWriteThrottle() throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
@@ -107,7 +83,6 @@ public class FileRegionThrottleTest {
         });
         Channel sc = bs.bind(0).sync().channel();
         Channel cc = clientConnect(sc.localAddress(), new ReadHandler(latch)).channel();
-
         long start = TrafficCounter.milliSecondFromNano();
         cc.writeAndFlush(Unpooled.copiedBuffer("send-file\n", CharsetUtil.US_ASCII)).sync();
         latch.await();
@@ -116,7 +91,6 @@ public class FileRegionThrottleTest {
         sc.close().sync();
         cc.close().sync();
     }
-
     private ChannelFuture clientConnect(final SocketAddress server, final ReadHandler readHandler) throws Exception {
         Bootstrap bc = new Bootstrap();
         bc.group(group).channel(NioSocketChannel.class).handler(new ChannelInitializer<SocketChannel>() {
@@ -127,7 +101,6 @@ public class FileRegionThrottleTest {
         });
         return bc.connect(server).sync();
     }
-
     private static final class MessageDecoder extends ChannelInboundHandlerAdapter {
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -142,15 +115,12 @@ public class FileRegionThrottleTest {
             }
         }
     }
-
     private static final class ReadHandler extends ChannelInboundHandlerAdapter {
         private long bytesTransferred;
         private CountDownLatch latch;
-
         ReadHandler(CountDownLatch latch) {
             this.latch = latch;
         }
-
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
             if (msg instanceof ByteBuf) {

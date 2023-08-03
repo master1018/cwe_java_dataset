@@ -1,5 +1,4 @@
 package org.bouncycastle.jcajce.provider.asymmetric.dsa;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
@@ -9,7 +8,6 @@ import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.security.SignatureSpi;
 import java.security.spec.AlgorithmParameterSpec;
-
 import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -29,7 +27,6 @@ import org.bouncycastle.crypto.digests.SHA3Digest;
 import org.bouncycastle.crypto.digests.SHA512Digest;
 import org.bouncycastle.crypto.params.ParametersWithRandom;
 import org.bouncycastle.crypto.signers.HMacDSAKCalculator;
-
 public class DSASigner
     extends SignatureSpi
     implements PKCSObjectIdentifiers, X509ObjectIdentifiers
@@ -37,7 +34,6 @@ public class DSASigner
     private Digest                  digest;
     private DSA                     signer;
     private SecureRandom            random;
-
     protected DSASigner(
         Digest digest,
         DSA signer)
@@ -45,17 +41,14 @@ public class DSASigner
         this.digest = digest;
         this.signer = signer;
     }
-
     protected void engineInitVerify(
         PublicKey   publicKey)
         throws InvalidKeyException
     {
         CipherParameters    param = DSAUtil.generatePublicKeyParameter(publicKey);
-
         digest.reset();
         signer.init(false, param);
     }
-
     protected void engineInitSign(
         PrivateKey      privateKey,
         SecureRandom    random)
@@ -64,29 +57,24 @@ public class DSASigner
         this.random = random;
         engineInitSign(privateKey);
     }
-
     protected void engineInitSign(
         PrivateKey  privateKey)
         throws InvalidKeyException
     {
         CipherParameters    param = DSAUtil.generatePrivateKeyParameter(privateKey);
-
         if (random != null)
         {
             param = new ParametersWithRandom(param, random);
         }
-
         digest.reset();
         signer.init(true, param);
     }
-
     protected void engineUpdate(
         byte    b)
         throws SignatureException
     {
         digest.update(b);
     }
-
     protected void engineUpdate(
         byte[]  b,
         int     off,
@@ -95,18 +83,14 @@ public class DSASigner
     {
         digest.update(b, off, len);
     }
-
     protected byte[] engineSign()
         throws SignatureException
     {
         byte[]  hash = new byte[digest.getDigestSize()];
-
         digest.doFinal(hash, 0);
-
         try
         {
             BigInteger[]    sig = signer.generateSignature(hash);
-
             return derEncode(sig[0], sig[1]);
         }
         catch (Exception e)
@@ -114,17 +98,13 @@ public class DSASigner
             throw new SignatureException(e.toString());
         }
     }
-
     protected boolean engineVerify(
         byte[]  sigBytes) 
         throws SignatureException
     {
         byte[]  hash = new byte[digest.getDigestSize()];
-
         digest.doFinal(hash, 0);
-
         BigInteger[]    sig;
-
         try
         {
             sig = derDecode(sigBytes);
@@ -133,35 +113,24 @@ public class DSASigner
         {
             throw new SignatureException("error decoding signature bytes.");
         }
-
         return signer.verifySignature(hash, sig[0], sig[1]);
     }
-
     protected void engineSetParameter(
         AlgorithmParameterSpec params)
     {
         throw new UnsupportedOperationException("engineSetParameter unsupported");
     }
-
-    /**
-     * @deprecated replaced with <a href = "#engineSetParameter(java.security.spec.AlgorithmParameterSpec)">
-     */
     protected void engineSetParameter(
         String  param,
         Object  value)
     {
         throw new UnsupportedOperationException("engineSetParameter unsupported");
     }
-
-    /**
-     * @deprecated
-     */
     protected Object engineGetParameter(
         String      param)
     {
         throw new UnsupportedOperationException("engineSetParameter unsupported");
     }
-
     private byte[] derEncode(
         BigInteger  r,
         BigInteger  s)
@@ -170,7 +139,6 @@ public class DSASigner
         ASN1Integer[] rs = new ASN1Integer[]{ new ASN1Integer(r), new ASN1Integer(s) };
         return new DERSequence(rs).getEncoded(ASN1Encoding.DER);
     }
-
     private BigInteger[] derDecode(
         byte[]  encoding)
         throws IOException
@@ -180,13 +148,11 @@ public class DSASigner
         {
             throw new IOException("malformed signature");
         }
-
         return new BigInteger[]{
             ((ASN1Integer)s.getObjectAt(0)).getValue(),
             ((ASN1Integer)s.getObjectAt(1)).getValue()
         };
     }
-
     static public class stdDSA
         extends DSASigner
     {
@@ -195,7 +161,6 @@ public class DSASigner
             super(new SHA1Digest(), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSA
         extends DSASigner
     {
@@ -204,7 +169,6 @@ public class DSASigner
             super(new SHA1Digest(), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA1Digest())));
         }
     }
-
     static public class dsa224
         extends DSASigner
     {
@@ -213,7 +177,6 @@ public class DSASigner
             super(new SHA224Digest(), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSA224
         extends DSASigner
     {
@@ -222,7 +185,6 @@ public class DSASigner
             super(new SHA224Digest(), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA224Digest())));
         }
     }
-
     static public class dsa256
         extends DSASigner
     {
@@ -231,7 +193,6 @@ public class DSASigner
             super(new SHA256Digest(), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSA256
         extends DSASigner
     {
@@ -240,7 +201,6 @@ public class DSASigner
             super(new SHA256Digest(), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA256Digest())));
         }
     }
-
     static public class dsa384
         extends DSASigner
     {
@@ -249,7 +209,6 @@ public class DSASigner
             super(new SHA384Digest(), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSA384
         extends DSASigner
     {
@@ -258,7 +217,6 @@ public class DSASigner
             super(new SHA384Digest(), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA384Digest())));
         }
     }
-
     static public class dsa512
         extends DSASigner
     {
@@ -267,7 +225,6 @@ public class DSASigner
             super(new SHA512Digest(), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSA512
         extends DSASigner
     {
@@ -276,7 +233,6 @@ public class DSASigner
             super(new SHA512Digest(), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA512Digest())));
         }
     }
-
     static public class dsaSha3_224
         extends DSASigner
     {
@@ -285,7 +241,6 @@ public class DSASigner
             super(new SHA3Digest(224), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSASha3_224
         extends DSASigner
     {
@@ -294,7 +249,6 @@ public class DSASigner
             super(new SHA3Digest(224), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA3Digest(224))));
         }
     }
-
     static public class dsaSha3_256
         extends DSASigner
     {
@@ -303,7 +257,6 @@ public class DSASigner
             super(new SHA3Digest(256), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSASha3_256
         extends DSASigner
     {
@@ -312,7 +265,6 @@ public class DSASigner
             super(new SHA3Digest(256), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA3Digest(256))));
         }
     }
-
     static public class dsaSha3_384
         extends DSASigner
     {
@@ -321,7 +273,6 @@ public class DSASigner
             super(new SHA3Digest(384), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSASha3_384
         extends DSASigner
     {
@@ -330,7 +281,6 @@ public class DSASigner
             super(new SHA3Digest(384), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA3Digest(384))));
         }
     }
-
     static public class dsaSha3_512
         extends DSASigner
     {
@@ -339,7 +289,6 @@ public class DSASigner
             super(new SHA3Digest(512), new org.bouncycastle.crypto.signers.DSASigner());
         }
     }
-
     static public class detDSASha3_512
         extends DSASigner
     {
@@ -348,7 +297,6 @@ public class DSASigner
             super(new SHA3Digest(512), new org.bouncycastle.crypto.signers.DSASigner(new HMacDSAKCalculator(new SHA3Digest(512))));
         }
     }
-
     static public class noneDSA
         extends DSASigner
     {

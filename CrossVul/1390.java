@@ -1,12 +1,5 @@
-//
-// $Id$
-// From Philippe Le Hegaret (Philippe.Le_Hegaret@sophia.inria.fr)
-//
-// (c) COPYRIGHT MIT and INRIA, 1997.
-// Please first read the full copyright statement in file COPYRIGHT.html
 
 package org.w3c.css.css;
-
 import org.w3c.css.atrules.css.AtRuleMedia;
 import org.w3c.css.atrules.css.AtRulePage;
 import org.w3c.css.parser.AtRule;
@@ -27,7 +20,6 @@ import org.w3c.css.util.Messages;
 import org.w3c.css.util.Util;
 import org.w3c.css.util.Warning;
 import org.w3c.css.util.Warnings;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,15 +31,9 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
-/**
- * @version $Revision$
- */
 public final class StyleSheetParser
         implements CssValidatorListener, CssParser {
-
     private static Constructor co = null;
-
     static {
         try {
             Class c = java.lang.Exception.class;
@@ -57,36 +43,23 @@ public final class StyleSheetParser
             co = null;
         }
     }
-
     CssFouffa cssFouffa;
     StyleSheet style = new StyleSheet();
-
     public void reInit() {
         style = new StyleSheet();
     }
-
     public StyleSheet getStyleSheet() {
         return style;
     }
-
     public void setWarningLevel(int warningLevel) {
         style.setWarningLevel(warningLevel);
     }
-
     public void notifyErrors(Errors errors) {
         style.addErrors(errors);
     }
-
     public void notifyWarnings(Warnings warnings) {
         style.addWarnings(warnings);
     }
-
-    /**
-     * Adds a vector of properties to a selector.
-     *
-     * @param selector   the selector
-     * @param properties Properties to associate with contexts
-     */
     public void handleRule(ApplContext ac, CssSelectors selector,
                            ArrayList<CssProperty> properties) {
         if (selector.getAtRule() instanceof AtRulePage) {
@@ -97,64 +70,33 @@ public final class StyleSheetParser
             style.addProperty(selector, property);
         }
     }
-
-    // part added by Sijtsche de Jong
-
     public void addCharSet(String charset) {
         style.addCharSet(charset);
     }
-
     public void newAtRule(AtRule atRule) {
         style.newAtRule(atRule);
     }
-
     public void endOfAtRule() {
         style.endOfAtRule();
     }
-
     public void setImportant(boolean important) {
         style.setImportant(important);
     }
-
     public void setSelectorList(ArrayList<CssSelectors> selectors) {
         style.setSelectorList(selectors);
     }
-
     public void setProperty(ArrayList<CssProperty> properties) {
         style.setProperty(properties);
     }
-
     public void endOfRule() {
         style.endOfRule();
     }
-
     public void removeThisRule() {
         style.removeThisRule();
     }
-
     public void removeThisAtRule() {
         style.removeThisAtRule();
     }
-
-    //end of part added by Sijtsche de Jong
-
-    /**
-     * Handles an at-rule.
-     * <p/>
-     * <p>The parameter <code>value</code> can be :
-     * <DL>
-     * <DT>CssString
-     * <DD>The value coming from a string.
-     * <DT>CssURL
-     * <DD>The value coming from an URL.
-     * <DT>Vector
-     * <DD>The value is a vector of declarations (it contains properties).
-     * This feature is not legal, so be careful.
-     * </DL>
-     *
-     * @param ident  The ident for this at-rule (for example: 'font-face')
-     * @param string The string representation if this at-rule
-     */
     public void handleAtRule(ApplContext ac, String ident, String string) {
         style.getWarnings().addWarning(new Warning(cssFouffa.getSourceFile(),
                 cssFouffa.getLine(),
@@ -162,17 +104,7 @@ public final class StyleSheetParser
                 2,
                 new String[]{ident, string},
                 ac));
-        //stylesheet.addAtRule(atRule);
     }
-
-    /**
-     * @param url    the URL containing the style sheet
-     * @param title  the title of the stylesheet
-     * @param kind   may be a stylesheet or an alternate stylesheet
-     * @param media  the media to apply this
-     * @param origin the origin of the style sheet
-     * @throws IOException an IO error
-     */
     public void parseURL(ApplContext ac, URL url, String title,
                          String kind, String media,
                          int origin) {
@@ -193,19 +125,8 @@ public final class StyleSheetParser
         }
         try {
             ac.setOrigin(origin);
-//	    if (cssFouffa == null) {
             cssFouffa = new CssFouffa(ac, url);
             cssFouffa.addListener(this);
-//	    } else {
-//		cssFouffa.ReInit(ac, url);
-//	    }
-
-            //	    cssFouffa.setResponse(res);
-
-            // removed plh 2001-03-08
-            // cssFouffa.setOrigin(origin);
-            //	    cssFouffa.setDefaultMedium(defaultmedium);
-            //	    cssFouffa.doConfig();
             if (media == null) {
                 if (ac.getCssVersion() != CssVersion.CSS1) {
                     if (ac.getMedium() == null) {
@@ -242,10 +163,7 @@ public final class StyleSheetParser
             }
         }
     }
-
-    // add media, easy version for CSS version < 3, otherwise, reuse the parser
     private void addMedias(AtRuleMedia m, String medias, ApplContext ac) throws InvalidParamException {
-        // before CSS3, let's parse it the easy way...
         if (ac.getCssVersion().compareTo(CssVersion.CSS3) < 0) {
             StringTokenizer tokens = new StringTokenizer(medias, ",");
             while (tokens.hasMoreTokens()) {
@@ -259,18 +177,9 @@ public final class StyleSheetParser
                     m.allMedia = arm.allMedia;
                 }
             } catch (ParseException pex) {
-                // error already added, so nothing else to do
             }
         }
     }
-
-    /**
-     * Parse a style element. The Style element always comes from the user
-     *
-     * @param reader the reader containing the style data
-     * @param url    the name of the file the style element was read in.
-     * @throws IOException an IO error
-     */
     public void parseStyleElement(ApplContext ac, Reader reader,
                                   String title, String media,
                                   URL url, int lineno) {
@@ -283,22 +192,12 @@ public final class StyleSheetParser
         }
         URL ref = ac.getReferrer();
         try {
-
-//	    if (cssFouffa == null) {
             String charset = ac.getCharsetForURL(url);
             cssFouffa = new CssFouffa(ac, reader, url, lineno);
             cssFouffa.addListener(this);
-//	    } else {
-//		cssFouffa.ReInit(ac, input, url, lineno);
-//	    }
-
-            //	    cssFouffa.setResponse(res);
-            //	    cssFouffa.setDefaultMedium(defaultmedium);
-            //	    cssFouffa.doConfig();
             if (media == null && ac.getCssVersion() != CssVersion.CSS1) {
                 media = "all";
             }
-
             AtRuleMedia m = AtRuleMedia.getInstance(ac.getCssVersion());
             try {
                 if (media != null) {
@@ -338,7 +237,6 @@ public final class StyleSheetParser
             }
             er.addError(new org.w3c.css.parser.CssError(url.toString(),
                     -1,
-                    //e.getErrorLine(),
                     cpe));
             notifyErrors(er);
         } catch (RuntimeException e) {
@@ -353,25 +251,9 @@ public final class StyleSheetParser
             }
         }
     }
-
-    /**
-     * @param input the inputStream containing the style data
-     * @param url   the name of the file the style element was read in.
-     * @throws IOException an IO error
-     * @see #parseStyleElement(ApplContext, InputStream, String, String, URL, int)
-     * @deprecated Replaced by parseStyleElement
-     */
     public void parseStyleElement(ApplContext ac, String input, URL url, int lineno) {
         parseStyleElement(ac, new StringReader(input), null, null, url, lineno);
     }
-
-    /**
-     * Parse a style element. The Style element always comes from the user
-     *
-     * @param input the input stream containing the style data
-     * @param url   the name of the file the style element was read in.
-     * @throws IOException an IO error
-     */
     public void parseStyleElement(ApplContext ac, InputStream input,
                                   String title, String media,
                                   URL url, int lineno) {
@@ -386,7 +268,6 @@ public final class StyleSheetParser
                     -1, uex));
             notifyErrors(er);
         } catch (Exception ex) {
-            // in case of error, ignore it.
             reader = null;
             if (Util.onDebug) {
                 System.err.println("Error in StyleSheet.parseStyleElement(" + title + ","
@@ -397,44 +278,22 @@ public final class StyleSheetParser
             parseStyleElement(ac, reader, title, media, url, lineno);
         }
     }
-
-    /**
-     * Unify call to the parser for css doc as a reader.
-     *
-     * @param ac
-     * @param reader
-     * @param docref
-     */
     public void parseStyleSheet(ApplContext ac, Reader reader, URL docref) {
         parseStyleElement(ac, reader, null, null, (docref == null) ? ac.getFakeURL() : docref, 0);
     }
-
-    /**
-     * Parse some declarations. All declarations always comes from the user
-     *
-     * @param input the inputStream containing the style data
-     * @param id    the uniq id
-     * @param url   the URL the style element was read in.
-     * @throws IOException an IO error
-     */
     public void parseStyleAttribute(ApplContext ac, InputStream input, String id,
                                     URL url, int lineno) {
         style.setWarningLevel(ac.getWarningLevel());
-        lineno--; // why ?!?!
+        lineno--; 
         if (Util.onDebug) {
             System.err.println("StyleSheet.parseStyleAttribute(" + id + ","
                     + url + "," + lineno + ")");
         }
-
         try {
-            //	    if (cssFouffa == null) {
             String charset = ac.getCharsetForURL(url);
             cssFouffa = new CssFouffa(ac, input, charset, url, lineno);
             cssFouffa.addListener(this);
-            //	    } else
-//		cssFouffa.ReInit(ac, input, url, lineno);
             CssSelectors selector = new CssSelectors(ac);
-
             try {
                 AtRuleMedia media = AtRuleMedia.getInstance(ac.getCssVersion());
                 if (ac.getCssVersion() != CssVersion.CSS1) {
@@ -442,12 +301,10 @@ public final class StyleSheetParser
                 }
                 cssFouffa.setAtRule(media);
             } catch (InvalidParamException e) {
-            } //ignore
-
+            } 
             try {
                 if (id == null || id.length() == 0) {
                     id = "nullId-" + Long.toHexString(System.currentTimeMillis());
-                    // TODO add an error/warning ?
                 }
                 selector.addId(new IdSelector(id.substring(1)));
             } catch (InvalidParamException e) {
@@ -462,23 +319,12 @@ public final class StyleSheetParser
             notifyErrors(er);
         }
     }
-
-    /**
-     * @param input the inputStream containing the style data
-     * @param id    the uniq id
-     * @param url   the name of the file the style element was read in.
-     * @throws IOException an IO error
-     * @see #parseStyleAttribute(ApplContext, InputStream, String, URL, int)
-     * @deprecated Replaced by parseStyleAttribute
-     */
     public void parseStyleAttribute(ApplContext ac, String input, String id,
                                     URL url, int lineno) {
         parseStyleAttribute(ac, new ByteArrayInputStream(input.getBytes()),
                 id, url, lineno);
     }
-
     public void setStyle(Class style) {
         cssFouffa.setStyle(style);
     }
-
 }

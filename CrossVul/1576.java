@@ -1,5 +1,4 @@
 package eu.siacs.conversations.ui;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -50,13 +49,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityStartConversationBinding;
@@ -79,9 +76,7 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import rocks.xmpp.addr.Jid;
-
 public class StartConversationActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, CreateConferenceDialog.CreateConferenceDialogListener, JoinConferenceDialog.JoinConferenceDialogListener {
-
 	private final int REQUEST_SYNC_CONTACTS = 0x28cf;
 	private final int REQUEST_CREATE_CONFERENCE = 0x39da;
 	private final PendingItem<Intent> pendingViewIntent = new PendingItem<>();
@@ -99,7 +94,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 	private AtomicBoolean mRequestedContactsPermission = new AtomicBoolean(false);
 	private boolean mHideOfflineContacts = false;
 	private MenuItem.OnActionExpandListener mOnActionExpandListener = new MenuItem.OnActionExpandListener() {
-
 		@Override
 		public boolean onMenuItemActionExpand(MenuItem item) {
 			mSearchEditText.post(() -> {
@@ -113,10 +107,8 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_IMPLICIT);
 				}
 			});
-
 			return true;
 		}
-
 		@Override
 		public boolean onMenuItemActionCollapse(MenuItem item) {
 			SoftKeyboardUtils.hideSoftKeyboard(StartConversationActivity.this);
@@ -126,16 +118,13 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 	};
 	private TextWatcher mSearchTextWatcher = new TextWatcher() {
-
 		@Override
 		public void afterTextChanged(Editable editable) {
 			filter(editable.toString());
 		}
-
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 		}
-
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 		}
@@ -162,15 +151,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				switchToConversation(conversation);
 			});
 		}
-
 		@Override
 		public void error(final int errorCode, Conversation object) {
 			runOnUiThread(() -> replaceToast(getString(errorCode)));
 		}
-
 		@Override
 		public void userInputRequried(PendingIntent pi, Conversation object) {
-
 		}
 	};
 	private ActivityStartConversationBinding binding;
@@ -206,7 +192,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			onTabChanged();
 		}
 	};
-
 	public static void populateAccountSpinner(Context context, List<String> accounts, Spinner spinner) {
 		if (accounts.size() > 0) {
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.simple_list_item, accounts);
@@ -222,40 +207,33 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			spinner.setEnabled(false);
 		}
 	}
-
 	public static void launch(Context context) {
 		final Intent intent = new Intent(context, StartConversationActivity.class);
 		context.startActivity(intent);
 	}
-
 	private static Intent createLauncherIntent(Context context) {
 		final Intent intent = new Intent(context, StartConversationActivity.class);
 		intent.setAction(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 		return intent;
 	}
-
 	private static boolean isViewIntent(final Intent i) {
 		return i != null && (Intent.ACTION_VIEW.equals(i.getAction()) || Intent.ACTION_SENDTO.equals(i.getAction()) || i.hasExtra(WelcomeActivity.EXTRA_INVITE_URI));
 	}
-
 	protected void hideToast() {
 		if (mToast != null) {
 			mToast.cancel();
 		}
 	}
-
 	protected void replaceToast(String msg) {
 		hideToast();
 		mToast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
 		mToast.show();
 	}
-
 	@Override
 	public void onRosterUpdate() {
 		this.refreshUi();
 	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -275,7 +253,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 							return;
 						}
 					} catch (IllegalArgumentException ignored) {
-						//ignore and fall through
 					}
 				}
 				showCreateContactDialog(null, null);
@@ -287,17 +264,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		binding.startConversationViewPager.addOnPageChangeListener(mOnPageChangeListener);
 		mListPagerAdapter = new ListPagerAdapter(getSupportFragmentManager());
 		binding.startConversationViewPager.setAdapter(mListPagerAdapter);
-
 		mConferenceAdapter = new ListItemAdapter(this, conferences);
 		mContactsAdapter = new ListItemAdapter(this, contacts);
 		mContactsAdapter.setOnTagClickedListener(this.mOnTagClickedListener);
-
 		final SharedPreferences preferences = getPreferences();
-
 		this.mHideOfflineContacts = preferences.getBoolean("hide_offline", false);
-
 		final boolean startSearching = preferences.getBoolean("start_searching",getResources().getBoolean(R.bool.start_searching));
-
 		final Intent intent;
 		if (savedInstanceState == null) {
 			intent = getIntent();
@@ -308,7 +280,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			}
 			intent = savedInstanceState.getParcelable("intent");
 		}
-
 		if (isViewIntent(intent)) {
 			pendingViewIntent.push(intent);
 			setIntent(createLauncherIntent(this));
@@ -316,7 +287,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			mInitialSearchValue.push("");
 		}
 	}
-
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		Intent pendingIntent = pendingViewIntent.peek();
@@ -326,7 +296,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		super.onSaveInstanceState(savedInstanceState);
 	}
-
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -341,7 +310,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		mConferenceAdapter.refreshSettings();
 		mContactsAdapter.refreshSettings();
 	}
-
 	@Override
 	public void onNewIntent(final Intent intent) {
 		if (xmppConnectionServiceBound) {
@@ -351,31 +319,25 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		setIntent(createLauncherIntent(this));
 	}
-
 	protected void openConversationForContact(int position) {
 		Contact contact = (Contact) contacts.get(position);
 		openConversationForContact(contact);
 	}
-
 	protected void openConversationForContact(Contact contact) {
 		Conversation conversation = xmppConnectionService.findOrCreateConversation(contact.getAccount(), contact.getJid(), false, true);
 		SoftKeyboardUtils.hideSoftKeyboard(this);
 		switchToConversation(conversation);
 	}
-
 	protected void openConversationForBookmark() {
 		openConversationForBookmark(conference_context_id);
 	}
-
 	protected void openConversationForBookmark(int position) {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
 		openConversationsForBookmark(bookmark);
 	}
-
 	protected void shareBookmarkUri() {
 		shareBookmarkUri(conference_context_id);
 	}
-
 	protected void shareBookmarkUri(int position) {
 		Bookmark bookmark = (Bookmark) conferences.get(position);
 		Intent shareIntent = new Intent();
@@ -388,7 +350,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			Toast.makeText(this, R.string.no_application_to_share_uri, Toast.LENGTH_SHORT).show();
 		}
 	}
-
 	protected void openConversationsForBookmark(Bookmark bookmark) {
 		Jid jid = bookmark.getJid();
 		if (jid == null) {
@@ -404,24 +365,20 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		SoftKeyboardUtils.hideSoftKeyboard(this);
 		switchToConversation(conversation);
 	}
-
 	protected void openDetailsForContact() {
 		int position = contact_context_id;
 		Contact contact = (Contact) contacts.get(position);
 		switchToContactDetails(contact);
 	}
-
 	protected void showQrForContact() {
 		int position = contact_context_id;
 		Contact contact = (Contact) contacts.get(position);
 		showQrCode("xmpp:"+contact.getJid().asBareJid().toEscapedString());
 	}
-
 	protected void toggleContactBlock() {
 		final int position = contact_context_id;
 		BlockContactDialog.show(this, (Contact) contacts.get(position));
 	}
-
 	protected void deleteContact() {
 		final int position = contact_context_id;
 		final Contact contact = (Contact) contacts.get(position);
@@ -435,11 +392,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		});
 		builder.create().show();
 	}
-
 	protected void deleteConference() {
 		int position = conference_context_id;
 		final Bookmark bookmark = (Bookmark) conferences.get(position);
-
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setNegativeButton(R.string.cancel, null);
 		builder.setTitle(R.string.delete_bookmark);
@@ -452,9 +407,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			filter(mSearchEditText.getText().toString());
 		});
 		builder.create().show();
-
 	}
-
 	@SuppressLint("InflateParams")
 	protected void showCreateContactDialog(final String prefilledJid, final Invite invite) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -471,17 +424,14 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				null,
 				invite == null || !invite.hasFingerprints()
 		);
-
 		dialog.setOnEnterJidDialogPositiveListener((accountJid, contactJid) -> {
 			if (!xmppConnectionServiceBound) {
 				return false;
 			}
-
 			final Account account = xmppConnectionService.findAccountByJid(accountJid);
 			if (account == null) {
 				return true;
 			}
-
 			final Contact contact = account.getRoster().getContact(contactJid);
 			if (invite != null && invite.getName() != null) {
 				contact.setServerName(invite.getName());
@@ -502,7 +452,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		});
 		dialog.show(ft, FRAGMENT_TAG_DIALOG);
 	}
-
 	@SuppressLint("InflateParams")
 	protected void showJoinConferenceDialog(final String prefilledJid) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -514,7 +463,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance(prefilledJid, mActivatedAccounts);
 		joinConferenceFragment.show(ft, FRAGMENT_TAG_DIALOG);
 	}
-
 	private void showCreateConferenceDialog() {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		Fragment prev = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_DIALOG);
@@ -525,7 +473,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		CreateConferenceDialog createConferenceFragment = CreateConferenceDialog.newInstance(mActivatedAccounts);
 		createConferenceFragment.show(ft, FRAGMENT_TAG_DIALOG);
 	}
-
 	private Account getSelectedAccount(Spinner spinner) {
 		if (!spinner.isEnabled()) {
 			return null;
@@ -542,14 +489,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		return xmppConnectionService.findAccountByJid(jid);
 	}
-
 	protected void switchToConversation(Contact contact, String body) {
 		Conversation conversation = xmppConnectionService
 				.findOrCreateConversation(contact.getAccount(),
 						contact.getJid(), false, true);
 		switchToConversation(conversation, body);
 	}
-
 	@Override
 	public void invalidateOptionsMenu() {
 		boolean isExpanded = mMenuSearchView != null && mMenuSearchView.isActionViewExpanded();
@@ -560,7 +505,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		super.invalidateOptionsMenu();
 	}
-
 	private void updateSearchViewHint() {
 		if (binding == null || mSearchEditText == null) {
 			return;
@@ -571,7 +515,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			mSearchEditText.setHint(R.string.search_groups);
 		}
 	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.start_conversation, menu);
@@ -596,7 +539,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		updateSearchViewHint();
 		return super.onCreateOptionsMenu(menu);
 	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (MenuDoubleTabUtil.shouldIgnoreTap()) {
@@ -622,7 +564,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_SEARCH && !event.isLongPress()) {
@@ -639,13 +580,11 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		return super.onKeyUp(keyCode, event);
 	}
-
 	private void openSearch() {
 		if (mMenuSearchView != null) {
 			mMenuSearchView.expandActionView();
 		}
 	}
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode == RESULT_OK) {
@@ -668,7 +607,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		super.onActivityResult(requestCode, requestCode, intent);
 	}
-
 	private void askForContactsPermissions() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -687,7 +625,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			}
 		}
 	}
-
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 		if (grantResults.length > 0)
@@ -699,7 +636,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				}
 			}
 	}
-
 	private void configureHomeButton() {
 		final ActionBar actionBar = getSupportActionBar();
 		if (actionBar == null) {
@@ -708,9 +644,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		boolean openConversations = !xmppConnectionService.isConversationsListEmpty(null);
 		actionBar.setDisplayHomeAsUpEnabled(openConversations);
 		actionBar.setDisplayHomeAsUpEnabled(openConversations);
-
 	}
-
 	@Override
 	protected void onBackendConnected() {
 		if (mPostponedActivityResult != null) {
@@ -744,7 +678,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			((OnBackendConnected) fragment).onBackendConnected();
 		}
 	}
-
 	protected boolean processViewIntent(@NonNull Intent intent) {
 		final String inviteUri = intent.getStringExtra(WelcomeActivity.EXTRA_INVITE_URI);
 		if (inviteUri != null) {
@@ -771,7 +704,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		return false;
 	}
-
 	private boolean handleJid(Invite invite) {
 		List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid(), invite.account);
 		if (invite.isAction(XmppUri.ACTION_JOIN)) {
@@ -814,7 +746,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			return true;
 		}
 	}
-
 	private void displayVerificationWarningDialog(final Contact contact, final Invite invite) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.verify_omemo_keys);
@@ -835,14 +766,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		dialog.setOnCancelListener(dialog1 -> StartConversationActivity.this.finish());
 		dialog.show();
 	}
-
 	protected void filter(String needle) {
 		if (xmppConnectionServiceBound) {
 			this.filterContacts(needle);
 			this.filterConferences(needle);
 		}
 	}
-
 	protected void filterContacts(String needle) {
 		this.contacts.clear();
 		final List<Account> accounts = xmppConnectionService.getAccounts();
@@ -863,7 +792,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		Collections.sort(this.contacts);
 		mContactsAdapter.notifyDataSetChanged();
 	}
-
 	private static boolean isSingleAccountActive(final List<Account> accounts) {
 		int i = 0;
 		for(Account account : accounts) {
@@ -873,7 +801,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		return i == 1;
 	}
-
 	protected void filterConferences(String needle) {
 		this.conferences.clear();
 		for (Account account : xmppConnectionService.getAccounts()) {
@@ -888,7 +815,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		Collections.sort(this.conferences);
 		mConferenceAdapter.notifyDataSetChanged();
 	}
-
 	private void onTabChanged() {
 		@DrawableRes final int fabDrawable;
 		if (binding.startConversationViewPager.getCurrentItem() == 0) {
@@ -899,12 +825,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		binding.fab.setImageResource(fabDrawable);
 		invalidateOptionsMenu();
 	}
-
 	@Override
 	public void OnUpdateBlocklist(final Status status) {
 		refreshUi();
 	}
-
 	@Override
 	protected void refreshUiReal() {
 		if (mSearchEditText != null) {
@@ -912,12 +836,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		configureHomeButton();
 	}
-
 	@Override
 	public void onBackPressed() {
 		navigateBack();
 	}
-
 	private void navigateBack() {
 		if (xmppConnectionService != null && !xmppConnectionService.isConversationsListEmpty(null)) {
 			Intent intent = new Intent(this, ConversationsActivity.class);
@@ -926,7 +848,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		}
 		finish();
 	}
-
 	@Override
 	public void onCreateDialogPositiveClick(Spinner spinner, String name) {
 		if (!xmppConnectionServiceBound) {
@@ -944,7 +865,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 		intent.putExtra(ChooseContactActivity.EXTRA_TITLE_RES_ID, R.string.choose_participants);
 		startActivityForResult(intent, REQUEST_CREATE_CONFERENCE);
 	}
-
 	@Override
 	public void onJoinDialogPositiveClick(Dialog dialog, Spinner spinner, AutoCompleteTextView jid, boolean isBookmarkChecked) {
 		if (!xmppConnectionServiceBound) {
@@ -961,7 +881,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			jid.setError(getString(R.string.invalid_jid));
 			return;
 		}
-
 		if (isBookmarkChecked) {
 			if (account.hasBookmarkFor(conferenceJid)) {
 				jid.setError(getString(R.string.bookmark_already_exists));
@@ -987,31 +906,25 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			switchToConversation(conversation);
 		}
 	}
-
 	@Override
 	public void onConversationUpdate() {
 		refreshUi();
 	}
-
 	public static class MyListFragment extends ListFragment {
 		private AdapterView.OnItemClickListener mOnItemClickListener;
 		private int mResContextMenu;
-
 		public void setContextMenu(final int res) {
 			this.mResContextMenu = res;
 		}
-
 		@Override
 		public void onListItemClick(final ListView l, final View v, final int position, final long id) {
 			if (mOnItemClickListener != null) {
 				mOnItemClickListener.onItemClick(l, v, position, id);
 			}
 		}
-
 		public void setOnListItemClickListener(AdapterView.OnItemClickListener l) {
 			this.mOnItemClickListener = l;
 		}
-
 		@Override
 		public void onViewCreated(@NonNull final View view, final Bundle savedInstanceState) {
 			super.onViewCreated(view, savedInstanceState);
@@ -1020,7 +933,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			getListView().setDivider(null);
 			getListView().setDividerHeight(0);
 		}
-
 		@Override
 		public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
 			super.onCreateContextMenu(menu, v, menuInfo);
@@ -1054,7 +966,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 				}
 			}
 		}
-
 		@Override
 		public boolean onContextItemSelected(final MenuItem item) {
 			StartConversationActivity activity = (StartConversationActivity) getActivity();
@@ -1086,22 +997,18 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			return true;
 		}
 	}
-
 	public class ListPagerAdapter extends PagerAdapter {
 		FragmentManager fragmentManager;
 		MyListFragment[] fragments;
-
 		public ListPagerAdapter(FragmentManager fm) {
 			fragmentManager = fm;
 			fragments = new MyListFragment[2];
 		}
-
 		public void requestFocus(int pos) {
 			if (fragments.length > pos) {
 				fragments[pos].getListView().requestFocus();
 			}
 		}
-
 		@Override
 		public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 			FragmentTransaction trans = fragmentManager.beginTransaction();
@@ -1109,7 +1016,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			trans.commit();
 			fragments[position] = null;
 		}
-
 		@NonNull
 		@Override
 		public Fragment instantiateItem(@NonNull ViewGroup container, int position) {
@@ -1119,17 +1025,14 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			trans.commit();
 			return fragment;
 		}
-
 		@Override
 		public int getCount() {
 			return fragments.length;
 		}
-
 		@Override
 		public boolean isViewFromObject(@NonNull View view, @NonNull Object fragment) {
 			return ((Fragment) fragment).getView() == view;
 		}
-
 		@Nullable
 		@Override
 		public CharSequence getPageTitle(int position) {
@@ -1142,7 +1045,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					return super.getPageTitle(position);
 			}
 		}
-
 		Fragment getItem(int position) {
 			if (fragments[position] == null) {
 				final MyListFragment listFragment = new MyListFragment();
@@ -1151,7 +1053,6 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 					listFragment.setContextMenu(R.menu.conference_context);
 					listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForBookmark(p));
 				} else {
-
 					listFragment.setListAdapter(mContactsAdapter);
 					listFragment.setContextMenu(R.menu.contact_context);
 					listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForContact(p));
@@ -1161,23 +1062,17 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 			return fragments[position];
 		}
 	}
-
 	private class Invite extends XmppUri {
-
 		public String account;
-
 		public Invite(final Uri uri) {
 			super(uri);
 		}
-
 		public Invite(final String uri) {
 			super(uri);
 		}
-
 		public Invite(Uri uri, boolean safeSource) {
 			super(uri, safeSource);
 		}
-
 		boolean invite() {
 			if (!isJidValid()) {
 				Toast.makeText(StartConversationActivity.this, R.string.invalid_jid, Toast.LENGTH_SHORT).show();
