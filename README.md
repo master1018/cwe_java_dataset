@@ -1,2 +1,2 @@
 # cwe_java_dataset
-The dataset is get from find-sec-bugs/juliet-test-suite, only used for academy
+The dataset is get from other's dataset, only used for academy.
