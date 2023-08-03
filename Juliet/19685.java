@@ -1,0 +1,68 @@
+
+package testcases.CWE369_Divide_by_Zero.s02;
+import testcasesupport.*;
+public class CWE369_Divide_by_Zero__float_URLConnection_divide_22b
+{
+    public void badSink(float data ) throws Throwable
+    {
+        if (CWE369_Divide_by_Zero__float_URLConnection_divide_22a.badPublicStatic)
+        {
+            int result = (int)(100.0 / data);
+            IO.writeLine(result);
+        }
+        else
+        {
+            data = 0.0f;
+        }
+    }
+    public void goodB2G1Sink(float data ) throws Throwable
+    {
+        if (CWE369_Divide_by_Zero__float_URLConnection_divide_22a.goodB2G1PublicStatic)
+        {
+            data = 0.0f;
+        }
+        else
+        {
+            if (Math.abs(data) > 0.000001)
+            {
+                int result = (int)(100.0 / data);
+                IO.writeLine(result);
+            }
+            else
+            {
+                IO.writeLine("This would result in a divide by zero");
+            }
+        }
+    }
+    public void goodB2G2Sink(float data ) throws Throwable
+    {
+        if (CWE369_Divide_by_Zero__float_URLConnection_divide_22a.goodB2G2PublicStatic)
+        {
+            if (Math.abs(data) > 0.000001)
+            {
+                int result = (int)(100.0 / data);
+                IO.writeLine(result);
+            }
+            else
+            {
+                IO.writeLine("This would result in a divide by zero");
+            }
+        }
+        else
+        {
+            data = 0.0f;
+        }
+    }
+    public void goodG2BSink(float data ) throws Throwable
+    {
+        if (CWE369_Divide_by_Zero__float_URLConnection_divide_22a.goodG2BPublicStatic)
+        {
+            int result = (int)(100.0 / data);
+            IO.writeLine(result);
+        }
+        else
+        {
+            data = 0.0f;
+        }
+    }
+}

@@ -1,0 +1,19 @@
+
+package testcases.CWE470_Unsafe_Reflection;
+import testcasesupport.*;
+import javax.servlet.http.*;
+public class CWE470_Unsafe_Reflection__getParameter_Servlet_61b
+{
+    public String badSource(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = request.getParameter("name");
+        return data;
+    }
+    public String goodG2BSource(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        String data;
+        data = "Testing.test";
+        return data;
+    }
+}

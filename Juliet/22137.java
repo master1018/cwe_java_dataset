@@ -1,0 +1,112 @@
+
+package testcases.CWE134_Uncontrolled_Format_String.s01;
+import testcasesupport.*;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+public class CWE134_Uncontrolled_Format_String__PropertiesFile_printf_17 extends AbstractTestCase
+{
+    public void bad() throws Throwable
+    {
+        String data;
+        data = ""; 
+        {
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
+            {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        }
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                System.out.printf(data);
+            }
+        }
+    }
+    private void goodG2B() throws Throwable
+    {
+        String data;
+        data = "foo";
+        for (int j = 0; j < 1; j++)
+        {
+            if (data != null)
+            {
+                System.out.printf(data);
+            }
+        }
+    }
+    private void goodB2G() throws Throwable
+    {
+        String data;
+        data = ""; 
+        {
+            Properties properties = new Properties();
+            FileInputStream streamFileInput = null;
+            try
+            {
+                streamFileInput = new FileInputStream("../common/config.properties");
+                properties.load(streamFileInput);
+                data = properties.getProperty("data");
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (streamFileInput != null)
+                    {
+                        streamFileInput.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing FileInputStream", exceptIO);
+                }
+            }
+        }
+        for (int k = 0; k < 1; k++)
+        {
+            if (data != null)
+            {
+                System.out.printf("%s%n", data);
+            }
+        }
+    }
+    public void good() throws Throwable
+    {
+        goodG2B();
+        goodB2G();
+    }
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
+}

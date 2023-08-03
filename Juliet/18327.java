@@ -1,0 +1,60 @@
+
+package testcases.CWE477_Obsolete_Functions;
+import testcasesupport.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.DataInputStream;
+public class CWE477_Obsolete_Functions__DataInputStream_readLine_04 extends AbstractTestCase
+{
+    private static final boolean PRIVATE_STATIC_FINAL_TRUE = true;
+    private static final boolean PRIVATE_STATIC_FINAL_FALSE = false;
+    public void bad() throws Throwable
+    {
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            {
+                DataInputStream streamDataInput = new DataInputStream(System.in);
+                String myString = streamDataInput.readLine();
+                IO.writeLine(myString); 
+            }
+        }
+    }
+    private void good1() throws Throwable
+    {
+        if (PRIVATE_STATIC_FINAL_FALSE)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                String myString = readerBuffered.readLine();
+                IO.writeLine(myString); 
+            }
+        }
+    }
+    private void good2() throws Throwable
+    {
+        if (PRIVATE_STATIC_FINAL_TRUE)
+        {
+            {
+                InputStreamReader readerInputStream = new InputStreamReader(System.in, "UTF-8");
+                BufferedReader readerBuffered = new BufferedReader(readerInputStream);
+                String myString = readerBuffered.readLine();
+                IO.writeLine(myString); 
+            }
+        }
+    }
+    public void good() throws Throwable
+    {
+        good1();
+        good2();
+    }
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
+}

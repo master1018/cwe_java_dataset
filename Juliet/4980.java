@@ -1,0 +1,420 @@
+
+package testcases.CWE319_Cleartext_Tx_Sensitive_Info;
+import testcasesupport.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.sql.*;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+public class CWE319_Cleartext_Tx_Sensitive_Info__URLConnection_driverManager_21 extends AbstractTestCase
+{
+    private boolean badPrivate = false;
+    public void bad() throws Throwable
+    {
+        String password;
+        password = ""; 
+        {
+            URLConnection urlConnection = (new URL("http:
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                readerInputStream = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                password = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (readerBuffered != null)
+                    {
+                        readerBuffered.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+                try
+                {
+                    if (readerInputStream != null)
+                    {
+                        readerInputStream.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+            }
+        }
+        badPrivate = true;
+        badSink(password );
+    }
+    private void badSink(String password ) throws Throwable
+    {
+        if (badPrivate)
+        {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try
+            {
+                connection = DriverManager.getConnection("data-url", "root", password);
+                preparedStatement = connection.prepareStatement("select * from test_table");
+                resultSet = preparedStatement.executeQuery();
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with database connection", exceptSql);
+            }
+            finally
+            {
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                }
+                try
+                {
+                    if (preparedStatement != null)
+                    {
+                        preparedStatement.close();
+                    }
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                }
+                try
+                {
+                    if (connection != null)
+                    {
+                        connection.close();
+                    }
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                }
+            }
+        }
+    }
+    private boolean goodB2G1Private = false;
+    private boolean goodB2G2Private = false;
+    private boolean goodG2BPrivate = false;
+    public void good() throws Throwable
+    {
+        goodB2G1();
+        goodB2G2();
+        goodG2B();
+    }
+    private void goodB2G1() throws Throwable
+    {
+        String password;
+        password = ""; 
+        {
+            URLConnection urlConnection = (new URL("http:
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                readerInputStream = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                password = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (readerBuffered != null)
+                    {
+                        readerBuffered.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+                try
+                {
+                    if (readerInputStream != null)
+                    {
+                        readerInputStream.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+            }
+        }
+        goodB2G1Private = false;
+        goodB2G1Sink(password );
+    }
+    private void goodB2G1Sink(String password ) throws Throwable
+    {
+        if (goodB2G1Private)
+        {
+            IO.writeLine("Benign, fixed string");
+        }
+        else
+        {
+            if (password != null)
+            {
+                {
+                    Cipher aesCipher = Cipher.getInstance("AES");
+                    SecretKeySpec secretKeySpec = new SecretKeySpec("ABCDEFGHABCDEFGH".getBytes("UTF-8"), "AES");
+                    aesCipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+                    password = new String(aesCipher.doFinal(password.getBytes("UTF-8")), "UTF-8");
+                }
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    connection = DriverManager.getConnection("data-url", "root", password);
+                    preparedStatement = connection.prepareStatement("select * from test_table");
+                    resultSet = preparedStatement.executeQuery();
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with database connection", exceptSql);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (resultSet != null)
+                        {
+                            resultSet.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                    }
+                    try
+                    {
+                        if (preparedStatement != null)
+                        {
+                            preparedStatement.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                    }
+                    try
+                    {
+                        if (connection != null)
+                        {
+                            connection.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                    }
+                }
+            }
+        }
+    }
+    private void goodB2G2() throws Throwable
+    {
+        String password;
+        password = ""; 
+        {
+            URLConnection urlConnection = (new URL("http:
+            BufferedReader readerBuffered = null;
+            InputStreamReader readerInputStream = null;
+            try
+            {
+                readerInputStream = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+                readerBuffered = new BufferedReader(readerInputStream);
+                password = readerBuffered.readLine();
+            }
+            catch (IOException exceptIO)
+            {
+                IO.logger.log(Level.WARNING, "Error with stream reading", exceptIO);
+            }
+            finally
+            {
+                try
+                {
+                    if (readerBuffered != null)
+                    {
+                        readerBuffered.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing BufferedReader", exceptIO);
+                }
+                try
+                {
+                    if (readerInputStream != null)
+                    {
+                        readerInputStream.close();
+                    }
+                }
+                catch (IOException exceptIO)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing InputStreamReader", exceptIO);
+                }
+            }
+        }
+        goodB2G2Private = true;
+        goodB2G2Sink(password );
+    }
+    private void goodB2G2Sink(String password ) throws Throwable
+    {
+        if (goodB2G2Private)
+        {
+            if (password != null)
+            {
+                {
+                    Cipher aesCipher = Cipher.getInstance("AES");
+                    SecretKeySpec secretKeySpec = new SecretKeySpec("ABCDEFGHABCDEFGH".getBytes("UTF-8"), "AES");
+                    aesCipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+                    password = new String(aesCipher.doFinal(password.getBytes("UTF-8")), "UTF-8");
+                }
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSet = null;
+                try
+                {
+                    connection = DriverManager.getConnection("data-url", "root", password);
+                    preparedStatement = connection.prepareStatement("select * from test_table");
+                    resultSet = preparedStatement.executeQuery();
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error with database connection", exceptSql);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (resultSet != null)
+                        {
+                            resultSet.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                    }
+                    try
+                    {
+                        if (preparedStatement != null)
+                        {
+                            preparedStatement.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                    }
+                    try
+                    {
+                        if (connection != null)
+                        {
+                            connection.close();
+                        }
+                    }
+                    catch (SQLException exceptSql)
+                    {
+                        IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                    }
+                }
+            }
+        }
+    }
+    private void goodG2B() throws Throwable
+    {
+        String password;
+        password = "Password1234!";
+        goodG2BPrivate = true;
+        goodG2BSink(password );
+    }
+    private void goodG2BSink(String password ) throws Throwable
+    {
+        if (goodG2BPrivate)
+        {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try
+            {
+                connection = DriverManager.getConnection("data-url", "root", password);
+                preparedStatement = connection.prepareStatement("select * from test_table");
+                resultSet = preparedStatement.executeQuery();
+            }
+            catch (SQLException exceptSql)
+            {
+                IO.logger.log(Level.WARNING, "Error with database connection", exceptSql);
+            }
+            finally
+            {
+                try
+                {
+                    if (resultSet != null)
+                    {
+                        resultSet.close();
+                    }
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing ResultSet", exceptSql);
+                }
+                try
+                {
+                    if (preparedStatement != null)
+                    {
+                        preparedStatement.close();
+                    }
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing PreparedStatement", exceptSql);
+                }
+                try
+                {
+                    if (connection != null)
+                    {
+                        connection.close();
+                    }
+                }
+                catch (SQLException exceptSql)
+                {
+                    IO.logger.log(Level.WARNING, "Error closing Connection", exceptSql);
+                }
+            }
+        }
+    }
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
+}

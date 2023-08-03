@@ -1,0 +1,62 @@
+
+package testcases.CWE598_Information_Exposure_QueryString;
+import testcasesupport.*;
+import javax.servlet.http.*;
+public class CWE598_Information_Exposure_QueryString__Servlet_15 extends AbstractTestCaseServlet
+{
+    public void bad(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        switch (7)
+        {
+        case 7:
+            response.getWriter().println("<form id=\"form\" name=\"form\" method=\"get\" action=\"password-test-servlet\">"); 
+            response.getWriter().println("Username: <input name=\"username\" type=\"text\" tabindex=\"10\" /><br><br>");
+            response.getWriter().println("Password: <input name=\"password\" type=\"password\" tabindex=\"10\" />");
+            response.getWriter().println("<input type=\"submit\" name=\"submit\" value=\"Login-bad\" /></form>");
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+    private void good1(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        switch (8)
+        {
+        case 7:
+            IO.writeLine("Benign, fixed string");
+            break;
+        default:
+            response.getWriter().println("<form id=\"form\" name=\"form\" method=\"post\" action=\"password-test-servlet\">"); 
+            response.getWriter().println("Username: <input name=\"username\" type=\"text\" tabindex=\"10\" /><br><br>");
+            response.getWriter().println("Password: <input name=\"password\" type=\"password\" tabindex=\"10\" />");
+            response.getWriter().println("<input type=\"submit\" name=\"submit\" value=\"Login-good\" /></form>");
+            break;
+        }
+    }
+    private void good2(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        switch (7)
+        {
+        case 7:
+            response.getWriter().println("<form id=\"form\" name=\"form\" method=\"post\" action=\"password-test-servlet\">"); 
+            response.getWriter().println("Username: <input name=\"username\" type=\"text\" tabindex=\"10\" /><br><br>");
+            response.getWriter().println("Password: <input name=\"password\" type=\"password\" tabindex=\"10\" />");
+            response.getWriter().println("<input type=\"submit\" name=\"submit\" value=\"Login-good\" /></form>");
+            break;
+        default:
+            IO.writeLine("Benign, fixed string");
+            break;
+        }
+    }
+    public void good(HttpServletRequest request, HttpServletResponse response) throws Throwable
+    {
+        good1(request, response);
+        good2(request, response);
+    }
+    public static void main(String[] args) throws ClassNotFoundException,
+           InstantiationException, IllegalAccessException
+    {
+        mainFromParent(args);
+    }
+}
