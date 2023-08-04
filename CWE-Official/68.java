@@ -1,8 +1,12 @@
-if (helper == null) {
-synchronized (this) {
-if (helper == null) {
-helper = new Helper();
+public class cwe {
+    public Helper fun() {
+        if (helper == null) {
+            synchronized (this) {
+                if (helper == null) {
+                    helper = new Helper();
+                }
+            }
+        }
+        return helper;
+    }
 }
-}
-}
-return helper;
