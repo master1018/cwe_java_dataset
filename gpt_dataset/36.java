@@ -1,36 +1,34 @@
-import java.io.*;
-import java.util.logging.Level;
+//1. 不安全的数据库连接：
 
-public class PathTraversalExample {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
+public class DatabaseConnectionExample {
     public static void main(String[] args) {
-        String data = "../../../../etc/passwd"; // Relative path data, simulating the data received from the TCP connection
+        String username = "exampleUser";
+        String password = "examplePassword";
+        String jdbcUrl = "jdbc:mysql://localhost:3306/exampledb";
 
-        String root;
-        if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-            /* running on Windows */
-            root = "C:\\uploads\\";
-        } else {
-            /* running on non-Windows */
-            root = "/home/user/uploads/";
-        }
+        try {
+            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+            Statement statement = connection.createStatement();
+            String sqlQuery = "SELECT * FROM users";
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
 
-        if (data != null) {
-            File file = new File(root + data);
-            try (FileInputStream streamFileInputSink = new FileInputStream(file);
-                 InputStreamReader readerInputStreamSink = new InputStreamReader(streamFileInputSink, "UTF-8");
-                 BufferedReader readerBufferedSink = new BufferedReader(readerInputStreamSink)) {
-
-                String line;
-                while ((line = readerBufferedSink.readLine()) != null) {
-                    System.out.println(line); // Output the contents of the file to the console
-                }
-
-            } catch (IOException exceptIO) {
-                // Handle any exceptions here
-                System.err.println("Error with stream reading: " + exceptIO.getMessage());
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String email = resultSet.getString("email");
+                System.out.println("Username: " + username + ", Email: " + email);
             }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
-

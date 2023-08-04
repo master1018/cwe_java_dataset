@@ -1,0 +1,42 @@
+[
+    {
+        "name": "CWE-15",
+        "start": 1,
+        "end": 35
+    },
+    {
+        "name": "CWE-5",
+        "start": 36,
+        "end": 46
+    },
+    {
+        "name": "CWE-6",
+        "start": 47,
+        "end": 56
+    },
+    {
+        "name": "CWE-7",
+        "start": 57,
+        "end": 66
+    },
+    {
+        "name": "CWE-95",
+        "start": 67,
+        "end": 76
+    },
+    {
+        "name": "CWE-78",
+        "start": 77,
+        "end": 86
+    },
+    {
+        "name": "CWE-36",
+        "start": 87,
+        "end": 93
+    },
+    {
+        "name": "CWE-23",
+        "start": 94,
+        "end": 94
+    },
+]
