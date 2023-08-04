@@ -1,20 +1,51 @@
 @Entity
 public class Customer {
-private String id;
-private String firstName;
-private String lastName;
-private Address address;
-public Customer() {
-}
-public Customer(String id, String firstName, String lastName) {...}
-@Id
-public String getCustomerId() {...}
-public void setCustomerId(String id) {...}
-public String getFirstName() {...}
-public void setFirstName(String firstName) {...}
-public String getLastName() {...}
-public void setLastName(String lastName) {...}
-@OneToOne()
-public Address getAddress() {...}
-public void setAddress(Address address) {...}
+    @Id
+    private String id;
+    private String firstName;
+    private String lastName;
+    @OneToOne
+    private Address address;
+
+    public Customer() {
+        // Default constructor
+    }
+
+    public Customer(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }

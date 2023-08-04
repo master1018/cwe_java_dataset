@@ -1,5 +1,9 @@
-String str1 = new String("Hello");
-String str2 = new String("Hello");
-if (str1 == str2) {
-System.out.println("str1 == str2");
+public class cwe {
+    public void fun() {
+        String str1 = new String("Hello");
+        String str2 = new String("Hello");
+        if (str1 == str2) {
+            System.out.println("str1 == str2");
+        }
+    }
 }

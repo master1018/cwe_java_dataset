@@ -1,1 +1,6 @@
-synchronized(this) { }
+public class cwe {
+    synchronized(this)
+
+    {
+    }
+}
