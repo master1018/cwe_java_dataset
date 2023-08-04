@@ -1,4 +1,4 @@
-class PatientRecord {
+public class PatientRecord {
 private String name;
 private String socialSecurityNum;
 public Patient(String name,String ssn) {

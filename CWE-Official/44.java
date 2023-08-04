@@ -11,7 +11,6 @@ public void setInputFile(String inputFile) {
 public void readInputFile() {
 try {
 reader = new FileReader(readFile);
-...
 } catch (RuntimeException rex) {
 System.err.println("Error: Cannot open input file in the directory " + inputFilePath);
 System.err.println("Input file has not been set, call setInputFile method before calling readInputFile");

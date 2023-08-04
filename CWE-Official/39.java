@@ -1,4 +1,6 @@
-private String[] userRoles;
-public void setUserRoles(String[] userRoles) {
-this.userRoles = userRoles;
+public class cwe {
+    private String[] userRoles;
+    public void setUserRoles(String[] userRoles) {
+    this.userRoles = userRoles;
+    }
 }
